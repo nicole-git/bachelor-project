@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #f5f5f5;
     margin: 100px 250px;
@@ -9,10 +13,9 @@ h1 {
 
 textarea {
     border-radius: 2px;
-    width: 400px;
-    max-width: 500px;
+    width: 900px;
+    max-width: 900px;
     height: 300px;
-    max-height: 700px;
 }
 
 button {
@@ -28,4 +31,10 @@ button {
     color: #00509E;
 }
 
-
+#output {
+    background-color: #FFFFFF;
+    border: solid 1px #A9A9A9;
+    border-radius: 2px;
+    width: 900px;
+    height: 300px;
+}

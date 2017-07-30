@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
+
     public static void main(String[] args) {
 
         Javalin app = Javalin.create()
@@ -28,4 +29,5 @@ public class Main {
     public static String runCode(String input){
         return new StringBuilder(input).reverse().toString();
     }
+
 }
