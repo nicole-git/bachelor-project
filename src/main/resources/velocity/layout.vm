@@ -1,0 +1,18 @@
+#macro(mainLayout)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Oppgave 9</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+<header>
+    <a href="/run-code">Run code</a>
+    <a href="/about">About</a>
+</header>
+<main>
+    $!bodyContent
+</main>
+</body>
+</html>
+#end

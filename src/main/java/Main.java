@@ -24,6 +24,10 @@ public class Main {
             model.put("codeOutput", output);
             ctx.renderVelocity("/velocity/code-editor.vm", model);
         });
+
+        app.get("/about", ctx -> {
+            ctx.renderVelocity("/velocity/about.vm", new HashMap<>());
+        });
     }
 
     public static String runCode(String input){

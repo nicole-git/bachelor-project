@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Oppgave 9</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
-</head>
-<body>
-<main>
+#parse("/velocity/layout.vm")
+#@mainLayout()
     <h1>Hello World</h1>
     <form method="post" action="/run-code">
         #if($codeInput)
@@ -20,6 +14,4 @@
     #else
         <div id="output">Waiting ...</div>
     #end
-</main>
-</body>
-</html>
+#end
