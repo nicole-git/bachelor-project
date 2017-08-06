@@ -3,6 +3,8 @@ import io.javalin.Javalin;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.javalin.translator.template.TemplateUtil.model;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -13,20 +15,20 @@ public class Main {
             .start();
 
         app.get("/run-code", ctx -> {
-            ctx.renderVelocity("/velocity/code-editor.vm", new HashMap<>());
+            ctx.renderVelocity("/velocity/code-editor.vm");
         });
 
         app.post("/run-code", ctx -> {
             String input = ctx.formParam("code");
             String output = runCode(input);
-            Map<String, Object> model = new HashMap<>();
-            model.put("codeInput", input);
-            model.put("codeOutput", output);
-            ctx.renderVelocity("/velocity/code-editor.vm", model);
+            ctx.renderVelocity("/velocity/code-editor.vm", model(
+                    "codeInput", input,
+                    "codeOutput", output
+            ));
         });
 
         app.get("/about", ctx -> {
-            ctx.renderVelocity("/velocity/about.vm", new HashMap<>());
+            ctx.renderVelocity("/velocity/about.vm");
         });
     }
 
