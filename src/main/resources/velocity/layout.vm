@@ -7,10 +7,15 @@
 </head>
 <body>
 <header>
-    <a href="/run-code">Run code</a>
-    <a href="/about">About</a>
+    <div class="width-limit">
+        <img class="logo" src="/img/logo_ntnu.png">
+        <ul class="navigation">
+            <li><a href="/run-code">Run code</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </div>
 </header>
-<main>
+<main class="width-limit">
     $!bodyContent
 </main>
 </body>
