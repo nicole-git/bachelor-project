@@ -1,6 +1,6 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-    <h1>Hello World</h1>
+    <h1>Run code</h1>
     <form method="post" action="/run-code">
         #if($codeInput)
             <textarea name="code">$codeInput</textarea>
