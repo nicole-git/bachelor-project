@@ -1,8 +1,5 @@
 import io.javalin.Javalin;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static io.javalin.translator.template.TemplateUtil.model;
 
 public class Main {
@@ -10,9 +7,9 @@ public class Main {
     public static void main(String[] args) {
 
         Javalin app = Javalin.create()
-            .port(7000)
-            .enableStaticFiles("/public")
-            .start();
+                .port(7000)
+                .enableStaticFiles("/public")
+                .start();
 
         app.get("/run-code", ctx -> {
             ctx.renderVelocity("/velocity/code-editor.vm");
@@ -32,7 +29,7 @@ public class Main {
         });
     }
 
-    public static String runCode(String input){
+    public static String runCode(String input) {
         return new StringBuilder(input).reverse().toString();
     }
 
