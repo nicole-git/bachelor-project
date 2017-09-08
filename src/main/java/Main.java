@@ -30,7 +30,7 @@ public class Main {
     }
 
     public static String runCode(String input) {
-        return new StringBuilder(input).reverse().toString();
+        return JavaScriptUtil.runScript(input);
     }
 
 }
