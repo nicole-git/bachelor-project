@@ -2,6 +2,12 @@
 #@mainLayout()
     <h1>Run code</h1>
     <form method="post" action="/run-code">
+        <select name="language">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="groovy">Groovy</option>
+            <option value="ruby">Ruby</option>
+        </select>
         #if($codeInput)
             <textarea name="code">$codeInput</textarea>
         #else

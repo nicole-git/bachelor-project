@@ -19,7 +19,7 @@ public class ScriptService {
         new ScriptEngineManager().registerEngineName("groovy", new GroovyScriptEngineFactory());
     }
 
-    public static String runScript(String script, String language) {
+    public static String runScript(String language, String script) {
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

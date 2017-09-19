@@ -19,8 +19,9 @@ public class Main {
         });
 
         app.post("/run-code", ctx -> {
+            String language = ctx.formParam("language");
             String input = ctx.formParam("code");
-            String output = runCode(input);
+            String output = ScriptService.runScript(language, input);
             ctx.renderVelocity("/velocity/code-editor.vm", model(
                     "codeInput", input,
                     "codeOutput", output
@@ -30,10 +31,6 @@ public class Main {
         app.get("/about", ctx -> {
             ctx.renderVelocity("/velocity/about.vm");
         });
-    }
-
-    public static String runCode(String input) {
-        return ScriptService.runScript(input, "javascript");
     }
 
 }
