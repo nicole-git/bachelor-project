@@ -52,9 +52,9 @@ public class ScriptService {
 
             return sw.toString();
         } catch (ScriptException e) {
-            throw new RuntimeException("Script failed: " + swError.toString());
+            return "Failed to run code";
         } catch (Exception e) {
-            throw new RuntimeException("System error");
+            return "System error...";
         }
     }
 
