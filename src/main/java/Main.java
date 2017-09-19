@@ -1,4 +1,5 @@
 import io.javalin.Javalin;
+import util.ScriptService;
 
 import static io.javalin.translator.template.TemplateUtil.model;
 
@@ -30,7 +31,7 @@ public class Main {
     }
 
     public static String runCode(String input) {
-        return JavaScriptUtil.runScript(input);
+        return ScriptService.runScript(input, "javascript");
     }
 
 }
