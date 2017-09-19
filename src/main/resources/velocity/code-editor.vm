@@ -8,13 +8,17 @@
             <option value="groovy" #if($language == "groovy")selected#end>Groovy</option>
             <option value="ruby" #if($language == "ruby")selected#end>Ruby</option>
         </select>
-
+        <br>
+        <br>
         #if($codeInput)
             <textarea name="code">$codeInput</textarea>
         #else
             <textarea name="code"></textarea>
         #end
+        <br>
         <button>Submit</button>
+        <br>
+        <br>
     </form>
     #if($codeOutput)
         <div id="output">$codeOutput</div>
