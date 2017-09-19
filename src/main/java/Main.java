@@ -12,6 +12,8 @@ public class Main {
                 .enableStaticFiles("/public")
                 .start();
 
+        app.get("/", ctx -> ctx.redirect("/run-code"));
+
         app.get("/run-code", ctx -> {
             ctx.renderVelocity("/velocity/code-editor.vm");
         });
