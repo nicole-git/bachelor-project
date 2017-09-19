@@ -21,10 +21,10 @@ public class ScriptService {
 
     public static String runScript(String language, String script) {
 
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        StringWriter swError = new StringWriter();
-        PrintWriter pwError = new PrintWriter(swError);
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        StringWriter errorStringWriter = new StringWriter();
+        PrintWriter errorPrintWriter = new PrintWriter(errorStringWriter);
 
         try {
             // create a script engine manager
@@ -36,21 +36,21 @@ public class ScriptService {
             }
 
             // create a language engine
-            engine.getContext().setErrorWriter(pwError);
-            engine.getContext().setWriter(pw);
+            engine.getContext().setErrorWriter(errorPrintWriter);
+            engine.getContext().setWriter(printWriter);
 
-            // evaluate code from String
             if ("javascript".equals(language)) {
-                script = "var console = { log: print };" + script;
+                script = "var console = { log: print };" + script; // enable console
             }
-            engine.eval(script);
 
-            pw.close();
-            pwError.close();
-            sw.close();
-            swError.close();
+            engine.eval(script); // evaluate code from String
 
-            return sw.toString();
+            printWriter.close();
+            errorPrintWriter.close();
+            stringWriter.close();
+            errorStringWriter.close();
+
+            return stringWriter.toString();
         } catch (ScriptException e) {
             return "Failed to run code";
         } catch (Exception e) {
