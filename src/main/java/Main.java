@@ -23,6 +23,7 @@ public class Main {
             String input = ctx.formParam("code");
             String output = ScriptService.runScript(language, input);
             ctx.renderVelocity("/velocity/code-editor.vm", model(
+                    "language", language,
                     "codeInput", input,
                     "codeOutput", output
             ));

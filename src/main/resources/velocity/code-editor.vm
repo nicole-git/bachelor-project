@@ -3,11 +3,12 @@
     <h1>Run code</h1>
     <form method="post" action="/run-code">
         <select name="language">
-            <option value="javascript">JavaScript</option>
-            <option value="python">Python</option>
-            <option value="groovy">Groovy</option>
-            <option value="ruby">Ruby</option>
+            <option value="javascript" #if($language == "javascript")selected#end>JavaScript</option>
+            <option value="python" #if($language == "python")selected#end>Python</option>
+            <option value="groovy" #if($language == "groovy")selected#end>Groovy</option>
+            <option value="ruby" #if($language == "ruby")selected#end>Ruby</option>
         </select>
+
         #if($codeInput)
             <textarea name="code">$codeInput</textarea>
         #else
