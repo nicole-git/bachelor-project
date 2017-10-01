@@ -1,4 +1,5 @@
 import io.javalin.Javalin;
+import model.LanguageAndCode;
 import model.LanguageViewModel;
 import util.ScriptService;
 
@@ -30,15 +31,8 @@ public class Main {
         });
 
         app.post("/run-code", ctx -> {
-            String language = ctx.formParam("language");
-            String input = ctx.formParam("code");
-            String output = ScriptService.runScript(language, input);
-            ctx.renderVelocity("/velocity/code-editor.vm", model(
-                    "supportedLanguages", supportedLanguages,
-                    "selectedLanguage", language,
-                    "codeInput", input,
-                    "codeOutput", output
-            ));
+            LanguageAndCode input = ctx.bodyAsClass(LanguageAndCode.class); // convert post-body to class
+            ctx.json(ScriptService.runScript(input.language, input.code)); // return runScript result to client, as json
         });
 
         app.get("/about", ctx -> {

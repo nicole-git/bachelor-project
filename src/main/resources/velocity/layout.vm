@@ -4,6 +4,13 @@
 <head>
     <title>Oppgave 9</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/ace/mode-python.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/js/axios.min.js"></script>
 </head>
 <body>
 <header>

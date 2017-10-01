@@ -1,27 +1,40 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-    <h1>Run code</h1>
-    <form method="post" action="/run-code">
-        <select name="language">
-            #foreach($language in $supportedLanguages)
-                <option value="$language.name" #if($language.name == $selectedLanguage)selected#end>$language.displayName</option>
-            #end
-        </select>
-        <br>
-        <br>
-        #if($codeInput)
-            <textarea name="code">$codeInput</textarea>
-        #else
-            <textarea name="code"></textarea>
-        #end
-        <br>
-        <button>Submit</button>
-        <br>
-        <br>
-    </form>
-    #if($codeOutput)
-        <div id="output">$codeOutput</div>
-    #else
-        <div id="output">Waiting ...</div>
+<h1>Run code</h1>
+<select id="language-select" name="language">
+    #foreach($language in $supportedLanguages)
+        <option value="$language.name">$language.displayName</option>
     #end
+</select>
+<br>
+<br>
+<div id="editor"></div>
+<br>
+<button id="run-code-btn">Submit</button>
+<br>
+<br>
+<div id="output">Waiting ...</div>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/javascript");
+    document.getElementById("language-select").addEventListener("change", function () {
+        editor.getSession().setMode("ace/mode/" + getSelectedLanguage());
+    });
+    document.getElementById("run-code-btn").addEventListener("click", function () {
+        var data = {
+            language: getSelectedLanguage(),
+            code: editor.getValue()
+        }
+        axios.post("/run-code", data).then(function (response) {
+            document.getElementById("output").innerHTML = response.data;
+        }).catch(function (error) {
+            alert("An error occurred")
+        });
+    });
+    function getSelectedLanguage() {
+        var languageSelect = document.getElementById("language-select");
+        return languageSelect.options[languageSelect.selectedIndex].value;
+    }
+</script>
 #end

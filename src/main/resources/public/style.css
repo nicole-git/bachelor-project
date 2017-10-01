@@ -66,11 +66,14 @@ h1 {
     margin: 0 auto;
 }
 
+#editor {
+    width: 900px;
+    min-height: 300px;
+}
+
 textarea {
     border-radius: 2px;
-    width: 900px;
     max-width: 900px;
-    height: 300px;
 }
 
 button {
