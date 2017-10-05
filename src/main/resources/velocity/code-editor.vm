@@ -10,7 +10,7 @@
     <div id="editor"></div>
     <div id="output">Waiting ...</div>
 </div>
-<button id="run-code-btn">Submit</button>
+<button id="run-code-btn">Run code</button>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
