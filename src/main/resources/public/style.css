@@ -62,7 +62,7 @@ h1 {
 }
 
 .width-limit {
-    max-width: 880px;
+    max-width: 980px;
     margin: 0 auto;
     overflow: auto;
     padding-left: 15px;
