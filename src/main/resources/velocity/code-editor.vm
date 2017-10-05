@@ -7,7 +7,11 @@
     #end
 </select>
 <div id="editor-wrap">
-    <div id="editor"></div>
+    <div id="editor">function helloWorld() {
+    console.log("Hello, world!");
+}
+
+helloWorld();</div>
     <div id="output">Waiting ...</div>
 </div>
 <button id="run-code-btn">Run code</button>
