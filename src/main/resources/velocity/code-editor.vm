@@ -6,14 +6,11 @@
         <option value="$language.name">$language.displayName</option>
     #end
 </select>
-<br>
-<br>
-<div id="editor"></div>
-<br>
+<div id="editor-wrap">
+    <div id="editor"></div>
+    <div id="output">Waiting ...</div>
+</div>
 <button id="run-code-btn">Submit</button>
-<br>
-<br>
-<div id="output">Waiting ...</div>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
@@ -32,6 +29,7 @@
             alert("An error occurred")
         });
     });
+
     function getSelectedLanguage() {
         var languageSelect = document.getElementById("language-select");
         return languageSelect.options[languageSelect.selectedIndex].value;
