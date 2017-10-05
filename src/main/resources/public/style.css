@@ -65,6 +65,8 @@ h1 {
     max-width: 880px;
     margin: 0 auto;
     overflow: auto;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 #editor-wrap {
