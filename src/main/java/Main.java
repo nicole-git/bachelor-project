@@ -38,6 +38,10 @@ public class Main {
         app.get("/about", ctx -> {
             ctx.renderVelocity("/velocity/about.vm");
         });
+
+        app.get("/exercise", ctx -> {
+            ctx.renderVelocity("/velocity/exercise.vm");
+        });
     }
 
 }
