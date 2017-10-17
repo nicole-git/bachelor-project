@@ -11,6 +11,7 @@
     <script src="/js/ace/mode-python.js" type="text/javascript" charset="utf-8"></script>
     <script src="/js/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
     <script src="/js/axios.min.js"></script>
+    <script src="/js/vue.js"></script>
 </head>
 <body>
 <header>
@@ -19,7 +20,7 @@
         <ul class="navigation">
             <li><a href="/run-code">Run code</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/exercise">Exercises</a></li>
+            <li><a href="/exercises">Exercises</a></li>
         </ul>
     </div>
 </header>

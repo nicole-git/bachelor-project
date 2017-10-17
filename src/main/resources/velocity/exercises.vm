@@ -1,0 +1,21 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>Exercises</h1>
+<div id="exercises-vue">
+    <li v-for="exercise in exercises">
+        {{ exercise.title }}
+    </li>
+</div>
+<script>
+    axios.get("/api/exercises").then(function (response) {
+        new Vue({
+            el: '#exercises-vue',
+            data: {
+                exercises: response.data
+            }
+        })
+    }).catch(function (error) {
+        alert("An error occurred")
+    });
+</script>
+#end

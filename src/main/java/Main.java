@@ -42,8 +42,8 @@ public class Main {
             ctx.renderVelocity("/velocity/about.vm");
         });
 
-        app.get("/exercise", ctx -> {
-            ctx.renderVelocity("/velocity/exercise.vm");
+        app.get("/exercises", ctx -> {
+            ctx.renderVelocity("/velocity/exercises.vm");
         });
 
         app.routes(() -> {
