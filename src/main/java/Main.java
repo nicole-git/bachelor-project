@@ -1,3 +1,4 @@
+import controller.ExerciseController;
 import io.javalin.Javalin;
 import model.LanguageAndCode;
 import model.LanguageViewModel;
@@ -6,6 +7,8 @@ import util.ScriptService;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.javalin.ApiBuilder.get;
+import static io.javalin.ApiBuilder.path;
 import static io.javalin.translator.template.TemplateUtil.model;
 
 public class Main {
@@ -41,6 +44,12 @@ public class Main {
 
         app.get("/exercise", ctx -> {
             ctx.renderVelocity("/velocity/exercise.vm");
+        });
+
+        app.routes(() -> {
+            path("/api", () -> {
+                get("/exercises", ExerciseController::getAllExercises);
+            });
         });
     }
 
