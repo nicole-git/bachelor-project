@@ -2,6 +2,8 @@ package controller;
 
 import io.javalin.Context;
 import model.Exercise;
+import model.LanguageAndCode;
+import util.ScriptService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +22,11 @@ public class ExerciseController {
 
     public static void getExercise(Context ctx) {
         ctx.json(exercises);
+    }
+
+    public static void runCode(Context ctx) {
+        LanguageAndCode input = ctx.bodyAsClass(LanguageAndCode.class); // convert post-body to class
+        ctx.json(ScriptService.runScript(input.language, input.code)); // return runScript result to client, as json
     }
 
 }

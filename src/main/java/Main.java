@@ -9,6 +9,7 @@ import java.util.List;
 
 import static io.javalin.ApiBuilder.get;
 import static io.javalin.ApiBuilder.path;
+import static io.javalin.ApiBuilder.post;
 import static io.javalin.translator.template.TemplateUtil.model;
 
 public class Main {
@@ -27,16 +28,7 @@ public class Main {
                 .enableStaticFiles("/public")
                 .start();
 
-        app.get("/", ctx -> ctx.redirect("/run-code"));
-
-        app.get("/run-code", ctx -> {
-            ctx.renderVelocity("/velocity/code-editor.vm", model("supportedLanguages", supportedLanguages));
-        });
-
-        app.post("/run-code", ctx -> {
-            LanguageAndCode input = ctx.bodyAsClass(LanguageAndCode.class); // convert post-body to class
-            ctx.json(ScriptService.runScript(input.language, input.code)); // return runScript result to client, as json
-        });
+        app.get("/", ctx -> ctx.redirect("/exercises"));
 
         app.get("/about", ctx -> {
             ctx.renderVelocity("/velocity/about.vm");
@@ -49,12 +41,13 @@ public class Main {
         app.get("/exercises/:exercise-id", ctx -> {
             String exerciseId = ctx.param("exercise-id");
             System.out.println(exerciseId);
-            ctx.renderVelocity("/velocity/exercise.vm");
+            ctx.renderVelocity("/velocity/exercise.vm", model("supportedLanguages", supportedLanguages));
         });
 
         app.routes(() -> {
             path("/api", () -> {
                 get("/exercises", ExerciseController::getAllExercises);
+                post("/run-code", ExerciseController::runCode);
             });
         });
     }

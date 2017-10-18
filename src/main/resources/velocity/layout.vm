@@ -16,9 +16,8 @@
 <body>
 <header>
     <div class="width-limit">
-        <a href="/run-code"><img class="logo" src="/img/logo_ntnu.png"></a>
+        <a href="/"><img class="logo" src="/img/logo_ntnu.png"></a>
         <ul class="navigation">
-            <li><a href="/run-code">Run code</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/exercises">Exercises</a></li>
         </ul>
