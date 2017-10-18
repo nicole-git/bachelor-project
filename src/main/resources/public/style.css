@@ -114,10 +114,15 @@ ul.exercise-list {
     padding: 0;
 }
 
+ul.exercise-list a {
+    text-decoration: none;
+    padding: 15px;
+    display: block;
+}
+
 ul.exercise-list .exercise {
     background-color: #fff;
     box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
-    padding: 15px;
 }
 
 ul.exercise-list .exercise + .exercise {
@@ -126,6 +131,7 @@ ul.exercise-list .exercise + .exercise {
 
 .exercise__title {
     font-size: 20px;
+    color: #333;
 }
 
 .exercise__description {
