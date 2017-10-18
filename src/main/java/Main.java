@@ -37,8 +37,10 @@ public class Main {
 
             get("/exercises/:exercise-id", ctx -> {
                 String exerciseId = ctx.param("exercise-id");
-                System.out.println(exerciseId);
-                ctx.renderVelocity("/velocity/exercise.vm", model("supportedLanguages", supportedLanguages));
+                ctx.renderVelocity("/velocity/exercise.vm", model(
+                        "supportedLanguages", supportedLanguages,
+                        "exercise", ExerciseController.getExercise(exerciseId)
+                ));
             });
         });
 

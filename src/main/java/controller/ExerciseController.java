@@ -1,5 +1,6 @@
 package controller;
 
+import exception.NotFoundException;
 import io.javalin.Context;
 import model.Exercise;
 import model.LanguageAndCode;
@@ -20,8 +21,13 @@ public class ExerciseController {
         ctx.json(exercises);
     }
 
-    public static void getExercise(Context ctx) {
-        ctx.json(exercises);
+    public static Exercise getExercise(String exerciseId) throws NotFoundException {
+        for (Exercise exercise : exercises) {
+            if (exercise.id.equals(exerciseId)) {
+                return exercise;
+            }
+        }
+        throw new NotFoundException();
     }
 
     public static void runCode(Context ctx) {
