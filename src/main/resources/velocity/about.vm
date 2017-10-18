@@ -1,4 +1,3 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-    <h1>About</h1>
 #end

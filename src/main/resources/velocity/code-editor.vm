@@ -1,6 +1,5 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<h1>Run code</h1>
 <select id="language-select" name="language">
     #foreach($language in $supportedLanguages)
         <option value="$language.name">$language.displayName</option>

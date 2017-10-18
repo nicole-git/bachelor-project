@@ -1,6 +1,5 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<h1>Exercises</h1>
 <div id="exercises-vue" v-cloak>
     <ul class="exercise-list">
         <li v-for="exercise in exercises" class="exercise">
