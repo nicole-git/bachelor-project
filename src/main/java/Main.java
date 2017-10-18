@@ -28,20 +28,18 @@ public class Main {
                 .enableStaticFiles("/public")
                 .start();
 
-        app.get("/", ctx -> ctx.redirect("/exercises"));
+        app.routes(() -> {
+            get("/", ctx -> ctx.redirect("/exercises"));
 
-        app.get("/about", ctx -> {
-            ctx.renderVelocity("/velocity/about.vm");
-        });
+            get("/about", ctx -> ctx.renderVelocity("/velocity/about.vm"));
 
-        app.get("/exercises", ctx -> {
-            ctx.renderVelocity("/velocity/exercises.vm");
-        });
+            get("/exercises", ctx -> ctx.renderVelocity("/velocity/exercises.vm"));
 
-        app.get("/exercises/:exercise-id", ctx -> {
-            String exerciseId = ctx.param("exercise-id");
-            System.out.println(exerciseId);
-            ctx.renderVelocity("/velocity/exercise.vm", model("supportedLanguages", supportedLanguages));
+            get("/exercises/:exercise-id", ctx -> {
+                String exerciseId = ctx.param("exercise-id");
+                System.out.println(exerciseId);
+                ctx.renderVelocity("/velocity/exercise.vm", model("supportedLanguages", supportedLanguages));
+            });
         });
 
         app.routes(() -> {
