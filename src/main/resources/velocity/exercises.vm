@@ -3,7 +3,7 @@
 <div id="exercises-vue" v-cloak>
     <ul class="exercise-list">
         <li v-for="exercise in exercises" class="exercise">
-            <a href="#">
+            <a :href="`/exercises/${exercise.id}`">
                 <div class="exercise__title"> {{ exercise.title }} </div>
                 <div class="exercise__description"> {{ exercise.description }} </div>
             </a>

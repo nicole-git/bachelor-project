@@ -46,6 +46,12 @@ public class Main {
             ctx.renderVelocity("/velocity/exercises.vm");
         });
 
+        app.get("/exercises/:exercise-id", ctx -> {
+            String exerciseId = ctx.param("exercise-id");
+            System.out.println(exerciseId);
+            ctx.renderVelocity("/velocity/exercise.vm");
+        });
+
         app.routes(() -> {
             path("/api", () -> {
                 get("/exercises", ExerciseController::getAllExercises);
