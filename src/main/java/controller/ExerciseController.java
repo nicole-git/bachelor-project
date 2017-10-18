@@ -1,6 +1,6 @@
 package controller;
 
-import exception.NotFoundException;
+import exception.PageNotFoundException;
 import io.javalin.Context;
 import model.Exercise;
 import model.LanguageAndCode;
@@ -21,13 +21,13 @@ public class ExerciseController {
         ctx.json(exercises);
     }
 
-    public static Exercise getExercise(String exerciseId) throws NotFoundException {
+    public static Exercise getExercise(String exerciseId) throws PageNotFoundException {
         for (Exercise exercise : exercises) {
             if (exercise.id.equals(exerciseId)) {
                 return exercise;
             }
         }
-        throw new NotFoundException();
+        throw new PageNotFoundException();
     }
 
     public static void runCode(Context ctx) {

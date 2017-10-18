@@ -1,8 +1,7 @@
 import controller.ExerciseController;
+import exception.PageNotFoundException;
 import io.javalin.Javalin;
-import model.LanguageAndCode;
 import model.LanguageViewModel;
-import util.ScriptService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +41,10 @@ public class Main {
                         "exercise", ExerciseController.getExercise(exerciseId)
                 ));
             });
+        });
+
+        app.exception(PageNotFoundException.class, (exception, ctx) -> {
+            ctx.renderVelocity("/velocity/notFound.vm");
         });
 
         app.routes(() -> {
