@@ -43,9 +43,8 @@ public class Main {
             });
         });
 
-        app.exception(PageNotFoundException.class, (exception, ctx) -> {
-            ctx.renderVelocity("/velocity/notFound.vm");
-        });
+        app.exception(PageNotFoundException.class, (exception, ctx) -> ctx.status(404));
+        app.error(404, ctx -> ctx.renderVelocity("/velocity/notFound.vm"));
 
         app.routes(() -> {
             path("/api", () -> {
