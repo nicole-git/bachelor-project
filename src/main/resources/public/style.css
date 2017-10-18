@@ -1,3 +1,7 @@
+[v-cloak] {
+    display: none;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -104,5 +108,31 @@ button {
     font-family: monospace;
     border: 0;
 }
+
+ul.exercise-list {
+    list-style: none;
+    padding: 0;
+}
+
+ul.exercise-list .exercise {
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    padding: 15px;
+}
+
+ul.exercise-list .exercise + .exercise {
+    margin-top: 20px;
+}
+
+.exercise__title {
+    font-size: 20px;
+}
+
+.exercise__description {
+    color: #777;
+}
+
+
+
 
 

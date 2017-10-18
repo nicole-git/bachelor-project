@@ -1,10 +1,13 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h1>Exercises</h1>
-<div id="exercises-vue">
-    <li v-for="exercise in exercises">
-        {{ exercise.title }}
-    </li>
+<div id="exercises-vue" v-cloak>
+    <ul class="exercise-list">
+        <li v-for="exercise in exercises" class="exercise">
+            <div class="exercise__title"> {{ exercise.title }} </div>
+            <div class="exercise__description"> {{ exercise.description }} </div>
+        </li>
+    </ul>
 </div>
 <script>
     axios.get("/api/exercises").then(function (response) {
