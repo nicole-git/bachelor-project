@@ -9,6 +9,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.UUID;
 
 public class ScriptService {
 
@@ -52,9 +53,23 @@ public class ScriptService {
 
             return stringWriter.toString();
         } catch (ScriptException e) {
+            e.printStackTrace();
             return "Failed to run code";
         } catch (Exception e) {
+            e.printStackTrace();
             return "System error...";
+        }
+    }
+
+    public static String runScriptWithTest(String language, String script, String testCode, String expectedValue) {
+        String randomId = UUID.randomUUID().toString();
+        String testScript = script + "\n\n print(\"" + randomId + "\")\n\n" + testCode;
+        String result = runScript(language, testScript);
+        boolean isCorrect = expectedValue.equalsIgnoreCase(result.split(randomId)[1].trim());
+        if (isCorrect) {
+            return "Your answer is correct. Good job.";
+        } else {
+            return "Your answer is incorrect. Keep trying!";
         }
     }
 

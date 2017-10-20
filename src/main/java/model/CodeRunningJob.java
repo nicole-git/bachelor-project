@@ -1,6 +1,7 @@
 package model;
 
-public class LanguageAndCode {
+public class CodeRunningJob {
+    public String exerciseId;
     public String language;
     public String code;
 }

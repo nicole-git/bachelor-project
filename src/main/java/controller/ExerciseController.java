@@ -1,9 +1,9 @@
 package controller;
 
-import exception.PageNotFoundException;
+import exception.NotFoundException;
 import io.javalin.Context;
 import model.Exercise;
-import model.LanguageAndCode;
+import model.CodeRunningJob;
 import util.ScriptService;
 
 import java.util.Arrays;
@@ -12,27 +12,31 @@ import java.util.List;
 public class ExerciseController {
 
     private static List<Exercise> exercises = Arrays.asList(
-            new Exercise("Exercise 1", "Description 1", "Print 'Hello World'", "Hello World"),
-            new Exercise("Exercise 2", "Description 2", "Print 'Hello Dorld'", "Hello Dorld"),
-            new Exercise("Exercise 3", "Description 3", "Print 'Hello Corld'", "Hello Corld")
+            new Exercise("Exercise 1", "Hello, World!", "Create a method called helloWorld() which prints \"Hello, World!\"", "helloWorld()", "Hello, World!")
     );
 
     public static void getAllExercises(Context ctx) {
         ctx.json(exercises);
     }
 
-    public static Exercise getExercise(String exerciseId) throws PageNotFoundException {
+    public static Exercise getExercise(String exerciseId) throws NotFoundException {
         for (Exercise exercise : exercises) {
             if (exercise.id.equals(exerciseId)) {
                 return exercise;
             }
         }
-        throw new PageNotFoundException();
+        throw new NotFoundException();
     }
 
-    public static void runCode(Context ctx) {
-        LanguageAndCode input = ctx.bodyAsClass(LanguageAndCode.class); // convert post-body to class
+    public static void runCode(Context ctx)  {
+        CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert post-body to class
         ctx.json(ScriptService.runScript(input.language, input.code)); // return runScript result to client, as json
+    }
+
+    public static void runCodeWithTest(Context ctx) throws NotFoundException {
+        CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
+        Exercise exercise = getExercise(input.exerciseId);
+        ctx.json(ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode, exercise.expectedValue));
     }
 
 }

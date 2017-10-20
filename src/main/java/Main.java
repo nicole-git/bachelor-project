@@ -1,5 +1,5 @@
 import controller.ExerciseController;
-import exception.PageNotFoundException;
+import exception.NotFoundException;
 import io.javalin.Javalin;
 import model.LanguageViewModel;
 
@@ -43,13 +43,14 @@ public class Main {
             });
         });
 
-        app.exception(PageNotFoundException.class, (exception, ctx) -> ctx.status(404));
+        app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ctx.renderVelocity("/velocity/notFound.vm"));
 
         app.routes(() -> {
             path("/api", () -> {
                 get("/exercises", ExerciseController::getAllExercises);
                 post("/run-code", ExerciseController::runCode);
+                post("/run-code-with-test", ExerciseController::runCodeWithTest);
             });
         });
     }

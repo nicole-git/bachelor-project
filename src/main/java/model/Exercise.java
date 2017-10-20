@@ -6,14 +6,16 @@ public class Exercise {
     public String title;
     public String description;
     public String instructions;
-    public String answer;
+    public String testCode;
+    public String expectedValue;
 
-    public Exercise(String title, String description, String instructions, String answer) {
+    public Exercise(String title, String description, String instructions, String testCode, String expectedValue) {
         this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
         this.title = title;
         this.description = description;
         this.instructions = instructions;
-        this.answer = answer;
+        this.testCode = testCode;
+        this.expectedValue = expectedValue;
     }
 
     public String getId() {
@@ -32,7 +34,11 @@ public class Exercise {
         return instructions;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getTestCode() {
+        return testCode;
+    }
+
+    public String getExpectedValue() {
+        return expectedValue;
     }
 }
