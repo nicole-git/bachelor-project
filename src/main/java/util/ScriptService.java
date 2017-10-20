@@ -21,19 +21,19 @@ public class ScriptService {
     }
 
     public static String runScript(String language, String script) {
-
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        StringWriter errorStringWriter = new StringWriter();
-        PrintWriter errorPrintWriter = new PrintWriter(errorStringWriter);
-
         try {
+
+            StringWriter stringWriter = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(stringWriter);
+            StringWriter errorStringWriter = new StringWriter();
+            PrintWriter errorPrintWriter = new PrintWriter(errorStringWriter);
+
             // create a script engine manager
             ScriptEngineManager factory = new ScriptEngineManager();
             ScriptEngine engine = factory.getEngineByName(language);
 
             if (engine == null) {
-                throw new RuntimeException("Language not supported");
+                return "Language not supported";
             }
 
             // create a language engine
@@ -52,12 +52,8 @@ public class ScriptService {
             errorStringWriter.close();
 
             return stringWriter.toString();
-        } catch (ScriptException e) {
-            e.printStackTrace();
-            return "Failed to run code";
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "System error...";
+        } catch (Throwable t) {
+            return t.toString();
         }
     }
 
@@ -65,12 +61,14 @@ public class ScriptService {
         String randomId = UUID.randomUUID().toString();
         String testScript = script + "\n\n print(\"" + randomId + "\")\n\n" + testCode;
         String result = runScript(language, testScript);
-        boolean isCorrect = expectedValue.equalsIgnoreCase(result.split(randomId)[1].trim());
-        if (isCorrect) {
-            return "Your answer is correct. Good job.";
-        } else {
-            return "Your answer is incorrect. Keep trying!";
+        try {
+            boolean isCorrect = expectedValue.equalsIgnoreCase(result.split(randomId)[1].trim());
+            if (isCorrect) {
+                return "Your answer is correct. Good job.";
+            }
+        } catch (Exception ignored) {
         }
+        return "Your answer is incorrect. Result was: " + result;
     }
 
 }

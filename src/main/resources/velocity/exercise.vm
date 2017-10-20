@@ -29,6 +29,7 @@ helloWorld();</div>
             language: getSelectedLanguage(),
             code: editor.getValue()
         }
+        console.log(data)
         axios.post("/api/run-code/", data).then(function (response) {
             document.getElementById("output").innerHTML = response.data;
         }).catch(function (error) {
@@ -42,6 +43,7 @@ helloWorld();</div>
             language: getSelectedLanguage(),
             code: editor.getValue()
         }
+        console.log(data)
         axios.post("/api/run-code-with-test/", data).then(function (response) {
             document.getElementById("output").innerHTML = response.data;
         }).catch(function (error) {
