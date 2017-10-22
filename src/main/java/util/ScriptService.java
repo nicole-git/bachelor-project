@@ -20,7 +20,7 @@ public class ScriptService {
         new ScriptEngineManager().registerEngineName("groovy", new GroovyScriptEngineFactory());
     }
 
-    public static String runScript(String language, String script) {
+    public static String runScript(String language, String userCode) {
         try {
 
             StringWriter stringWriter = new StringWriter();
@@ -41,10 +41,10 @@ public class ScriptService {
             engine.getContext().setWriter(printWriter);
 
             if ("javascript".equals(language)) {
-                script = "var console = { log: print };" + script; // enable console
+                userCode = "var console = { log: print };" + userCode; // enable console
             }
 
-            engine.eval(script); // evaluate code from String
+            engine.eval(userCode); // evaluate code from String
 
             printWriter.close();
             errorPrintWriter.close();
@@ -57,9 +57,9 @@ public class ScriptService {
         }
     }
 
-    public static String runScriptWithTest(String language, String script, String testCode, String expectedValue) {
+    public static String runScriptWithTest(String language, String userCode, String testCode, String expectedValue) {
         String randomId = UUID.randomUUID().toString();
-        String testScript = script + "\n\n print(\"" + randomId + "\")\n\n" + testCode;
+        String testScript = userCode + "\n\n print(\"" + randomId + "\")\n\n" + testCode;
         String result = runScript(language, testScript);
         try {
             boolean isCorrect = expectedValue.equalsIgnoreCase(result.split(randomId)[1].trim());
