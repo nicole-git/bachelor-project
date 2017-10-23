@@ -29,7 +29,7 @@ function filterEven(array) {
         editor.getSession().setMode("ace/mode/" + getSelectedLanguage());
     });
     document.getElementById("run-code-btn").addEventListener("click", function () {
-        var data = { // what we send to the server
+        var data = { // the json we send to the server, which is mapped to CodeRunningJob.java
             exerciseId: "$exercise.id",
             language: getSelectedLanguage(),
             code: editor.getValue()
@@ -42,7 +42,7 @@ function filterEven(array) {
     });
 
     document.getElementById("check-answer-btn").addEventListener("click", function () {
-        var data = {
+        var data = { // the json we send to the server, which is mapped to CodeRunningJob.java
             exerciseId: "$exercise.id",
             language: getSelectedLanguage(),
             code: editor.getValue()

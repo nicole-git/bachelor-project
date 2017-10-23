@@ -54,13 +54,15 @@ public class Main {
 
                 post("/run-code", ctx -> { // just run the user code (Run code)
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert post-body to class
-                    ctx.json(ScriptService.runScript(input.language, input.code)); // return runScript result to client, as json
+                    String result = (ScriptService.runScript(input.language, input.code));
+                    ctx.json(result); // send runScript result to client, as json
                 });
 
-                post("/run-code-with-test", ctx -> { // run user code and test if correc (Check answer)
+                post("/run-code-with-test", ctx -> { // run user code and test if correct (Check answer)
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
-                    Exercise exercise = ExerciseController.getExercise(input.exerciseId);
-                    ctx.json(ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode, exercise.expectedValue));
+                    Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
+                    String result = (ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode, exercise.expectedValue));
+                    ctx.json(result); // send runScriptWithTest result to client, as json
                 });
 
             });
