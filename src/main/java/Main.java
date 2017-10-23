@@ -31,25 +31,21 @@ public class Main {
                 .start();
 
         app.routes(() -> {
+
             get("/", ctx -> ctx.redirect("/exercises"));
 
             get("/about", ctx -> ctx.renderVelocity("/velocity/about.vm"));
 
             get("/exercises", ctx -> ctx.renderVelocity("/velocity/exercises.vm"));
 
-            get("/exercises/:exercise-id", ctx -> {
+            get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");
                 ctx.renderVelocity("/velocity/exercise.vm", model(
                         "supportedLanguages", supportedLanguages,
                         "exercise", ExerciseController.getExercise(exerciseId)
                 ));
             });
-        });
 
-        app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
-        app.error(404, ctx -> ctx.renderVelocity("/velocity/notFound.vm"));
-
-        app.routes(() -> {
             path("/api", () -> {
 
                 get("/exercises", ctx -> {
@@ -68,7 +64,12 @@ public class Main {
                 });
 
             });
+
         });
+
+        app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
+        app.error(404, ctx -> ctx.renderVelocity("/velocity/notFound.vm"));
+
     }
 
 }
