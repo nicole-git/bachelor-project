@@ -11,7 +11,12 @@
     console.log("Hello, world!");
 }
 
-helloWorld();</div>
+helloWorld();
+function filterEven(array) {
+    return array.filter(function(n) {
+        return n % 2 === 0;
+    });
+}</div>
     <div id="output">Waiting ...</div>
 </div>
 <button id="run-code-btn">Run code</button>
