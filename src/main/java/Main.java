@@ -1,7 +1,10 @@
 import controller.ExerciseController;
 import exception.NotFoundException;
 import io.javalin.Javalin;
+import model.CodeRunningJob;
+import model.Exercise;
 import model.LanguageViewModel;
+import util.ScriptService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,9 +51,22 @@ public class Main {
 
         app.routes(() -> {
             path("/api", () -> {
-                get("/exercises", ExerciseController::getAllExercises);
-                post("/run-code", ExerciseController::runCode);
-                post("/run-code-with-test", ExerciseController::runCodeWithTest);
+
+                get("/exercises", ctx -> {
+                    ctx.json(ExerciseController.getAllExercises());
+                });
+
+                post("/run-code", ctx -> { // just run the user code (Run code)
+                    CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert post-body to class
+                    ctx.json(ScriptService.runScript(input.language, input.code)); // return runScript result to client, as json
+                });
+
+                post("/run-code-with-test", ctx -> { // run user code and test if correc (Check answer)
+                    CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
+                    Exercise exercise = ExerciseController.getExercise(input.exerciseId);
+                    ctx.json(ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode, exercise.expectedValue));
+                });
+
             });
         });
     }

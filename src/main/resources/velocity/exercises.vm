@@ -11,6 +11,7 @@
     </ul>
 </div>
 <script>
+    // client tells the server that it wants to GET "/api/exercises"
     axios.get("/api/exercises").then(function (response) {
         new Vue({
             el: '#exercises-vue',

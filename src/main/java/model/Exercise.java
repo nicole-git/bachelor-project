@@ -9,6 +9,8 @@ public class Exercise {
     public String testCode;
     public String expectedValue;
 
+    //todo: how to store test-code and/or solution ???
+
     public Exercise(String title, String description, String instructions, String testCode, String expectedValue) {
         this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
         this.title = title;

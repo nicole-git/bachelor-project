@@ -24,12 +24,12 @@ helloWorld();</div>
         editor.getSession().setMode("ace/mode/" + getSelectedLanguage());
     });
     document.getElementById("run-code-btn").addEventListener("click", function () {
-        var data = {
+        var data = { // what we send to the server
             exerciseId: "$exercise.id",
             language: getSelectedLanguage(),
             code: editor.getValue()
         }
-        axios.post("/api/run-code/", data).then(function (response) {
+        axios.post("/api/run-code", data).then(function (response) {
             document.getElementById("output").innerHTML = response.data;
         }).catch(function (error) {
             alert("An error occurred")
