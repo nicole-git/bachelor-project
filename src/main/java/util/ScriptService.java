@@ -58,17 +58,12 @@ public class ScriptService {
     }
 
     public static String runScriptWithTest(String language, String userCode, String testCode, String expectedValue) {
-        String randomId = UUID.randomUUID().toString();
-        String testScript = userCode + "\n\n print(\"" + randomId + "\")\n\n" + testCode;
-        String result = runScript(language, testScript);
-        try {
-            boolean isCorrect = expectedValue.equalsIgnoreCase(result.split(randomId)[1].trim());
-            if (isCorrect) {
-                return "Your answer is correct. Good job.";
-            }
-        } catch (Exception ignored) {
+        String userCodeWithTest = userCode + testCode; // add test-code after user-code
+        String result = runScript(language, userCodeWithTest).trim(); // remove line-breaks
+        if (expectedValue.equals(result)) {
+            return "Your answer is correct. Good job.";
         }
-        return "Your answer is incorrect. Result was: " + result;
+        return "Your answer is incorrect. \nExpected: '" + expectedValue + "' \nActual:   '" + result + "'";
     }
 
 }
