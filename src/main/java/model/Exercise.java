@@ -4,11 +4,11 @@ import java.util.Map;
 
 public class Exercise {
 
-    public final String id;
-    public final String title;
-    public final String description;
-    public final String instructions;
-    public final Map<Language, String> testCode;
+    public String id;
+    public String title;
+    public String description;
+    public String instructions;
+    public Map<Language, String> testCode;
 
     public Exercise(String title, String description, String instructions, Map<Language, String> testCode) {
         this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
@@ -18,7 +18,6 @@ public class Exercise {
         this.testCode = testCode;
     }
 
-    // These getters are required by Velocity template engine
     public String getId() {
         return id;
     }
