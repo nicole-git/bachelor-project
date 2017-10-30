@@ -10,8 +10,6 @@ public class Exercise {
     public String instructions;
     public Map<Language, String> testCode;
 
-    //todo: how to store test-code and/or solution ???
-
     public Exercise(String title, String description, String instructions, Map<Language, String> testCode) {
         this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
         this.title = title;
