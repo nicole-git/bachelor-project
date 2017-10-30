@@ -1,23 +1,23 @@
 package model;
 
+import java.util.Map;
+
 public class Exercise {
 
     public String id;
     public String title;
     public String description;
     public String instructions;
-    public String testCode;
-    public String expectedValue;
+    public Map<String, String> testCode;
 
     //todo: how to store test-code and/or solution ???
 
-    public Exercise(String title, String description, String instructions, String testCode, String expectedValue) {
+    public Exercise(String title, String description, String instructions, Map<String, String> testCode) {
         this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
         this.title = title;
         this.description = description;
         this.instructions = instructions;
         this.testCode = testCode;
-        this.expectedValue = expectedValue;
     }
 
     public String getId() {
@@ -36,11 +36,8 @@ public class Exercise {
         return instructions;
     }
 
-    public String getTestCode() {
+    public Map<String, String> getTestCode() {
         return testCode;
     }
 
-    public String getExpectedValue() {
-        return expectedValue;
-    }
 }

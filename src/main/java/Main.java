@@ -61,7 +61,7 @@ public class Main {
                 post("/run-code-with-test", ctx -> { // run user code and test if correct (Check answer)
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
                     Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
-                    String result = (ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode, exercise.expectedValue));
+                    String result = (ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode));
                     ctx.json(result); // send runScriptWithTest result to client, as json
                 });
 

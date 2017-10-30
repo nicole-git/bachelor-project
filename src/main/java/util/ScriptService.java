@@ -1,15 +1,18 @@
 package util;
 
-import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
-import org.jruby.embed.jsr223.JRubyEngineFactory;
-import org.python.jsr223.PyScriptEngineFactory;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.UUID;
+
+import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
+import org.jruby.embed.jsr223.JRubyEngineFactory;
+import org.python.jsr223.PyScriptEngineFactory;
 
 public class ScriptService {
 
@@ -22,48 +25,55 @@ public class ScriptService {
 
     public static String runScript(String language, String userCode) {
         try {
-
+            // Create writers
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter);
             StringWriter errorStringWriter = new StringWriter();
             PrintWriter errorPrintWriter = new PrintWriter(errorStringWriter);
 
-            // create a script engine manager
-            ScriptEngineManager factory = new ScriptEngineManager();
-            ScriptEngine engine = factory.getEngineByName(language);
-
-            if (engine == null) {
-                return "Language not supported";
-            }
-
-            // create a language engine
+            // Do engine work
+            ScriptEngine engine = getEngine(language);
             engine.getContext().setErrorWriter(errorPrintWriter);
             engine.getContext().setWriter(printWriter);
+            engine.eval(userCode);
 
-            if ("javascript".equals(language)) {
-                userCode = "var console = { log: print };" + userCode; // enable console
-            }
-
-            engine.eval(userCode); // evaluate code from String
-
+            // Close writers
             printWriter.close();
             errorPrintWriter.close();
             stringWriter.close();
             errorStringWriter.close();
 
+            // return result
             return stringWriter.toString();
         } catch (Throwable t) {
             return t.toString();
         }
     }
 
-    public static String runScriptWithTest(String language, String userCode, String testCode, String expectedValue) {
-        String userCodeWithTest = userCode + testCode; // add test-code after user-code
-        String result = runScript(language, userCodeWithTest).trim(); // remove line-breaks
-        if (expectedValue.equals(result)) {
-            return "Your answer is correct. Good job.";
+    public static String runScriptWithTest(String language, String userCode, Map<String, String> testCode) {
+        try {
+            ScriptEngine engine = getEngine(language);
+            engine.eval(userCode);
+            if ((boolean) engine.eval(testCode.get(language))) {
+                return "Your solution is correct, good job!";
+            }
+            return "Your solution is not correct, try again.";
+        } catch (Throwable t) {
+            return "An error occurred while running your code: " + formatStackTrace(t);
         }
-        return "Your answer is incorrect. \nExpected: '" + expectedValue + "' \nActual:   '" + result + "'";
+    }
+
+    private static ScriptEngine getEngine(String language) throws ScriptException {
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName(language);
+        engine.getContext().setWriter(new PrintWriter(new StringWriter())); // mute engine by default
+        if ("javascript".equals(language)) { // add console.log to js
+            engine.eval("var console = { log: print };");
+        }
+        return engine;
+    }
+
+    private static String formatStackTrace(Throwable t) {
+        return Arrays.stream(t.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("\n"));
     }
 
 }
