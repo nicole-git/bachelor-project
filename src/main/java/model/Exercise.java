@@ -8,11 +8,11 @@ public class Exercise {
     public String title;
     public String description;
     public String instructions;
-    public Map<String, String> testCode;
+    public Map<Language, String> testCode;
 
     //todo: how to store test-code and/or solution ???
 
-    public Exercise(String title, String description, String instructions, Map<String, String> testCode) {
+    public Exercise(String title, String description, String instructions, Map<Language, String> testCode) {
         this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
         this.title = title;
         this.description = description;
@@ -36,7 +36,7 @@ public class Exercise {
         return instructions;
     }
 
-    public Map<String, String> getTestCode() {
+    public Map<Language, String> getTestCode() {
         return testCode;
     }
 

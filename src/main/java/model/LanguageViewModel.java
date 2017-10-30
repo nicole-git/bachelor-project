@@ -4,8 +4,8 @@ public class LanguageViewModel {
     private String name;
     private String displayName;
 
-    public LanguageViewModel(String name, String displayName) {
-        this.name = name;
+    public LanguageViewModel(Language language, String displayName) {
+        this.name = language.name();
         this.displayName = displayName;
     }
 

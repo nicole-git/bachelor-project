@@ -3,6 +3,7 @@ import exception.NotFoundException;
 import io.javalin.Javalin;
 import model.CodeRunningJob;
 import model.Exercise;
+import model.Language;
 import model.LanguageViewModel;
 import util.ScriptService;
 
@@ -17,10 +18,10 @@ import static io.javalin.translator.template.TemplateUtil.model;
 public class Main {
 
     private static List<LanguageViewModel> supportedLanguages = Arrays.asList(
-            new LanguageViewModel("javascript", "JavaScript"),
-            new LanguageViewModel("python", "Python"),
-            new LanguageViewModel("ruby", "Ruby"),
-            new LanguageViewModel("groovy", "Groovy")
+            new LanguageViewModel(Language.JAVASCRIPT, "JavaScript"),
+            new LanguageViewModel(Language.PYTHON, "Python"),
+            new LanguageViewModel(Language.RUBY, "Ruby"),
+            new LanguageViewModel(Language.JAVASCRIPT, "Groovy")
     );
 
     public static void main(String[] args) {
