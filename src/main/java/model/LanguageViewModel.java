@@ -2,7 +2,6 @@ package model;
 
 import org.python.google.common.collect.ImmutableList;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class LanguageViewModel {
@@ -27,7 +26,7 @@ public class LanguageViewModel {
             new LanguageViewModel(Language.JAVASCRIPT, "JavaScript"),
             new LanguageViewModel(Language.PYTHON, "Python"),
             new LanguageViewModel(Language.RUBY, "Ruby"),
-            new LanguageViewModel(Language.JAVASCRIPT, "Groovy")
+            new LanguageViewModel(Language.GROOVY, "Groovy")
     );
 
 }
