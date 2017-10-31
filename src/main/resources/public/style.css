@@ -91,7 +91,7 @@ select {
     appearance: none;
     padding: 5px 25px 5px 10px;
     border: 0;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
     outline: 0;
     font-size: 14px;
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAFAgMAAAABCpX7AAAACVBMVEX///8AAAD///9+749PAAAAA3RSTlPMAICPeyjaAAAAHElEQVQI12NoYFBgSGCYwBDBFMAQxhnAELo0AAAmCQQ0B0XZBgAAAABJRU5ErkJggg==') right 10px top 50% no-repeat #f5f5f5;
