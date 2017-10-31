@@ -27,6 +27,8 @@ function filterEven(array) {
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
+    editor.setShowPrintMargin(false);
+    editor.renderer.setScrollMargin(8, 8)
     document.getElementById("language-select").addEventListener("change", function () {
         editor.getSession().setMode("ace/mode/" + getSelectedLanguage());
     });
