@@ -1,12 +1,14 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h1>$exercise.instructions</h1>
-<select id="language-select" name="language">
-    #foreach($language in $supportedLanguages)
-        <option value="$language.name">$language.displayName</option>
-    #end
-</select>
 <div id="editor-wrap">
+    <div id="top-bar">
+        <select id="language-select" name="language">
+            #foreach($language in $supportedLanguages)
+                <option value="$language.name">$language.displayName</option>
+            #end
+        </select>
+    </div>
     <div id="editor">function helloWorld() {
     console.log("Hello, world!");
 }

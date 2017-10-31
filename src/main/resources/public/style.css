@@ -79,6 +79,30 @@ h1 {
     overflow: hidden;
 }
 
+#top-bar {
+    background-color: #1b1d19;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 7px 15px;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 5px 25px 5px 10px;
+    border: 0;
+    color: #fff;
+    outline: 0;
+    font-size: 14px;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAFAgMAAAABCpX7AAAACVBMVEX///8AAAD///9+749PAAAAA3RSTlPMAICPeyjaAAAAHElEQVQI12NoYFBgSGCYwBDBFMAQxhnAELo0AAAmCQQ0B0XZBgAAAABJRU5ErkJggg==')
+    right 10px top 50% no-repeat #f5f5f5;
+    background-color: #1b1d19;
+}
+
+.tall {
+    height: 50px;
+}
+
 #editor {
     width: 100%;
     min-height: 250px;
