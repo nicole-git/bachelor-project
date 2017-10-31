@@ -1,6 +1,10 @@
+#* @vtlvariable name="exercise" type="model.Exercise" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<h1>$exercise.instructions</h1>
+<div class="exercise-info">
+    <h1>$exercise.title</h1>
+    <p>$exercise.instructions</p>
+</div>
 <div id="editor-wrap">
     <div id="top-bar">
         <select id="language-select" name="language">
