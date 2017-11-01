@@ -64,7 +64,7 @@ function filterEven(array) {
 
     function getSelectedLanguage() {
         var languageSelect = document.getElementById("language-select");
-        return languageSelect.options[languageSelect.selectedIndex].value;
+        return languageSelect.options[languageSelect.selectedIndex].value.toLowerCase();
     }
 </script>
 #end
