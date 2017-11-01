@@ -3,7 +3,13 @@
 #@mainLayout()
 <div class="exercise-info">
     <h1>$exercise.title</h1>
-    <p>$exercise.instructions</p>
+    <div class="description">
+        <p>$exercise.instructions</p>
+    </div>
+    <div class="toggle">
+        <i class="fa fa-plus open" aria-hidden="true"></i>
+        <i class="fa fa-minus close" aria-hidden="true"></i>
+    </div>
 </div>
 <div id="editor-wrap">
     <div id="top-bar">
@@ -66,5 +72,10 @@ function filterEven(array) {
         var languageSelect = document.getElementById("language-select");
         return languageSelect.options[languageSelect.selectedIndex].value.toLowerCase();
     }
+
+    document.querySelector(".toggle").addEventListener("click", function () {
+        document.querySelector(".exercise-info").classList.toggle("minimized-description")
+        $(".description").slideToggle(200);
+    });
 </script>
 #end

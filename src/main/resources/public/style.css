@@ -187,7 +187,35 @@ ul.exercise-list .exercise + .exercise {
 }
 
 .exercise-info {
+    position: relative;
     padding: 1px 15px;
     background: white;
     box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}
+
+.exercise-info .description {
+    overflow: auto;
+}
+
+.exercise-info .description p {
+    margin-top: 0;
+}
+
+.exercise-info .toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 21px;
+    padding: 25px;
+    cursor: pointer;
+}
+
+.exercise-info .toggle .open,
+.exercise-info .toggle .close {
+    display: none;
+}
+
+.exercise-info.minimized-description .toggle .open,
+.exercise-info:not(.minimized-description) .toggle .close {
+    display: block;
 }
