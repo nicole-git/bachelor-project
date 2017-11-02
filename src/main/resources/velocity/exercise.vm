@@ -19,16 +19,7 @@
             #end
         </select>
     </div>
-    <div id="editor">function helloWorld() {
-    console.log("Hello, world!");
-}
-
-helloWorld();
-function filterEven(array) {
-    return array.filter(function(n) {
-        return n % 2 === 0;
-    });
-}</div>
+    <div id="editor"></div>
     <div id="output">Waiting ...</div>
 </div>
 <button id="run-code-btn">Run code</button>
