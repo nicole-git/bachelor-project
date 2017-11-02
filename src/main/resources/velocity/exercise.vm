@@ -40,7 +40,7 @@ function filterEven(array) {
     editor.setShowPrintMargin(false);
     editor.renderer.setScrollMargin(8, 8)
     document.getElementById("language-select").addEventListener("change", function () {
-        editor.getSession().setMode("ace/mode/" + getSelectedLanguage());
+        editor.getSession().setMode("ace/mode/" + getSelectedLanguage().toLowerCase());
     });
     document.getElementById("run-code-btn").addEventListener("click", function () {
         var data = { // the json we send to the server, which is mapped to CodeRunningJob.java
@@ -70,7 +70,7 @@ function filterEven(array) {
 
     function getSelectedLanguage() {
         var languageSelect = document.getElementById("language-select");
-        return languageSelect.options[languageSelect.selectedIndex].value.toLowerCase();
+        return languageSelect.options[languageSelect.selectedIndex].value;
     }
 
     document.querySelector(".toggle").addEventListener("click", function () {
