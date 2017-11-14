@@ -1,4 +1,4 @@
-package util;
+package app.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -10,7 +10,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import model.Language;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 import org.jruby.embed.jsr223.JRubyEngineFactory;
 import org.python.jsr223.PyScriptEngineFactory;
@@ -24,7 +23,7 @@ public class ScriptService {
         new ScriptEngineManager().registerEngineName("groovy", new GroovyScriptEngineFactory());
     }
 
-    public static String runScript(Language language, String userCode) {
+    public static String runScript(String language, String userCode) {
         try {
             // Create writers
             StringWriter stringWriter = new StringWriter();
@@ -51,7 +50,7 @@ public class ScriptService {
         }
     }
 
-    public static String runScriptWithTest(Language language, String userCode, Map<Language, String> testCode) {
+    public static String runScriptWithTest(String language, String userCode, Map<String, String> testCode) {
         try {
             ScriptEngine engine = getEngine(language);
             engine.eval(userCode);
@@ -64,8 +63,8 @@ public class ScriptService {
         }
     }
 
-    private static ScriptEngine getEngine(Language language) throws ScriptException {
-        String languageName = language.name().toLowerCase();
+    private static ScriptEngine getEngine(String language) throws ScriptException {
+        String languageName = language.toLowerCase();
         ScriptEngine engine = new ScriptEngineManager().getEngineByName(languageName);
         engine.getContext().setWriter(new PrintWriter(new StringWriter())); // mute engine by default
         if ("javascript".equals(languageName)) { // add console.log to js

@@ -1,10 +1,14 @@
-import controller.ExerciseController;
-import exception.NotFoundException;
+package app;
+
+import app.controller.ExerciseController;
+import app.model.CodeRunningJob;
+import app.model.Exercise;
+import app.model.LanguageViewModel;
+import app.util.FirebaseUtil;
+import app.util.ScriptService;
+import com.google.firebase.database.FirebaseDatabase;
+import app.exception.NotFoundException;
 import io.javalin.Javalin;
-import model.CodeRunningJob;
-import model.Exercise;
-import model.LanguageViewModel;
-import util.ScriptService;
 
 import static io.javalin.ApiBuilder.get;
 import static io.javalin.ApiBuilder.path;
@@ -13,7 +17,9 @@ import static io.javalin.translator.template.TemplateUtil.model;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static FirebaseDatabase firebaseDatabase = FirebaseUtil.initFirebase();
+
+    public static void main(String[] args) throws Exception {
 
         Javalin app = Javalin.create()
                 .port(7000)
@@ -24,9 +30,9 @@ public class Main {
 
             get("/", ctx -> ctx.redirect("/exercises"));
 
-            get("/about", ctx -> ctx.renderVelocity("/velocity/about.vm"));
-
             get("/exercises", ctx -> ctx.renderVelocity("/velocity/exercises.vm"));
+
+            get("/about", ctx -> ctx.renderVelocity("/velocity/about.vm"));
 
             get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");

@@ -1,4 +1,4 @@
-package model;
+package app.model;
 
 import com.google.common.collect.ImmutableList;
 
@@ -9,8 +9,8 @@ public class LanguageViewModel {
     private String name;
     private String displayName;
 
-    public LanguageViewModel(Language language, String displayName) {
-        this.name = language.name();
+    public LanguageViewModel(String language, String displayName) {
+        this.name = language;
         this.displayName = displayName;
     }
 

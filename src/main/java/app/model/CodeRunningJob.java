@@ -1,7 +1,7 @@
-package model;
+package app.model;
 
 public class CodeRunningJob { //used for converting json to java
     public String exerciseId;
-    public Language language;
+    public String language;
     public String code;
 }

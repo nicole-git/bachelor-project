@@ -1,0 +1,3 @@
+function isGreaterThanTen(number) {
+
+}

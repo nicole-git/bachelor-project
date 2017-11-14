@@ -1,4 +1,4 @@
-#* @vtlvariable name="exercise" type="model.Exercise" *#
+#* @vtlvariable name="exercise" type="app.model.Exercise" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <div class="exercise-info">
@@ -19,7 +19,7 @@
             #end
         </select>
     </div>
-    <div id="editor"></div>
+    <div id="editor">$exercise.startCode.get("JAVASCRIPT")</div>
     <div id="output">Waiting ...</div>
 </div>
 <button id="run-code-btn">Run code</button>

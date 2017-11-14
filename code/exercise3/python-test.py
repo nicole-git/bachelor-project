@@ -1,0 +1,1 @@
+seasonName(1) == 'Spring' and seasonName(2) == 'Summer' and seasonName(3) == 'Fall' and seasonName(4) == 'Winter'

@@ -1,0 +1,1 @@
+def isGreaterThanTen(number):
