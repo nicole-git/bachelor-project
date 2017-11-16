@@ -33,6 +33,7 @@ public class ExerciseUploadUtil {
         countDownLatch.await(); // will wait until count is 0
     }
 
+    // create a map with exercise-id as key and exercise as value
     private static Map<String, Exercise> getExercisesFromFileSystem() throws IOException {
         File codeDirectory = new File("code");
         Map<String, Exercise> exerciseList = new HashMap<>();
