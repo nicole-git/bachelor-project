@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class FirebaseUtil {
 
+    // this method creates a connection to firebase and returns a FirebaseDatabase-object
+    // that we can use to read from and write to the database
     public static FirebaseDatabase initFirebase() {
         try {
             FileInputStream serviceAccount = new FileInputStream("deploy/serviceAccountKey.json");

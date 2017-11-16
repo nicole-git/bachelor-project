@@ -5,6 +5,7 @@ import app.model.Language;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,16 +15,22 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class ExerciseUploadUtil {
 
     public static void main(String[] args) throws Exception {
         FirebaseDatabase firebaseDatabase = FirebaseUtil.initFirebase();
         DatabaseReference exercisesReference = firebaseDatabase.getReference("exercises");
-        exercisesReference.setValueAsync(getExercisesFromFileSystem());
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        exercisesReference.setValue(getExercisesFromFileSystem(), new DatabaseReference.CompletionListener() {
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                System.out.println("Uploaded complete.");
+                countDownLatch.countDown();
+            }
+        });
         System.out.println("Uploading files to firebase ... ");
-        Thread.sleep(2000);
-        System.exit(0);
+        countDownLatch.await(); // will wait until count is 0
     }
 
     private static Map<String, Exercise> getExercisesFromFileSystem() throws IOException {
