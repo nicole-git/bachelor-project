@@ -23,11 +23,9 @@ public class ExerciseUploadUtil {
         FirebaseDatabase firebaseDatabase = FirebaseUtil.initFirebase();
         DatabaseReference exercisesReference = firebaseDatabase.getReference("exercises");
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        exercisesReference.setValue(getExercisesFromFileSystem(), new DatabaseReference.CompletionListener() {
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                System.out.println("Uploaded complete.");
-                countDownLatch.countDown();
-            }
+        exercisesReference.setValue(getExercisesFromFileSystem(), (databaseError, databaseReference) -> {
+            System.out.println("Uploaded complete.");
+            countDownLatch.countDown();
         });
         System.out.println("Uploading files to firebase ... ");
         countDownLatch.await(); // will wait until count is 0

@@ -1,6 +1,8 @@
 package app;
 
 import app.controller.ExerciseController;
+import app.controller.UserController;
+import app.exception.NotFoundException;
 import app.model.CodeRunningJob;
 import app.model.Exercise;
 import app.model.LanguageViewModel;
@@ -8,9 +10,7 @@ import app.security.MyRole;
 import app.util.FirebaseUtil;
 import app.util.ScriptService;
 import com.google.firebase.database.FirebaseDatabase;
-import app.exception.NotFoundException;
 import io.javalin.Javalin;
-
 import static app.security.MyRole.LOGGED_IN;
 import static io.javalin.ApiBuilder.get;
 import static io.javalin.ApiBuilder.path;
@@ -25,17 +25,17 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         Javalin app = Javalin.create()
-                .port(7000)
-                .enableStaticFiles("/public")
-                .accessManager((handler, ctx, permittedRoles) -> {
-                    MyRole userRole = MyRole.getRole(ctx);
-                    if (permittedRoles.contains(userRole)) {
-                        handler.handle(ctx);
-                    } else {
-                        ctx.renderVelocity("/velocity/login.vm");
-                    }
-                })
-                .start();
+            .port(7000)
+            .enableStaticFiles("/public")
+            .accessManager((handler, ctx, permittedRoles) -> {
+                MyRole userRole = MyRole.getRole(ctx);
+                if (permittedRoles.contains(userRole)) {
+                    handler.handle(ctx);
+                } else {
+                    ctx.renderVelocity("/velocity/login.vm");
+                }
+            })
+            .start();
 
         app.routes(() -> {
 
@@ -60,18 +60,25 @@ public class Main {
 
             get("/about", ctx -> ctx.renderVelocity("/velocity/about.vm"), roles(LOGGED_IN));
 
+            get("/statistics/:user-id", ctx -> {
+                ctx.renderVelocity("/velocity/statistics.vm", model(
+                    "solvedExercises", UserController.getUserInfoByUserId("user1").solvedExercises.values().stream().filter(value -> value == true).count(),
+                    "totalExercises", ExerciseController.getAllExercises().size()
+                ));
+            }, roles(LOGGED_IN));
+
             get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");
                 ctx.renderVelocity("/velocity/exercise.vm", model(
-                        "supportedLanguages", LanguageViewModel.supportedLanguages,
-                        "exercise", ExerciseController.getExercise(exerciseId)
+                    "supportedLanguages", LanguageViewModel.supportedLanguages,
+                    "exercise", ExerciseController.getExercise(exerciseId)
                 ));
             }, roles(LOGGED_IN));
 
             path("/api", () -> {
 
                 get("/exercises", ctx -> {
-                    ctx.json(ExerciseController.getAllExercises());
+                    ctx.json(ExerciseController.getExerciseVms());
                 }, roles(LOGGED_IN));
 
                 post("/run-code", ctx -> { // just run the user code (Run code)
@@ -84,6 +91,9 @@ public class Main {
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
                     Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
                     String result = (ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode));
+                    if ("Your solution is correct, good job!".equals(result)) { // todo: fix this
+                        UserController.setExerciseSolved("user1", exercise.id);
+                    }
                     ctx.json(result); // send runScriptWithTest result to client, as json
                 }, roles(LOGGED_IN));
 
@@ -95,6 +105,9 @@ public class Main {
         app.error(404, ctx -> ctx.renderVelocity("/velocity/notFound.vm"));
 
         ExerciseController.getAllExercises(); // connect to firebase
+
+        // set exercise 1 to not-solved every time you start the server
+        FirebaseUtil.synchronizeWrite("userinfo/user1/solvedExercises/exercise-1", false);
 
     }
 

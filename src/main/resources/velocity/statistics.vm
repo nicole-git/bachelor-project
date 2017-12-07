@@ -1,0 +1,4 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+    <h3>You have solved $solvedExercises out of $totalExercises exercises
+#end
