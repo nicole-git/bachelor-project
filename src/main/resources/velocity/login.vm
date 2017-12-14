@@ -1,6 +1,7 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<form method="post" action="/login">
+<form id="login-form"method="post" action="/login">
+    <h1>Log in</h1>
     <input name="username" type="text" placeholder="User name">
     <input name="password" type="password" placeholder="Password">
     <button>Log in</button>

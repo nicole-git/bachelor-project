@@ -219,3 +219,29 @@ ul.exercise-list .exercise + .exercise {
 .exercise-info:not(.minimized-description) .toggle .close {
     display: block;
 }
+
+#login-form {
+    background: white;
+    max-width: 300px;
+    box-shadow: 0 1px 10px rgba(0,0,0,0.3);
+    border-radius: 5px;
+    padding: 20px;
+    position: fixed;
+    margin: 100px auto;
+    left: 0;
+    right: 0;
+}
+
+#login-form input {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+#login-form button {
+    float: right;
+    padding: 10px 23px;
+}
