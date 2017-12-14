@@ -23,6 +23,7 @@
             <li><a href="/exercises">Exercises</a></li>
             <li><a href="/statistics/user1">Statistics</a></li>
             <li><a href="/about">About</a></li>
+            <li id="logout"><a href="/logout">Log out</a></li>
         </ul>
     </div>
 </header>
