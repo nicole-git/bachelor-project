@@ -1,4 +1,19 @@
+#* @vtlvariable name="userInfoList" type="java.util.List<app.model.UserInfo>" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
-    <h3>You have solved $solvedExercises out of $totalExercises exercises
+
+<table>
+    <thead>
+        <th>Student ID</th>
+        <th>Stats</th>
+    </thead>
+    <tbody>
+        #foreach($userInfo in $userInfoList)
+            <tr>
+                <td>$userInfo.userId</td>
+                <td>$userInfo.solvedExercises</td>
+            </tr>
+        #end
+    </tbody>
+</table>
 #end

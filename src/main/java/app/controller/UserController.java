@@ -9,7 +9,7 @@ import java.util.List;
 
 public class UserController {
 
-    private static List<UserInfo> getAllUserInfo() {
+    public static List<UserInfo> getAllUserInfo() {
         List<UserInfo> userInfoList = new ArrayList<>();
         for (DataSnapshot child : FirebaseUtil.synchronizeRead("userinfo").getChildren()) {
             userInfoList.add(child.getValue(UserInfo.class));

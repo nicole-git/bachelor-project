@@ -6,12 +6,14 @@ import app.exception.NotFoundException;
 import app.model.CodeRunningJob;
 import app.model.Exercise;
 import app.model.LanguageViewModel;
-import app.security.MyRole;
+import app.security.UserRole;
 import app.util.FirebaseUtil;
 import app.util.ScriptService;
+import app.util.ViewUtil;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
-import static app.security.MyRole.LOGGED_IN;
+import static app.security.UserRole.STUDENT;
+import static app.security.UserRole.TEACHER;
 import static io.javalin.ApiBuilder.get;
 import static io.javalin.ApiBuilder.path;
 import static io.javalin.ApiBuilder.post;
@@ -22,17 +24,17 @@ public class Main {
 
     public static FirebaseDatabase firebaseDatabase = FirebaseUtil.initFirebase();
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         Javalin app = Javalin.create()
             .port(7000)
             .enableStaticFiles("/public")
             .accessManager((handler, ctx, permittedRoles) -> {
-                MyRole userRole = MyRole.getRole(ctx);
+                UserRole userRole = UserRole.getRole(ctx);
                 if (permittedRoles.contains(userRole)) {
                     handler.handle(ctx);
                 } else {
-                    ctx.renderVelocity("/velocity/login.vm");
+                    ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
                 }
             })
             .start();
@@ -41,51 +43,53 @@ public class Main {
 
             post("/login", ctx -> {
                 //todo: this has to be fixed
-                if ("user1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
-                    ctx.sessionAttribute("logged_in", true);
-                    ctx.redirect("/");
+                if ("student1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
+                    ctx.sessionAttribute("logintype", "student");
+                    ctx.redirect("/exercises");
+                } else if ("teacher1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
+                    ctx.sessionAttribute("logintype", "teacher");
+                    ctx.redirect("/statistics");
                 } else {
-                    ctx.renderVelocity("/velocity/login.vm");
+                    ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
                 }
             });
 
             get("/logout", ctx -> {
-                ctx.sessionAttribute("logged_in", false);
+                ctx.sessionAttribute("logintype", "none");
                 ctx.redirect("/");
             });
 
-            get("/", ctx -> ctx.redirect("/exercises"), roles(LOGGED_IN));
+            get("/", ctx -> ctx.redirect("/exercises"), roles(STUDENT));
 
-            get("/exercises", ctx -> ctx.renderVelocity("/velocity/exercises.vm"), roles(LOGGED_IN));
+            get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/exercises.vm"), roles(STUDENT));
 
-            get("/about", ctx -> ctx.renderVelocity("/velocity/about.vm"), roles(LOGGED_IN));
+            get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
 
-            get("/statistics/:user-id", ctx -> {
-                ctx.renderVelocity("/velocity/statistics.vm", model(
-                    "solvedExercises", UserController.getUserInfoByUserId("user1").solvedExercises.values().stream().filter(value -> value == true).count(),
-                    "totalExercises", ExerciseController.getAllExercises().size()
-                ));
-            }, roles(LOGGED_IN));
+            get("/statistics", ctx -> {
+                ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm", model(
+                    "userInfoList", UserController.getAllUserInfo())
+                );
+            }, roles(TEACHER));
 
             get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");
-                ctx.renderVelocity("/velocity/exercise.vm", model(
+                ViewUtil.renderToCtx(ctx, "/velocity/exercise.vm", model(
                     "supportedLanguages", LanguageViewModel.supportedLanguages,
                     "exercise", ExerciseController.getExercise(exerciseId)
                 ));
-            }, roles(LOGGED_IN));
+            }, roles(STUDENT));
 
             path("/api", () -> {
 
                 get("/exercises", ctx -> {
                     ctx.json(ExerciseController.getExerciseVms());
-                }, roles(LOGGED_IN));
+                }, roles(STUDENT));
 
                 post("/run-code", ctx -> { // just run the user code (Run code)
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert post-body to class
                     String result = (ScriptService.runScript(input.language, input.code));
                     ctx.json(result); // send runScript result to client, as json
-                }, roles(LOGGED_IN));
+                }, roles(STUDENT));
 
                 post("/run-code-with-test", ctx -> { // run user code and test if correct (Check answer)
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
@@ -95,14 +99,14 @@ public class Main {
                         UserController.setExerciseSolved("user1", exercise.id);
                     }
                     ctx.json(result); // send runScriptWithTest result to client, as json
-                }, roles(LOGGED_IN));
+                }, roles(STUDENT));
 
             });
 
         });
 
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
-        app.error(404, ctx -> ctx.renderVelocity("/velocity/notFound.vm"));
+        app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
 
         ExerciseController.getAllExercises(); // connect to firebase
 

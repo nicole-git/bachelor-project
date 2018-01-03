@@ -7,6 +7,7 @@ public class UserInfo {
     public String userId;
     public Map<String, Boolean> solvedExercises;
 
+    // Necessary for object-mapping
     public UserInfo() {
     }
 
@@ -15,11 +16,12 @@ public class UserInfo {
         this.solvedExercises = solvedExercises;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfo{" +
-            "userId='" + userId + '\'' +
-            ", solvedExercises=" + solvedExercises +
-            '}';
+    public String getUserId() {
+        return userId;
     }
+
+    public Map<String, Boolean> getSolvedExercises() {
+        return solvedExercises;
+    }
+
 }

@@ -1,35 +1,39 @@
 #macro(mainLayout)
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Oppgave 9</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
-    <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/js/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/js/ace/mode-python.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/js/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/vue.js"></script>
-    <script src="/js/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
-</head>
-<body>
-<header>
-    <div class="width-limit">
-        <a href="/"><img class="logo" src="/img/logo_ntnu.png"></a>
-        <ul class="navigation">
-            <li><a href="/exercises">Exercises</a></li>
-            <li><a href="/statistics/user1">Statistics</a></li>
-            <li><a href="/about">About</a></li>
-            <li id="logout"><a href="/logout">Log out</a></li>
-        </ul>
-    </div>
-</header>
-<main class="width-limit">
-    $!bodyContent
-</main>
-</body>
+    <head>
+        <title>Oppgave 9</title>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+        <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/mode-python.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/js/axios.min.js"></script>
+        <script src="/js/vue.js"></script>
+        <script src="/js/jquery-3.2.1.min.js"></script>
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="width-limit">
+                <img class="logo" src="/img/logo_ntnu.png">
+                <ul class="navigation">
+                    #if($logintype == "teacher")
+                        <li><a href="/statistics">Statistics</a></li>
+                    #end
+                    #if($logintype == "student")
+                        <li><a href="/exercises">Exercises</a></li>
+                        <li><a href="/about">About</a></li>
+                    #end
+                    <li id="logout"><a href="/logout">Log out</a></li>
+                </ul>
+            </div>
+        </header>
+        <main class="width-limit">
+            $!bodyContent
+        </main>
+    </body>
 </html>
 #end
