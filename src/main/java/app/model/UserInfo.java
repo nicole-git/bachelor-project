@@ -5,23 +5,28 @@ import java.util.Map;
 public class UserInfo {
 
     public String userId;
-    public Map<String, Boolean> solvedExercises;
+    public Map<String, Boolean> exerciseToSolved;
+    public Map<String, Integer> exerciseToAttempts;
 
     // Necessary for object-mapping
     public UserInfo() {
     }
 
-    public UserInfo(String userId, Map<String, Boolean> solvedExercises) {
+    public UserInfo(String userId, Map<String, Boolean> exerciseToSolved, Map<String, Integer> exerciseToAttempts) {
         this.userId = userId;
-        this.solvedExercises = solvedExercises;
+        this.exerciseToSolved = exerciseToSolved;
+        this.exerciseToAttempts = exerciseToAttempts;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public Map<String, Boolean> getSolvedExercises() {
-        return solvedExercises;
+    public Map<String, Boolean> getExerciseToSolved() {
+        return exerciseToSolved;
     }
 
+    public Map<String, Integer> getExerciseToAttempts() {
+        return exerciseToAttempts;
+    }
 }

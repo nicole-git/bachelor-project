@@ -19,8 +19,7 @@ public class ExerciseVm {
         this.description = exercise.description;
         this.instructions = exercise.instructions;
         this.startCode = exercise.startCode;
-        this.solved = userInfo.solvedExercises.getOrDefault(exercise.id, false);
-        // get value from map, or use default value (false) if no value is found
+        this.solved = userInfo.exerciseToSolved.get(exercise.id);
     }
 }
 

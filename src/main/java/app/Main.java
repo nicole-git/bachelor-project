@@ -7,6 +7,7 @@ import app.model.CodeRunningJob;
 import app.model.Exercise;
 import app.model.LanguageViewModel;
 import app.security.UserRole;
+import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
 import app.util.ScriptService;
 import app.util.ViewUtil;
@@ -95,6 +96,9 @@ public class Main {
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
                     Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
                     String result = (ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode));
+                    if (!UserController.getExerciseSolved("user1", exercise.id)) {
+                        UserController.incrementExerciseAttempts("user1", exercise.id);
+                    }
                     if ("Your solution is correct, good job!".equals(result)) { // todo: fix this
                         UserController.setExerciseSolved("user1", exercise.id);
                     }
@@ -108,10 +112,9 @@ public class Main {
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
 
-        ExerciseController.getAllExercises(); // connect to firebase
+        ExerciseController.getAllExercises(); // connect to firebase, reduces load-time
 
-        // set exercise 1 to not-solved every time you start the server
-        FirebaseUtil.synchronizeWrite("userinfo/user1/solvedExercises/exercise-1", false);
+        FakeDataUtil.writeFakeData(); //
 
     }
 

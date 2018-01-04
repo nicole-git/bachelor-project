@@ -26,9 +26,22 @@ public class UserController {
         throw new NotFoundException();
     }
 
+    public static boolean getExerciseSolved(String userId, String exerciseId) {
+        return FirebaseUtil.synchronizeRead("userinfo/" + userId + "/exerciseToSolved/" + exerciseId).getValue(Boolean.class);
+    }
+
+
     public static void setExerciseSolved(String userId, String exerciseId) {
-        // for example: userinfo/user1/solvedExercises/exercise-1 = true
-        FirebaseUtil.synchronizeWrite("userinfo/" + userId + "/solvedExercises/" + exerciseId, true);
+        // for example: userinfo/user1/exerciseToSolved/exercise-1 = true
+        FirebaseUtil.synchronizeWrite("userinfo/" + userId + "/exerciseToSolved/" + exerciseId, true);
+    }
+
+    public static int getExercisesAttempts(String userId, String exerciseId) {
+        return FirebaseUtil.synchronizeRead("userinfo/" + userId + "/exerciseToAttempts/" + exerciseId).getValue(Integer.class);
+    }
+
+    public static void incrementExerciseAttempts(String userId, String exerciseId) {
+        FirebaseUtil.synchronizeWrite("userinfo/" + userId + "/exerciseToAttempts/" + exerciseId, getExercisesAttempts(userId, exerciseId) + 1);
     }
 
 }

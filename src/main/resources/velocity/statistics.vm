@@ -5,13 +5,15 @@
 <table>
     <thead>
         <th>Student ID</th>
-        <th>Stats</th>
+        <th>Solved state</th>
+        <th>Attempts</th>
     </thead>
     <tbody>
         #foreach($userInfo in $userInfoList)
             <tr>
                 <td>$userInfo.userId</td>
-                <td>$userInfo.solvedExercises</td>
+                <td>$userInfo.exerciseToSolved</td>
+                <td>$userInfo.exerciseToAttempts</td>
             </tr>
         #end
     </tbody>
