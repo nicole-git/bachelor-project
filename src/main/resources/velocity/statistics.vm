@@ -1,7 +1,29 @@
 #* @vtlvariable name="userInfoList" type="java.util.List<app.model.UserInfo>" *#
+#* @vtlvariable name="exerciseInfoList" type="java.util.List<app.model.ExerciseInfo>" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
 
+<h1>Exercise statistics</h1>
+<table>
+    <thead>
+        <th>Exercise ID</th>
+        <th>Total attemtps</th>
+        <th>Total solves</th>
+        <th>Average attempts before solve</th>
+    </thead>
+    <tbody>
+        #foreach($exerciseInfo in $exerciseInfoList)
+            <tr>
+                <td>$exerciseInfo.exerciseId</td>
+                <td>$exerciseInfo.totalAttempts</td>
+                <td>$exerciseInfo.totalSolves</td>
+                <td>$exerciseInfo.averageAttemptsBeforeSolve</td>
+            </tr>
+        #end
+    </tbody>
+</table>
+
+<h1>Student statistics</h1>
 <table>
     <thead>
         <th>Student ID</th>

@@ -1,11 +1,13 @@
 package app;
 
 import app.controller.ExerciseController;
+import app.controller.StatisticsController;
 import app.controller.UserController;
 import app.exception.NotFoundException;
 import app.model.CodeRunningJob;
 import app.model.Exercise;
-import app.model.LanguageViewModel;
+import app.model.UserInfo;
+import app.viewmodel.LanguageVm;
 import app.security.UserRole;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
@@ -13,6 +15,7 @@ import app.util.ScriptService;
 import app.util.ViewUtil;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
+import java.util.List;
 import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
 import static io.javalin.ApiBuilder.get;
@@ -67,15 +70,17 @@ public class Main {
             get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
 
             get("/statistics", ctx -> {
+                List<UserInfo> userInfoList = UserController.getAllUserInfo();
                 ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm", model(
-                    "userInfoList", UserController.getAllUserInfo())
-                );
+                    "exerciseInfoList", StatisticsController.getExerciseInfo(userInfoList),
+                    "userInfoList", userInfoList
+                ));
             }, roles(TEACHER));
 
             get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");
                 ViewUtil.renderToCtx(ctx, "/velocity/exercise.vm", model(
-                    "supportedLanguages", LanguageViewModel.supportedLanguages,
+                    "supportedLanguages", LanguageVm.supportedLanguages,
                     "exercise", ExerciseController.getExercise(exerciseId)
                 ));
             }, roles(STUDENT));
