@@ -25,4 +25,4 @@ Each exercise must have the following files:
 * `python-test.py` // test-code for python
 
 ## Login
-There are two dummy-users in the system `student1` and `teacher1`. The password for both is `password`.
+There are two dummy-users in the system: `student1` and `teacher1`. The password for both is `password`.
