@@ -23,3 +23,6 @@ Each exercise must have the following files:
 * `meta.json` // meta information for exercise (title, description, etc)
 * `python.py` // start-code for python
 * `python-test.py` // test-code for python
+
+## Login
+There are two dummy-users in the system: `student1` and `teacher1`. The password for both is `password`.
