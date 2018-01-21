@@ -5,6 +5,7 @@ import app.controller.StatisticsController;
 import app.controller.UserController;
 import app.exception.NotFoundException;
 import app.model.CodeRunningJob;
+import app.model.CodeRunningJobResult;
 import app.model.Exercise;
 import app.model.UserInfo;
 import app.viewmodel.LanguageVm;
@@ -98,14 +99,15 @@ public class Main {
                 }, roles(STUDENT));
 
                 post("/run-code-with-test", ctx -> { // run user code and test if correct (Check answer)
-                    CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class);
+                    String userId = "user1";
+                    CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert json to java-object
                     Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
-                    String result = (ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode));
-                    if (!UserController.getExerciseSolved("user1", exercise.id)) {
-                        UserController.incrementExerciseAttempts("user1", exercise.id);
+                    CodeRunningJobResult result = ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode);
+                    if (!UserController.getExerciseSolved(userId, exercise.id)) {
+                        UserController.incrementExerciseAttempts(userId, exercise.id);
                     }
-                    if ("Your solution is correct, good job!".equals(result)) { // todo: fix this
-                        UserController.setExerciseSolved("user1", exercise.id);
+                    if (result.isCorrect) { 
+                        UserController.setExerciseSolved(userId, exercise.id);
                     }
                     ctx.json(result); // send runScriptWithTest result to client, as json
                 }, roles(STUDENT));

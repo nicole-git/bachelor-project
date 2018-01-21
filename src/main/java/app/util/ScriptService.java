@@ -10,6 +10,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import app.model.CodeRunningJobResult;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 import org.jruby.embed.jsr223.JRubyEngineFactory;
 import org.python.jsr223.PyScriptEngineFactory;
@@ -50,16 +51,16 @@ public class ScriptService {
         }
     }
 
-    public static String runScriptWithTest(String language, String userCode, Map<String, String> testCode) {
+    public static CodeRunningJobResult runScriptWithTest(String language, String userCode, Map<String, String> testCode) {
         try {
             ScriptEngine engine = getEngine(language);
             engine.eval(userCode);
             if ((boolean) engine.eval(testCode.get(language))) {
-                return "Your solution is correct, good job!";
+                return new CodeRunningJobResult(true, 100, "Your solution is correct, good job!");
             }
-            return "Your solution is not correct, try again.";
+            return new CodeRunningJobResult(false, 0, "Your solution is not correct, try again.");
         } catch (Throwable t) {
-            return "An error occurred while running your code: " + formatStackTrace(t);
+            return new CodeRunningJobResult(false, 0, "An error occurred while running your code: " + formatStackTrace(t));
         }
     }
 
