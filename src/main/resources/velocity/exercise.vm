@@ -53,7 +53,7 @@
             code: editor.getValue()
         }
         axios.post("/api/run-code-with-test/", data).then(function (response) {
-            document.getElementById("output").innerHTML = response.data;
+            document.getElementById("output").innerHTML = response.data.message;
         }).catch(function (error) {
             alert("An error occurred")
         });
