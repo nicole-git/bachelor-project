@@ -16,7 +16,9 @@ import app.util.ScriptService;
 import app.util.ViewUtil;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
+
 import java.util.List;
+
 import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
 import static io.javalin.ApiBuilder.get;
@@ -32,17 +34,17 @@ public class Main {
     public static void main(String[] args) {
 
         Javalin app = Javalin.create()
-            .port(7000)
-            .enableStaticFiles("/public")
-            .accessManager((handler, ctx, permittedRoles) -> {
-                UserRole userRole = UserRole.getRole(ctx);
-                if (permittedRoles.contains(userRole)) {
-                    handler.handle(ctx);
-                } else {
-                    ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
-                }
-            })
-            .start();
+                .port(7000)
+                .enableStaticFiles("/public")
+                .accessManager((handler, ctx, permittedRoles) -> {
+                    UserRole userRole = UserRole.getRole(ctx);
+                    if (permittedRoles.contains(userRole)) {
+                        handler.handle(ctx);
+                    } else {
+                        ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
+                    }
+                })
+                .start();
 
         app.routes(() -> {
 
@@ -73,16 +75,16 @@ public class Main {
             get("/statistics", ctx -> {
                 List<UserInfo> userInfoList = UserController.getAllUserInfo();
                 ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm", model(
-                    "exerciseInfoList", StatisticsController.getExerciseInfo(userInfoList),
-                    "userInfoList", userInfoList
+                        "exerciseInfoList", StatisticsController.getExerciseInfo(userInfoList),
+                        "userInfoList", userInfoList
                 ));
             }, roles(TEACHER));
 
             get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");
                 ViewUtil.renderToCtx(ctx, "/velocity/exercise.vm", model(
-                    "supportedLanguages", LanguageVm.supportedLanguages,
-                    "exercise", ExerciseController.getExercise(exerciseId)
+                        "supportedLanguages", LanguageVm.supportedLanguages,
+                        "exercise", ExerciseController.getExercise(exerciseId)
                 ));
             }, roles(STUDENT));
 
@@ -106,7 +108,7 @@ public class Main {
                     if (!UserController.getExerciseSolved(userId, exercise.id)) {
                         UserController.incrementExerciseAttempts(userId, exercise.id);
                     }
-                    if (result.isCorrect) { 
+                    if (result.isCorrect) {
                         UserController.setExerciseSolved(userId, exercise.id);
                     }
                     ctx.json(result); // send runScriptWithTest result to client, as json
