@@ -4,6 +4,7 @@ import app.exception.NotFoundException;
 import app.model.UserInfo;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class UserController {
 
     public static UserInfo getUserInfoByUserId(String userId) throws NotFoundException {
         for (UserInfo userInfo : getAllUserInfo()) {
-            if (userInfo.userId.equals(userId)) {
+            if (userInfo.getUserId().equals(userId)) {
                 return userInfo;
             }
         }

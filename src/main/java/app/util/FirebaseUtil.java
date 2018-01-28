@@ -1,16 +1,12 @@
 package app.util;
 
 import app.Main;
-import app.controller.ExerciseController;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.common.collect.ImmutableMap;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.*;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 public class FirebaseUtil {
@@ -41,6 +37,7 @@ public class FirebaseUtil {
                 snapshot[0] = dataSnapshot;
                 countDownLatch.countDown();
             }
+
             public void onCancelled(DatabaseError databaseError) {
             }
         });

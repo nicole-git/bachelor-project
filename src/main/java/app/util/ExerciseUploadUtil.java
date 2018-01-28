@@ -5,7 +5,6 @@ import app.model.Language;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -43,6 +42,7 @@ public class ExerciseUploadUtil {
             String jsTestCode = readFile(exerciseDir, "javascript-test.js");
             String pythonTestCode = readFile(exerciseDir, "python-test.py");
             Exercise exercise = new Exercise(
+                    meta.get("title").textValue().toLowerCase().replaceAll(" ", "-"),
                     meta.get("title").textValue(),
                     meta.get("description").textValue(),
                     instructions,

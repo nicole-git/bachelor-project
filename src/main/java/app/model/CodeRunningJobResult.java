@@ -1,14 +1,13 @@
 package app.model;
 
-public class CodeRunningJobResult {
-    public boolean isCorrect;
-    public double percentageCorrect;
-    public String message;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-    public CodeRunningJobResult(boolean isCorrect, double percentageCorrect, String message) {
-        this.isCorrect = isCorrect;
-        this.percentageCorrect = percentageCorrect;
-        this.message = message;
-    }
+@Data // creates getters, setters, toString, equals, and hash
+@AllArgsConstructor // required to create objects
+public class CodeRunningJobResult {
+    private boolean isCorrect;
+    private double percentageCorrect;
+    private String message;
 }
 

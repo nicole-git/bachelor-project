@@ -8,12 +8,12 @@ import app.model.CodeRunningJob;
 import app.model.CodeRunningJobResult;
 import app.model.Exercise;
 import app.model.UserInfo;
-import app.viewmodel.LanguageVm;
 import app.security.UserRole;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
 import app.util.ScriptService;
 import app.util.ViewUtil;
+import app.viewmodel.LanguageVm;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
 
@@ -21,9 +21,7 @@ import java.util.List;
 
 import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
-import static io.javalin.ApiBuilder.get;
-import static io.javalin.ApiBuilder.path;
-import static io.javalin.ApiBuilder.post;
+import static io.javalin.ApiBuilder.*;
 import static io.javalin.security.Role.roles;
 import static io.javalin.translator.template.TemplateUtil.model;
 
@@ -104,12 +102,12 @@ public class Main {
                     String userId = "user1";
                     CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert json to java-object
                     Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
-                    CodeRunningJobResult result = ScriptService.runScriptWithTest(input.language, input.code, exercise.testCode);
-                    if (!UserController.getExerciseSolved(userId, exercise.id)) {
-                        UserController.incrementExerciseAttempts(userId, exercise.id);
+                    CodeRunningJobResult result = ScriptService.runScriptWithTest(input.language, input.code, exercise.getTestCode());
+                    if (!UserController.getExerciseSolved(userId, exercise.getId())) {
+                        UserController.incrementExerciseAttempts(userId, exercise.getId());
                     }
-                    if (result.isCorrect) {
-                        UserController.setExerciseSolved(userId, exercise.id);
+                    if (result.isCorrect()) {
+                        UserController.setExerciseSolved(userId, exercise.getId());
                     }
                     ctx.json(result); // send runScriptWithTest result to client, as json
                 }, roles(STUDENT));

@@ -6,6 +6,7 @@ import app.model.UserInfo;
 import app.util.FirebaseUtil;
 import app.viewmodel.ExerciseVm;
 import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ExerciseController {
 
     public static Exercise getExercise(String exerciseId) throws NotFoundException {
         for (Exercise exercise : getExercises()) {
-            if (exercise.id.equals(exerciseId)) {
+            if (exercise.getId().equals(exerciseId)) {
                 return exercise;
             }
         }

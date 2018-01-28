@@ -1,61 +1,19 @@
 package app.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Map;
 
+@Data // creates getters, setters, toString, equals, and hash
+@NoArgsConstructor // required by firebase
+@AllArgsConstructor // required to create objects
 public class Exercise {
-
-    public String id;
-    public String title;
-    public String description;
-    public String instructions;
-    public Map<String, String> startCode;
-    public Map<String, String> testCode;
-
-    public Exercise() {
-    }
-
-    public Exercise(String title, String description, String instructions, Map<String, String> startCode, Map<String, String> testCode) {
-        this.id = title.toLowerCase().replaceAll(" ", "-"); // todo: reconsider
-        this.title = title;
-        this.description = description;
-        this.instructions = instructions;
-        this.startCode = startCode;
-        this.testCode = testCode;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public Map<String, String> getStartCode() {
-        return startCode;
-    }
-
-    public Map<String, String> getTestCode() {
-        return testCode;
-    }
-
-    @Override
-    public String toString() {
-        return "Exercise{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", instructions='" + instructions + '\'' +
-                ", startCode=" + startCode +
-                ", testCode=" + testCode +
-                '}';
-    }
+    private String id;
+    private String title;
+    private String description;
+    private String instructions;
+    private Map<String, String> startCode;
+    private Map<String, String> testCode;
 }

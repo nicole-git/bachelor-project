@@ -1,7 +1,9 @@
 package app.util;
 
 import io.javalin.Context;
+
 import java.util.Map;
+
 import static io.javalin.translator.template.TemplateUtil.model;
 
 public class ViewUtil {
