@@ -1,11 +1,12 @@
 package app;
 
+import app.controller.AttemptController;
 import app.controller.ExerciseController;
 import app.controller.StatisticsController;
 import app.controller.UserController;
 import app.exception.NotFoundException;
-import app.model.CodeRunningJob;
-import app.model.CodeRunningJobResult;
+import app.model.CodeRunningInput;
+import app.model.CodeRunningResult;
 import app.model.Exercise;
 import app.model.UserInfo;
 import app.security.UserRole;
@@ -93,17 +94,19 @@ public class Main {
                 }, roles(STUDENT));
 
                 post("/run-code", ctx -> { // just run the user code (Run code)
-                    CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert post-body to class
-                    String result = (ScriptService.runScript(input.language, input.code));
+                    CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert post-body to class
+                    String result = (ScriptService.runScript(input.getLanguage(), input.getCode()));
                     ctx.json(result); // send runScript result to client, as json
                 }, roles(STUDENT));
 
                 post("/run-code-with-test", ctx -> { // run user code and test if correct (Check answer)
                     String userId = "user1";
-                    CodeRunningJob input = ctx.bodyAsClass(CodeRunningJob.class); // convert json to java-object
-                    Exercise exercise = ExerciseController.getExercise(input.exerciseId); //gets the exercise the user is solving
-                    CodeRunningJobResult result = ScriptService.runScriptWithTest(input.language, input.code, exercise.getTestCode());
+                    CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert json to java-object
+                    Exercise exercise = ExerciseController.getExercise(input.getExerciseId()); //gets the exercise the user is solving
+                    CodeRunningResult result = ScriptService.runScriptWithTest(input.getLanguage(), input.getCode(), exercise.getTestCode());
+
                     if (!UserController.getExerciseSolved(userId, exercise.getId())) {
+                        AttemptController.registerAttempt(userId, input, result);
                         UserController.incrementExerciseAttempts(userId, exercise.getId());
                     }
                     if (result.isCorrect()) {
