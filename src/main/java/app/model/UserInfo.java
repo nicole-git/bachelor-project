@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.Map;
 
 @Data // creates getters, setters, toString, equals, and hash
-@NoArgsConstructor // required by firebase
 @AllArgsConstructor // required to create objects
 public class UserInfo {
     private String userId;

@@ -1,19 +1,28 @@
 package app.controller;
 
 import app.exception.NotFoundException;
+import app.model.Attempt;
+import app.model.Exercise;
 import app.model.UserInfo;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class UserController {
 
+    // TODO: this is very inefficient. should  rewrite to go through each attempt instead
     public static List<UserInfo> getAllUserInfo() {
         List<UserInfo> userInfoList = new ArrayList<>();
-        for (DataSnapshot child : FirebaseUtil.synchronizeRead("userinfo").getChildren()) {
-            userInfoList.add(child.getValue(UserInfo.class));
+        for (DataSnapshot child : FirebaseUtil.synchronizeRead("users").getChildren()) {
+            String userName = child.getKey();
+            Map<String, Boolean> exerciseSolved = new HashMap<>();
+            Map<String, Integer> exerciseAttempts = new HashMap<>();
+            for (Exercise exercise : ExerciseController.getAllExercises()) {
+                exerciseSolved.put(exercise.getId(), getExerciseSolved(userName, exercise.getId()));
+                exerciseAttempts.put(exercise.getId(), getExerciseAttempts(userName, exercise.getId()));
+            }
+            userInfoList.add(new UserInfo(userName, exerciseSolved, exerciseAttempts));
         }
         return userInfoList;
     }
@@ -28,21 +37,24 @@ public class UserController {
     }
 
     public static boolean getExerciseSolved(String userId, String exerciseId) {
-        return FirebaseUtil.synchronizeRead("userinfo/" + userId + "/exerciseToSolved/" + exerciseId).getValue(Boolean.class);
+        for (DataSnapshot child : FirebaseUtil.synchronizeRead("attempts").getChildren()) {
+            Attempt attempt = child.getValue(Attempt.class);
+            if (userId.equals(attempt.getUserId()) && exerciseId.equals(attempt.getExerciseId()) && attempt.getPercentageCorrect() == 100) {
+                return true;
+            }
+        }
+        return false;
     }
 
-
-    public static void setExerciseSolved(String userId, String exerciseId) {
-        // for example: userinfo/user1/exerciseToSolved/exercise-1 = true
-        FirebaseUtil.synchronizeWrite("userinfo/" + userId + "/exerciseToSolved/" + exerciseId, true);
-    }
-
-    public static int getExercisesAttempts(String userId, String exerciseId) {
-        return FirebaseUtil.synchronizeRead("userinfo/" + userId + "/exerciseToAttempts/" + exerciseId).getValue(Integer.class);
-    }
-
-    public static void incrementExerciseAttempts(String userId, String exerciseId) {
-        FirebaseUtil.synchronizeWrite("userinfo/" + userId + "/exerciseToAttempts/" + exerciseId, getExercisesAttempts(userId, exerciseId) + 1);
+    public static int getExerciseAttempts(String userId, String exerciseId) {
+        int counter = 0;
+        for (DataSnapshot child : FirebaseUtil.synchronizeRead("attempts").getChildren()) {
+            Attempt attempt = child.getValue(Attempt.class);
+            if (userId.equals(attempt.getUserId()) && exerciseId.equals(attempt.getExerciseId())) {
+                counter = counter + 1;
+            }
+        }
+        return counter;
     }
 
 }

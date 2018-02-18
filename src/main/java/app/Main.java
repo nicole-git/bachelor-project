@@ -107,10 +107,6 @@ public class Main {
 
                     if (!UserController.getExerciseSolved(userId, exercise.getId())) {
                         AttemptController.registerAttempt(userId, input, result);
-                        UserController.incrementExerciseAttempts(userId, exercise.getId());
-                    }
-                    if (result.isCorrect()) {
-                        UserController.setExerciseSolved(userId, exercise.getId());
                     }
                     ctx.json(result); // send runScriptWithTest result to client, as json
                 }, roles(STUDENT));
