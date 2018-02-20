@@ -11,6 +11,7 @@ public class AttemptController {
 
     public static void registerAttempt(String userId, CodeRunningInput input, CodeRunningResult result) {
         Attempt attempt = new Attempt(
+                System.currentTimeMillis(),
                 UUID.randomUUID().toString(),
                 userId,
                 input.getExerciseId(),

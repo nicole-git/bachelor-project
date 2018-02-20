@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor // required by firebase
 @AllArgsConstructor // required to create objects
 public class Attempt {
+    long dateTime;
     String id;
     String userId;
     String exerciseId;
