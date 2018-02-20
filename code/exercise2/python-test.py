@@ -1,1 +1,0 @@
-isGreaterThanTen(5) == 'Not greater than 10' and isGreaterThanTen(555) == 'Greater than 10'

@@ -1,0 +1,1 @@
+isGreaterThanTen(11) === 'Greater than 10'

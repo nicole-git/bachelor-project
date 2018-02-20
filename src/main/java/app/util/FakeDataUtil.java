@@ -16,7 +16,7 @@ public class FakeDataUtil {
         FirebaseUtil.synchronizeWrite("attempts/fake-05", new Attempt(System.currentTimeMillis(), "fake-5", "user1", "exercise-2", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-06", new Attempt(System.currentTimeMillis(), "fake-6", "user1", "exercise-2", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-07", new Attempt(System.currentTimeMillis(), "fake-7", "user1", "exercise-2", "", "", 0));
-        FirebaseUtil.synchronizeWrite("attempts/fake-08", new Attempt(System.currentTimeMillis(), "fake-8", "user1", "exercise-2", "", "", 100));
+        FirebaseUtil.synchronizeWrite("attempts/fake-08", new Attempt(System.currentTimeMillis(), "fake-8", "user1", "exercise-2", "", "", 0));
 
         FirebaseUtil.synchronizeWrite("attempts/fake-09", new Attempt(System.currentTimeMillis(), "fake-9", "user1", "exercise-3", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-10", new Attempt(System.currentTimeMillis(), "fake-10", "user1", "exercise-3", "", "", 0));
@@ -29,7 +29,7 @@ public class FakeDataUtil {
         FirebaseUtil.synchronizeWrite("attempts/fake-17", new Attempt(System.currentTimeMillis(), "fake-17", "user1", "exercise-3", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-18", new Attempt(System.currentTimeMillis(), "fake-18", "user1", "exercise-3", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-19", new Attempt(System.currentTimeMillis(), "fake-19", "user1", "exercise-3", "", "", 0));
-        FirebaseUtil.synchronizeWrite("attempts/fake-20", new Attempt(System.currentTimeMillis(), "fake-20", "user1", "exercise-3", "", "", 100));
+        FirebaseUtil.synchronizeWrite("attempts/fake-20", new Attempt(System.currentTimeMillis(), "fake-20", "user1", "exercise-3", "", "", 1));
 
         FirebaseUtil.synchronizeWrite("attempts/fake-21", new Attempt(System.currentTimeMillis(), "fake-21", "user2", "exercise-1", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-22", new Attempt(System.currentTimeMillis(), "fake-22", "user2", "exercise-1", "", "", 0));
@@ -38,7 +38,7 @@ public class FakeDataUtil {
         FirebaseUtil.synchronizeWrite("attempts/fake-25", new Attempt(System.currentTimeMillis(), "fake-25", "user2", "exercise-1", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-26", new Attempt(System.currentTimeMillis(), "fake-26", "user2", "exercise-1", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-27", new Attempt(System.currentTimeMillis(), "fake-27", "user2", "exercise-1", "", "", 0));
-        FirebaseUtil.synchronizeWrite("attempts/fake-28", new Attempt(System.currentTimeMillis(), "fake-28", "user2", "exercise-1", "", "", 100));
+        FirebaseUtil.synchronizeWrite("attempts/fake-28", new Attempt(System.currentTimeMillis(), "fake-28", "user2", "exercise-1", "", "", 1));
 
         FirebaseUtil.synchronizeWrite("attempts/fake-29", new Attempt(System.currentTimeMillis(), "fake-29", "user2", "exercise-2", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-30", new Attempt(System.currentTimeMillis(), "fake-30", "user2", "exercise-2", "", "", 0));
@@ -61,7 +61,7 @@ public class FakeDataUtil {
         FirebaseUtil.synchronizeWrite("attempts/fake-47", new Attempt(System.currentTimeMillis(), "fake-47", "user2", "exercise-2", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-48", new Attempt(System.currentTimeMillis(), "fake-48", "user2", "exercise-2", "", "", 0));
         FirebaseUtil.synchronizeWrite("attempts/fake-49", new Attempt(System.currentTimeMillis(), "fake-49", "user2", "exercise-2", "", "", 0));
-        FirebaseUtil.synchronizeWrite("attempts/fake-50", new Attempt(System.currentTimeMillis(), "fake-50", "user2", "exercise-2", "", "", 100));
+        FirebaseUtil.synchronizeWrite("attempts/fake-50", new Attempt(System.currentTimeMillis(), "fake-50", "user2", "exercise-2", "", "", 1));
 
     }
 

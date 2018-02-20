@@ -6,7 +6,6 @@ import lombok.Data;
 @Data // creates getters, setters, toString, equals, and hash
 @AllArgsConstructor // required to create objects
 public class CodeRunningResult {
-    private boolean isCorrect;
     private double percentageCorrect;
     private String message;
 }

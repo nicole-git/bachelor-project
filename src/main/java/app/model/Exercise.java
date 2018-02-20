@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data // creates getters, setters, toString, equals, and hash
@@ -15,5 +16,5 @@ public class Exercise {
     private String description;
     private String instructions;
     private Map<String, String> startCode;
-    private Map<String, String> testCode;
+    private Map<String, List<String>> testCode;
 }

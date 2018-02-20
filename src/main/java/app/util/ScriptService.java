@@ -10,7 +10,9 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -50,16 +52,27 @@ public class ScriptService {
         }
     }
 
-    public static CodeRunningResult runScriptWithTest(String language, String userCode, Map<String, String> testCode) {
+    public static CodeRunningResult runScriptWithTest(String language, String userCode, Map<String, List<String>> languageTests) {
+        double percentageCorrect = 0;
+        String percentage = "0.00";
         try {
             ScriptEngine engine = getEngine(language);
             engine.eval(userCode);
-            if ((boolean) engine.eval(testCode.get(language))) {
-                return new CodeRunningResult(true, 100, "Your solution is correct, good job!");
+            int numberOfTestsPassed = 0;
+            List<String> tests = languageTests.get(language); // get test-list for current language
+            for (String test : tests) {
+                if ((boolean) engine.eval(test)) { // test passed
+                    numberOfTestsPassed = numberOfTestsPassed + 1;
+                    percentageCorrect = (double) numberOfTestsPassed / tests.size();
+                    percentage = new DecimalFormat("#.00").format(percentageCorrect * 100);
+                }
             }
-            return new CodeRunningResult(false, 0, "Your solution is not correct, try again.");
+            if (percentageCorrect == 1.0) {
+                return new CodeRunningResult(1.0, "Your solution is correct, good job!");
+            }
+            return new CodeRunningResult(percentageCorrect, "Your solution is only " + percentage + "% correct, try again.");
         } catch (Throwable t) {
-            return new CodeRunningResult(false, 0, "An error occurred while running your code: " + formatStackTrace(t));
+            return new CodeRunningResult(percentageCorrect, "Your solution is " + percentage + "% correct, but an error occurred: " + formatStackTrace(t));
         }
     }
 

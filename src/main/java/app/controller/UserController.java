@@ -39,7 +39,7 @@ public class UserController {
     public static boolean getExerciseSolved(String userId, String exerciseId) {
         for (DataSnapshot child : FirebaseUtil.synchronizeRead("attempts").getChildren()) {
             Attempt attempt = child.getValue(Attempt.class);
-            if (userId.equals(attempt.getUserId()) && exerciseId.equals(attempt.getExerciseId()) && attempt.getPercentageCorrect() == 100) {
+            if (userId.equals(attempt.getUserId()) && exerciseId.equals(attempt.getExerciseId()) && attempt.getPercentageCorrect() == 1) {
                 return true;
             }
         }
