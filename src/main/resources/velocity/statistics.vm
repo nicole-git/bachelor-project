@@ -6,19 +6,19 @@
 <h1>Exercise statistics</h1>
 <table>
     <thead>
-        <th>Exercise ID</th>
-        <th>Total attemtps</th>
-        <th>Total solves</th>
-        <th>Average attempts before solve</th>
+    <th>Exercise ID</th>
+    <th>Total attemtps</th>
+    <th>Total solves</th>
+    <th>Average attempts before solve</th>
     </thead>
     <tbody>
         #foreach($exerciseInfo in $exerciseInfoList)
-            <tr>
-                <td>$exerciseInfo.exerciseId</td>
-                <td>$exerciseInfo.totalAttempts</td>
-                <td>$exerciseInfo.totalSolves</td>
-                <td>$exerciseInfo.averageAttemptsBeforeSolve</td>
-            </tr>
+        <tr>
+            <td>$exerciseInfo.exerciseId</td>
+            <td>$exerciseInfo.totalAttempts</td>
+            <td>$exerciseInfo.totalSolves</td>
+            <td>$exerciseInfo.averageAttemptsBeforeSolve</td>
+        </tr>
         #end
     </tbody>
 </table>
@@ -26,18 +26,51 @@
 <h1>Student statistics</h1>
 <table>
     <thead>
-        <th>Student ID</th>
-        <th>Solved state</th>
-        <th>Attempts</th>
+    <th>Student ID</th>
+    <th>Solved state</th>
+    <th>Attempts</th>
     </thead>
     <tbody>
         #foreach($userInfo in $userInfoList)
-            <tr>
-                <td>$userInfo.userId</td>
-                <td>$userInfo.exerciseToSolved</td>
-                <td>$userInfo.exerciseToAttempts</td>
-            </tr>
+        <tr>
+            <td>$userInfo.userId</td>
+            <td>$userInfo.exerciseToSolved</td>
+            <td>$userInfo.exerciseToAttempts</td>
+        </tr>
         #end
     </tbody>
 </table>
+
+<script>
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawBasic);
+
+    function drawBasic() {
+
+        google.charts.load("current", {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['EXERCISE', 'ATTEMPTS'],
+                ['1', 10],
+                ['2', 19],
+                ['3', 27],
+                ['4', 25],
+                ['5', 39]
+            ]);
+            var options = {
+                title: "Number of attempts per exercise",
+                width: 600,
+                height: 400,
+                bar: {groupWidth: '95%'},
+                legend: {position: 'none'},
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    }
+</script>
+<!--Div that will hold the pie chart-->
+<div id="chart_div"></div>
 #end
