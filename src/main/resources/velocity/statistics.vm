@@ -3,26 +3,6 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 
-
-
-<h1>Student statistics</h1>
-<table>
-    <thead>
-    <th>Student ID</th>
-    <th>Solved state</th>
-    <th>Attempts</th>
-    </thead>
-    <tbody>
-        #foreach($userInfo in $userInfoList)
-        <tr>
-            <td>$userInfo.userId</td>
-            <td>$userInfo.exerciseToSolved</td>
-            <td>$userInfo.exerciseToAttempts</td>
-        </tr>
-        #end
-    </tbody>
-</table>
-
 <script>
 
     axios.get("/api/statistics/exercises").then(function (response) {

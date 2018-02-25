@@ -71,13 +71,7 @@ public class Main {
 
             get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
 
-            get("/statistics", ctx -> {
-                List<UserInfo> userInfoList = UserController.getAllUserInfo();
-                ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm", model(
-                        "exerciseInfoList", StatisticsController.getExerciseInfo(userInfoList),
-                        "userInfoList", userInfoList
-                ));
-            }, roles(TEACHER));
+            get("/statistics", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm"), roles(TEACHER));
 
             get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
                 String exerciseId = ctx.param("exercise-id");
