@@ -2,18 +2,42 @@
 #* @vtlvariable name="exerciseInfoList" type="java.util.List<app.model.ExerciseInfo>" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
-
+<div id="students-vue" v-cloak>
+    <ul>
+        <li @click="getGraph('ALL')">All students</li>
+        <li @click="getGraph(student.userId)" v-for="student in students">{{student.userId}}</li>
+    </ul>
+</div>
+<script>
+    // client tells the server that it wants to GET "/api/students"
+    axios.get("/api/students").then(function (response) {
+        new Vue({
+            el: '#students-vue',
+            data: {students: response.data},
+            methods: {
+                getGraph: function (userId) {
+                    getDataAndDrawGraph(userId);
+                }
+            }
+        })
+    });
+</script>
 <script>
 
-    axios.get("/api/statistics/exercises").then(function (response) {
-        var graphData = [];
-        graphData.push(["Exercise", "Total Attempts"]);
-        response.data.forEach(function (element) {
-            graphData.push([element.exerciseId, element.totalAttempts]);
+    getDataAndDrawGraph("ALL");
+
+    function getDataAndDrawGraph(userId) {
+        var path = userId === "ALL" ? "/api/statistics/exercises" : "/api/statistics/students/" + userId;
+        axios.get(path).then(function (response) {
+            var graphData = [];
+            graphData.push(["Exercise", "Total Attempts"]);
+            response.data.forEach(function (element) {
+                graphData.push([element.exerciseId, element.totalAttempts]);
+            });
+            google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.setOnLoadCallback(() => drawChart(graphData));
         });
-        google.charts.load('current', {packages: ['corechart', 'bar']});
-        google.charts.setOnLoadCallback(() => drawChart(graphData));
-    });
+    }
 
     function drawChart(graphData) {
         var data = google.visualization.arrayToDataTable(graphData);
@@ -27,6 +51,7 @@
         var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     }
+
 </script>
 <!--Div that will hold the pie chart-->
 <div id="chart_div"></div>

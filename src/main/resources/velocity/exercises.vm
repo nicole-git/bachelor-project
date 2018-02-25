@@ -6,7 +6,6 @@
             <a :href="`/exercises/${exercise.id}`">
                 <div class="exercise__title"> {{ exercise.title }} <small v-if="exercise.solved">(solved)</small> </div>
                 <div class="exercise__description"> {{ exercise.description }} </div>
-
             </a>
         </li>
     </ul>
@@ -16,12 +15,8 @@
     axios.get("/api/exercises").then(function (response) {
         new Vue({
             el: '#exercises-vue',
-            data: {
-                exercises: response.data
-            }
+            data: {exercises: response.data}
         })
-    }).catch(function (error) {
-        alert("An error occurred")
     });
 </script>
 #end
