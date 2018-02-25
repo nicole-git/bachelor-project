@@ -3,25 +3,7 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 
-<h1>Exercise statistics</h1>
-<table>
-    <thead>
-    <th>Exercise ID</th>
-    <th>Total attemtps</th>
-    <th>Total solves</th>
-    <th>Average attempts before solve</th>
-    </thead>
-    <tbody>
-        #foreach($exerciseInfo in $exerciseInfoList)
-        <tr>
-            <td>$exerciseInfo.exerciseId</td>
-            <td>$exerciseInfo.totalAttempts</td>
-            <td>$exerciseInfo.totalSolves</td>
-            <td>$exerciseInfo.averageAttemptsBeforeSolve</td>
-        </tr>
-        #end
-    </tbody>
-</table>
+
 
 <h1>Student statistics</h1>
 <table>
@@ -42,33 +24,28 @@
 </table>
 
 <script>
-    google.charts.load('current', {packages: ['corechart', 'bar']});
-    google.charts.setOnLoadCallback(drawBasic);
 
-    function drawBasic() {
+    axios.get("/api/statistics/exercises").then(function (response) {
+        var graphData = [];
+        graphData.push(["Exercise", "Total Attempts"]);
+        response.data.forEach(function (element) {
+            graphData.push([element.exerciseId, element.totalAttempts]);
+        });
+        google.charts.load('current', {packages: ['corechart', 'bar']});
+        google.charts.setOnLoadCallback(() => drawChart(graphData));
+    });
 
-        google.charts.load("current", {packages: ['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['EXERCISE', 'ATTEMPTS'],
-                ['1', 10],
-                ['2', 19],
-                ['3', 27],
-                ['4', 25],
-                ['5', 39]
-            ]);
-            var options = {
-                title: "Number of attempts per exercise",
-                width: 600,
-                height: 400,
-                bar: {groupWidth: '95%'},
-                legend: {position: 'none'},
-            };
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-        }
+    function drawChart(graphData) {
+        var data = google.visualization.arrayToDataTable(graphData);
+        var options = {
+            title: "Number of attempts per exercise",
+            width: 600,
+            height: 400,
+            bar: {groupWidth: '95%'},
+            legend: {position: 'none'},
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
     }
 </script>
 <!--Div that will hold the pie chart-->

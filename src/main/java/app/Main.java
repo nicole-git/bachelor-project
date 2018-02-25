@@ -111,6 +111,12 @@ public class Main {
                     ctx.json(result); // send runScriptWithTest result to client, as json
                 }, roles(STUDENT));
 
+                path("/statistics", () -> {
+
+                    get("/exercises", ctx -> {
+                        ctx.json(StatisticsController.getExerciseInfo(UserController.getAllUserInfo())); // rewrite
+                    });
+                });
             });
 
         });
