@@ -51,7 +51,11 @@ public class FirebaseUtil {
     }
 
     public static void synchronizeWrite(String reference, Object object) {
-        DatabaseReference ref = Main.firebaseDatabase.getReference(reference);
+        synchronizeWrite(Main.firebaseDatabase, reference, object);
+    }
+
+    public static void synchronizeWrite(FirebaseDatabase db, String reference, Object object) {
+        DatabaseReference ref = db.getReference(reference);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ref.setValue(object, (databaseError, databaseReference) -> countDownLatch.countDown());
         try {

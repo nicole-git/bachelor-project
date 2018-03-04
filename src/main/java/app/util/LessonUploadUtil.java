@@ -2,8 +2,10 @@ package app.util;
 
 import app.model.Exercise;
 import app.model.Language;
+import app.model.Lesson;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,18 +20,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-public class ExerciseUploadUtil {
+public class LessonUploadUtil {
 
     public static void main(String[] args) throws Exception {
-        FirebaseDatabase firebaseDatabase = FirebaseUtil.initFirebase();
-        DatabaseReference exercisesReference = firebaseDatabase.getReference("exercises");
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        exercisesReference.setValue(getExercisesFromFileSystem(), (databaseError, databaseReference) -> {
-            System.out.println("Uploaded complete.");
-            countDownLatch.countDown();
-        });
+        FirebaseDatabase db = FirebaseUtil.initFirebase();
+        FirebaseUtil.synchronizeWrite(db, "lessons", ImmutableList.of(new Lesson("lesson-1", "The basics", "Description", ImmutableList.of(
+                "exercise-1", "exercise-2", "exercise-3", "exercise-4", "exercise-5"
+        ))));
         System.out.println("Uploading files to firebase ... ");
-        countDownLatch.await(); // will wait until count is 0
+        FirebaseUtil.synchronizeWrite(db, "exercises", getExercisesFromFileSystem());
+        System.out.println("Uploading complete!");
     }
 
     // create a map with exercise-id as key and exercise as value
