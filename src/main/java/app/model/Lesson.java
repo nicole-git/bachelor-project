@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor // normal constructor
 @NoArgsConstructor // required by firebase
 public class Lesson {
-    private String lessonId;
+    private String id;
     private String title;
     private String description;
     private List<String> exerciseIds;

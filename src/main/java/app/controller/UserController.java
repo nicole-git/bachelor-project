@@ -18,7 +18,7 @@ public class UserController {
             String userName = child.getKey();
             Map<String, Boolean> exerciseSolved = new HashMap<>();
             Map<String, Integer> exerciseAttempts = new HashMap<>();
-            for (Exercise exercise : ExerciseController.getAllExercises()) {
+            for (Exercise exercise : ExerciseController.getExercises()) {
                 exerciseSolved.put(exercise.getId(), getExerciseSolved(userName, exercise.getId()));
                 exerciseAttempts.put(exercise.getId(), getExerciseAttempts(userName, exercise.getId()));
             }

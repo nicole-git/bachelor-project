@@ -1,9 +1,6 @@
 package app;
 
-import app.controller.AttemptController;
-import app.controller.ExerciseController;
-import app.controller.StatisticsController;
-import app.controller.UserController;
+import app.controller.*;
 import app.exception.NotFoundException;
 import app.model.CodeRunningInput;
 import app.model.CodeRunningResult;
@@ -52,7 +49,7 @@ public class Main {
                 //todo: this has to be fixed
                 if ("student1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
                     ctx.sessionAttribute("logintype", "student");
-                    ctx.redirect("/exercises");
+                    ctx.redirect("/lessons");
                 } else if ("teacher1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
                     ctx.sessionAttribute("logintype", "teacher");
                     ctx.redirect("/statistics");
@@ -66,9 +63,17 @@ public class Main {
                 ctx.redirect("/");
             });
 
-            get("/", ctx -> ctx.redirect("/exercises"), roles(STUDENT));
+            get("/", ctx -> ctx.redirect("/lessons"), roles(STUDENT));
 
-            get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/exercises.vm"), roles(STUDENT));
+            get("/lessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lessons.vm"), roles(STUDENT));
+
+            get("/lessons/:lesson-id", ctx -> { // one specific lesson, get by id
+                ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
+                        "lessonId", ctx.param("lesson-id")
+                ));
+            }, roles(STUDENT));
+
+            get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm"), roles(STUDENT));
 
             get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
 
@@ -84,8 +89,16 @@ public class Main {
 
             path("/api", () -> {
 
+                get("/lessons", ctx -> {
+                    ctx.json(LessonController.getLessons());
+                }, roles(STUDENT));
+
                 get("/exercises", ctx -> {
-                    ctx.json(ExerciseController.getExerciseVms());
+                    if (ctx.queryParam("lesson-id") != null) { //ex: /api/exercises?lesson-id=lesson-1
+                        ctx.json(ExerciseController.getExercisesForLesson(ctx.queryParam("lesson-id")));
+                    } else {
+                        ctx.json(ExerciseController.getExerciseVms());
+                    }
                 }, roles(STUDENT));
 
                 get("/students", ctx -> {
@@ -122,7 +135,6 @@ public class Main {
                     });
 
 
-
                 });
             });
 
@@ -131,7 +143,7 @@ public class Main {
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
 
-        ExerciseController.getAllExercises(); // connect to firebase, reduces load-time
+        ExerciseController.getExercises(); // connect to firebase, reduces load-time
 
         FakeDataUtil.writeFakeData(); //
 

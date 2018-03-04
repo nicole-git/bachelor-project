@@ -1,0 +1,22 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<div id="lessons-vue" v-cloak>
+    <ul class="block-list">
+        <li v-for="lesson in lessons" class="block">
+            <a :href="`/lessons/${lesson.id}`">
+                <div class="block__title"> {{ lesson.title }} </div>
+                <div class="block__description"> {{ lesson.description }} </div>
+            </a>
+        </li>
+    </ul>
+</div>
+<script>
+    // client tells the server that it wants to GET "/api/lessons"
+    axios.get("/api/lessons").then(function (response) {
+        new Vue({
+            el: '#lessons-vue',
+            data: {lessons: response.data}
+        })
+    });
+</script>
+#end

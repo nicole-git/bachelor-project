@@ -1,18 +1,18 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <div id="exercises-vue" v-cloak>
-    <ul class="exercise-list">
-        <li v-for="exercise in exercises" class="exercise">
+    <ul class="block-list">
+        <li v-for="exercise in exercises" class="block">
             <a :href="`/exercises/${exercise.id}`">
-                <div class="exercise__title"> {{ exercise.title }} <small v-if="exercise.solved">(solved)</small> </div>
-                <div class="exercise__description"> {{ exercise.description }} </div>
+                <div class="block__title"> {{ exercise.title }} <small v-if="exercise.solved">(solved)</small> </div>
+                <div class="block__description"> {{ exercise.description }} </div>
             </a>
         </li>
     </ul>
 </div>
 <script>
     // client tells the server that it wants to GET "/api/exercises"
-    axios.get("/api/exercises").then(function (response) {
+    axios.get("/api/exercises?lesson-id=$lessonId").then(function (response) {
         new Vue({
             el: '#exercises-vue',
             data: {exercises: response.data}
