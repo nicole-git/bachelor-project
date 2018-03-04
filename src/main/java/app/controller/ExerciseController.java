@@ -15,12 +15,11 @@ import java.util.stream.Collectors;
 public class ExerciseController {
 
     public static Exercise getExercise(String exerciseId) throws NotFoundException {
-        for (Exercise exercise : getExercises()) {
-            if (exercise.getId().equals(exerciseId)) {
-                return exercise;
-            }
+        Exercise exercise = FirebaseUtil.synchronizeRead("exercises/" + exerciseId).getValue(Exercise.class);
+        if (exercise == null) {
+            throw new NotFoundException();
         }
-        throw new NotFoundException();
+        return exercise;
     }
 
     public static List<Exercise> getExercises() {
