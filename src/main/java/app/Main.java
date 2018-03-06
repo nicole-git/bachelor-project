@@ -93,6 +93,10 @@ public class Main {
                     ctx.json(LessonController.getLessons());
                 }, roles(STUDENT));
 
+                get("/lessons/:lesson-id", ctx -> {
+                    ctx.json(LessonController.getLesson(ctx.param("lesson-id")));
+                }, roles(STUDENT));
+
                 get("/exercises", ctx -> {
                     if (ctx.queryParam("lesson-id") != null) { //ex: /api/exercises?lesson-id=lesson-1
                         ctx.json(ExerciseController.getExercisesForLesson(ctx.queryParam("lesson-id")));

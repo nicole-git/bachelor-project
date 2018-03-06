@@ -24,7 +24,7 @@ public class LessonUploadUtil {
 
     public static void main(String[] args) throws Exception {
         FirebaseDatabase db = FirebaseUtil.initFirebase();
-        FirebaseUtil.synchronizeWrite(db, "lessons", ImmutableMap.of("lesson-1", new Lesson("lesson-1", "The basics", "Description", ImmutableList.of(
+        FirebaseUtil.synchronizeWrite(db, "lessons", ImmutableMap.of("lesson-1", new Lesson("lesson-1", "The basics", "Description", "Text", ImmutableList.of(
                 "exercise-1", "exercise-2", "exercise-3", "exercise-4", "exercise-5"
         ))));
         System.out.println("Uploading files to firebase ... ");
