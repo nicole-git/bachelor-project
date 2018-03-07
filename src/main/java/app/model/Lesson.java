@@ -12,7 +12,6 @@ import java.util.List;
 public class Lesson {
     private String id;
     private String title;
-    private String description;
     private String text;
     private List<String> exerciseIds;
 }

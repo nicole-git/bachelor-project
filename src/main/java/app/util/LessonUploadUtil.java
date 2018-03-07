@@ -24,9 +24,9 @@ public class LessonUploadUtil {
 
     public static void main(String[] args) throws Exception {
         FirebaseDatabase db = FirebaseUtil.initFirebase();
-        FirebaseUtil.synchronizeWrite(db, "lessons", ImmutableMap.of("lesson-1", new Lesson("lesson-1", "The basics", "Description", "Text", ImmutableList.of(
-                "exercise-1", "exercise-2", "exercise-3", "exercise-4", "exercise-5"
-        ))));
+        Lesson lesson1 = new ObjectMapper().readValue(readFileAsString("lesson/lesson1.json"), Lesson.class);
+        lesson1.setText(readFileAsString("lesson/lesson1.html"));
+        FirebaseUtil.synchronizeWrite(db, "lessons", ImmutableMap.of(lesson1.getId(), lesson1));
         System.out.println("Uploading files to firebase ... ");
         FirebaseUtil.synchronizeWrite(db, "exercises", getExercisesFromFileSystem());
         System.out.println("Uploading complete!");
@@ -68,6 +68,10 @@ public class LessonUploadUtil {
             exerciseList.put(exercise.getId(), exercise);
         }
         return exerciseList;
+    }
+
+    private static String readFileAsString(String path) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(path)));
     }
 
     private static String readFileAsString(File exerciseFile, String path) throws IOException {
