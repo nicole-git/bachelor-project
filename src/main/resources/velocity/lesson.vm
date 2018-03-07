@@ -2,17 +2,19 @@
 #@mainLayout()
 <div id="exercises-vue" v-cloak>
     <h1> {{ lesson.title }}</h1>
-    <div> {{lesson.text}} </div>
-    <ul class="block-list">
-        <li v-for="exercise in exercises" class="block">
-            <a :href="`/exercises/${exercise.id}`">
-                <div class="block__title"> {{ exercise.title }}
-                    <small v-if="exercise.solved">(solved)</small>
-                </div>
-                <div class="block__description"> {{ exercise.description }}</div>
-            </a>
-        </li>
-    </ul>
+    <div id="lesson-content">
+        <div id="lesson-text"> {{lesson.text}}</div>
+        <ul id="exercise-list" class="block-list">
+            <li v-for="exercise in exercises" class="block">
+                <a :href="`/exercises/${exercise.id}`">
+                    <div class="block__title"> {{ exercise.title }}
+                        <small v-if="exercise.solved">(solved)</small>
+                    </div>
+                    <div class="block__description"> {{ exercise.description }}</div>
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>
 <script>
     new Vue({

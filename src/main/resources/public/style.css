@@ -250,3 +250,21 @@ ul.block-list .block + .block {
 #logout {
     float: right;
 }
+
+#lesson-content {
+    display: flex;
+}
+
+#lesson-text {
+    width: calc(60% - 32px);
+    margin-right: 32px;
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    margin-bottom: 16px;
+}
+
+#exercise-list {
+    margin-top: 0;
+    width: 40%;
+}
