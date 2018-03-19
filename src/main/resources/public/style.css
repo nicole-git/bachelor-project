@@ -14,7 +14,7 @@ body {
 }
 
 main {
-    padding-top: 70px;
+    padding-top: 90px;
 }
 
 header {
@@ -67,7 +67,6 @@ h1, h2, h3 {
 }
 
 h1 {
-    margin-top: 32px;
     color: #00509E;
 }
 
