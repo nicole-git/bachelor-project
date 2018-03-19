@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f5f5f5;
+    background-color: #fbfbfb;
     margin: 0px;
     font-family: "open sans", arial, sans-serif;
     font-size: 14px;
@@ -180,8 +180,9 @@ ul.block-list a {
 }
 
 ul.block-list .block {
-    background-color: #fff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    background: #fff;
+    border: 1px solid #ddd;
+    border-left: 3px solid hotpink;
 }
 
 ul.block-list .block + .block {
@@ -201,7 +202,7 @@ ul.block-list .block + .block {
     position: relative;
     padding: 1px 15px;
     background: white;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+    border: 1px solid #ddd;
 }
 
 .exercise-info .description {
@@ -266,11 +267,13 @@ ul.block-list .block + .block {
 }
 
 #lesson-text {
+    line-height: 1.5;
+    color: #444;
     flex: 2;
     margin-right: 32px;
     padding: 16px;
     background-color: #fff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    border: 1px solid #ddd;
     margin-bottom: 16px;
 }
 
@@ -284,7 +287,7 @@ ul.block-list .block + .block {
     padding: 16px;
     margin-right: 32px;
     background-color: #fff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+    border: 1px solid #ddd;
     margin-bottom: 16px;
 }
 
