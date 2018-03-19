@@ -1,7 +1,19 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
+<h1>Lessons</h1>
 <div id="lessons-vue" v-cloak>
-    <ul class="block-list">
+    <div class="refine-container">
+        <div id="filter-lessons">
+            <h2>Filter</h2>
+            <input type="checkbox" id="beginner" value="Beginner">
+            <label for="beginner">Beginner</label><br>
+            <input type="checkbox" id="intermediate" value="Intermediate">
+            <label for="intermediate">Intermediate</label><br>
+            <input type="checkbox" id="advanced" value="Advanced">
+            <label for="advanced">Advanced</label><br>
+        </div>
+    </div>
+    <ul id="lesson-list" class="block-list">
         <li v-for="lesson in lessons" class="block">
             <a :href="`/lessons/${lesson.id}`">
                 <div class="block__title"> {{ lesson.title }} </div>
