@@ -105,10 +105,6 @@ public class Main {
                     }
                 }, roles(STUDENT));
 
-                get("/students", ctx -> {
-                    ctx.json(UserController.getAllUserInfo());
-                });
-
                 post("/run-code", ctx -> { // just run the user code (Run code)
                     CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert post-body to class
                     String result = (ScriptService.runScript(input.getLanguage(), input.getCode()));
@@ -133,11 +129,14 @@ public class Main {
                         ctx.json(StatisticsController.getExerciseInfo(UserController.getAllUserInfo())); // rewrite
                     });
 
+                    get("/students", ctx -> {
+                        ctx.json(UserController.getAllUserInfo());
+                    });
+
                     get("/students/:student-id", ctx -> {
                         List<UserInfo> userInfoList = ImmutableList.of(UserController.getUserInfoByUserId(ctx.param("student-id")));
                         ctx.json(StatisticsController.getExerciseInfo(userInfoList));
                     });
-
 
                 });
             });

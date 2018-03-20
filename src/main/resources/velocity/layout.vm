@@ -12,6 +12,8 @@
         <script src="/js/ace/mode-ruby.js" type="text/javascript" charset="utf-8"></script>
         <script src="/js/axios.min.js"></script>
         <script src="/js/vue.js"></script>
+        <script src="/js/vue-select.js"></script>
+        <script>Vue.component('v-select', VueSelect.VueSelect);</script>
         <script src="/js/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <link rel="stylesheet" href="/css/font-awesome.min.css">

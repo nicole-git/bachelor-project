@@ -1,33 +1,53 @@
-#* @vtlvariable name="userInfoList" type="java.util.List<app.model.UserInfo>" *#
-#* @vtlvariable name="exerciseInfoList" type="java.util.List<app.model.ExerciseInfo>" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <div id="students-vue" v-cloak>
     <ul>
-        <li @click="getGraph('ALL')">All students</li>
-        <li @click="getGraph(student.userId)" v-for="student in students">{{student.userId}}</li>
+        <v-select v-model="selectedStudentOption" :options="studentOptions"></v-select>
+    </ul>
+    <ul>
+        <v-select v-model="selectedExerciseOption" :options="exerciseOptions"></v-select>
     </ul>
 </div>
 <script>
     // client tells the server that it wants to GET "/api/students"
-    axios.get("/api/students").then(function (response) {
-        new Vue({
-            el: '#students-vue',
-            data: {students: response.data},
-            methods: {
-                getGraph: function (userId) {
-                    getDataAndDrawGraph(userId);
-                }
+    new Vue({
+        el: '#students-vue',
+        data: {
+            selectedStudentOption: "All students",
+            selectedExerciseOption: "All exercises",
+            students: [],
+            exercises: []
+        },
+        computed: {
+            studentOptions: function() {
+                return ["All students"].concat(this.students.map(student => student.userId));
+            },
+            exerciseOptions: function () {
+                return ["All exercises"].concat(this.exercises.map(exercise => exercise.exerciseId));
             }
-        })
+        },
+        watch: {
+            selectedStudentOption: function (newOption) {
+                getDataAndDrawGraph(newOption)
+            },
+            selectedExerciseOption: function (newOption) {
+                getDataAndDrawGraph(newOption)
+            }
+        },
+        created: function () {
+            axios.get("/api/statistics/students").then(response => {
+                this.students = this.students.concat(response.data);
+            });
+            axios.get("/api/statistics/exercises").then(response => {
+                this.exercises = this.exercises.concat(response.data);
+            });
+        }
     });
-</script>
-<script>
 
-    getDataAndDrawGraph("ALL");
+    getDataAndDrawGraph("All students");
 
-    function getDataAndDrawGraph(userId) {
-        var path = userId === "ALL" ? "/api/statistics/exercises" : "/api/statistics/students/" + userId;
+    function getDataAndDrawGraph(option) {
+        var path = option === "All students" ? "/api/statistics/exercises" : "/api/statistics/students/" + option;
         axios.get(path).then(function (response) {
             var graphData = [];
             graphData.push(["Exercise", "Total Attempts"]);
