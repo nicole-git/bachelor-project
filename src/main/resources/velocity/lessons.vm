@@ -5,19 +5,21 @@
     <div class="refine-container">
         <div id="filter-lessons">
             <h2>Filter</h2>
-            <input type="checkbox" id="beginner" value="Beginner">
+            <input v-model="includeBeginner" type="checkbox" id="beginner" value="Beginner" @click="alert">
             <label for="beginner">Beginner</label><br>
-            <input type="checkbox" id="intermediate" value="Intermediate">
+            <input v-model="includeIntermediate" type="checkbox" id="intermediate" value="Intermediate" v-on:click="alert">
             <label for="intermediate">Intermediate</label><br>
-            <input type="checkbox" id="advanced" value="Advanced">
+            <input v-model="includeAdvanced" type="checkbox" id="advanced" value="Advanced">
             <label for="advanced">Advanced</label><br>
+            <input v-model="message" placeholder="Write something">
+            <p>Message is: {{ message }}</p>
         </div>
     </div>
     <ul id="lesson-list" class="block-list">
         <li v-for="lesson in lessons" class="block">
             <a :href="`/lessons/${lesson.id}`">
-                <div class="block__title"> {{ lesson.title }} </div>
-                <div class="block__description"> {{ lesson.description }} </div>
+                <div class="block__title"> {{ lesson.title }}</div>
+                <div class="block__description"> {{ lesson.description }}</div>
             </a>
         </li>
     </ul>
@@ -27,8 +29,17 @@
     axios.get("/api/lessons").then(function (response) {
         new Vue({
             el: '#lessons-vue',
-            data: {lessons: response.data}
-        })
+            data: {
+                lessons: response.data,
+                includeBeginner: true,
+                message: "python",
+            },
+            methods: {
+                alert: function () {
+                    alert("clicked");
+                }
+            }
+        });
     });
 </script>
 #end
