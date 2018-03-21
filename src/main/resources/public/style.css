@@ -14,7 +14,7 @@ body {
 }
 
 main {
-    padding-top: 90px;
+    padding-top: 110px;
 }
 
 header {
@@ -23,16 +23,17 @@ header {
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    border-top: 3px solid #00509E;
-    border-bottom: 1px solid #ccc;
-    height: 70px;
+    border-top: 3px solid #e25f8b;/*#00509E*/
+    border-bottom: 1px solid #0000000d;
+    height: 90px;
     box-sizing: content-box;
+    background-color: #fbf5f4; /*#ff79b6, #E2738C*/
 }
 
 img.logo {
     float: left;
-    height: 32px;
-    margin: calc((70px - 32px) / 2) 0;
+    height: 52px;
+    margin: calc((90px - 52px) / 2) 0;
     margin-right: 30px;
 }
 
@@ -41,24 +42,24 @@ ul.navigation {
     padding: 0;
     float: left;
     margin: 0;
-    height: 70px;
+    height: 90px;
     width: calc(100% - 200px);
 }
 
 ul.navigation li {
     text-align: center;
     display: inline-block;
-    height: 70px;
+    height: 90px;
 }
 
 ul.navigation li a {
     display: inline-block;
     text-decoration: none;
-    color: #444444;
+    color: #cb5d76;
     margin: 0px 5px;
     padding: 0 5px;
-    height: 70px;
-    line-height: 70px;
+    height: 90px;
+    line-height: 90px;
 
 }
 
@@ -67,7 +68,7 @@ h1, h2, h3 {
 }
 
 h1 {
-    color: #00509E;
+    color: #e25f8b;
 }
 
 h2 {
@@ -154,13 +155,13 @@ select {
 }
 
 button {
-    background-color: #3477b9;
+    background-color: #e25f8b;
     margin: 0 auto;
     margin-top: 10px;
     max-width: 150px;
     padding: 10px;
     border-radius: 3px;
-    font-weight: 700;
+    font-weight: 900;
     cursor: pointer;
     color: #fff;
     font-family: monospace;
@@ -182,7 +183,7 @@ ul.block-list a {
 ul.block-list .block {
     background: #fff;
     border: 1px solid #ddd;
-    border-left: 3px solid hotpink;
+    border-left: 3px solid #e25f8b;
 }
 
 ul.block-list .block + .block {

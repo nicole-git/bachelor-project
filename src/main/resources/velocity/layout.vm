@@ -21,10 +21,11 @@
     <body>
         <header>
             <div class="width-limit">
-                <img class="logo" src="/img/logo_ntnu.png">
+                <img class="logo" src="/img/og9.png">
                 <ul class="navigation">
                     #if($logintype == "teacher")
                         <li><a href="/statistics">Statistics</a></li>
+                        <li><a href="/teacherLessons">Lessons</a></li>
                     #end
                     #if($logintype == "student")
                         <li><a href="/lessons">Lessons</a></li>
