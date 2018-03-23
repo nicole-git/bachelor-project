@@ -19,7 +19,6 @@ main {
 
 header {
     overflow: hidden;
-    background-color: #FFFFFF;
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
@@ -28,6 +27,7 @@ header {
     height: 90px;
     box-sizing: content-box;
     background-color: #fbf5f4; /*#ff79b6, #E2738C*/
+    z-index: 1;
 }
 
 img.logo {
@@ -43,7 +43,7 @@ ul.navigation {
     float: left;
     margin: 0;
     height: 90px;
-    width: calc(100% - 200px);
+    width: 100%;
 }
 
 ul.navigation li {
@@ -201,7 +201,7 @@ ul.block-list .block + .block {
 
 .exercise-info {
     position: relative;
-    padding: 1px 15px;
+    padding: 15px;
     background: white;
     border: 1px solid #ddd;
 }

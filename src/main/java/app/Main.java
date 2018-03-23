@@ -32,6 +32,7 @@ public class Main {
 
         Javalin app = Javalin.create()
                 .port(7000)
+                .enableRouteOverview("/routes")
                 .enableStaticFiles("/public")
                 .accessManager((handler, ctx, permittedRoles) -> {
                     UserRole userRole = UserRole.getRole(ctx);
@@ -67,6 +68,8 @@ public class Main {
 
             get("/lessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lessons.vm"), roles(STUDENT));
 
+            get("/teacherLessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/teacherLessons.vm"), roles(TEACHER));
+
             get("/lessons/:lesson-id", ctx -> { // one specific lesson, get by id
                 ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
                         "lessonId", ctx.param("lesson-id")
@@ -91,11 +94,11 @@ public class Main {
 
                 get("/lessons", ctx -> {
                     ctx.json(LessonController.getLessons());
-                }, roles(STUDENT));
+                }, roles(STUDENT, TEACHER));
 
                 get("/lessons/:lesson-id", ctx -> {
                     ctx.json(LessonController.getLesson(ctx.param("lesson-id")));
-                }, roles(STUDENT));
+                }, roles(STUDENT, TEACHER));
 
                 get("/exercises", ctx -> {
                     if (ctx.queryParam("lesson-id") != null) { //ex: /api/exercises?lesson-id=lesson-1
