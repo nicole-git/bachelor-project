@@ -65,6 +65,8 @@ public class Main {
 
             get("/lessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lessons.vm"), roles(STUDENT, TEACHER));
 
+            get("/lessons/new", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/addLesson.vm"), roles(TEACHER));
+
             get("/lessons/:lesson-id", ctx -> { // one specific lesson, get by id
                 ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
                         "lessonId", ctx.param("lesson-id")

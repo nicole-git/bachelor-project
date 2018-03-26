@@ -13,9 +13,9 @@
             <label for="advanced">Advanced</label><br>
             <input v-model="message" placeholder="Write something">
             <p>Message is: {{ message }}</p>
-            <div v-if="isAdmin" id="addNewLesson">
-                <button @click="alertButton">Add new lesson</button>
-            </div>
+        </div>
+        <div v-if="isAdmin" id="addNewLesson">
+            <a class="button" href="/lessons/new">Add new lesson</a>
         </div>
     </div>
     <ul id="lesson-list" class="block-list">
@@ -40,9 +40,6 @@
         },
         methods: {
             alert: function () {
-                alert("clicked");
-            },
-            alertButton: function () {
                 alert("clicked");
             }
         },

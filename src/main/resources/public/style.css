@@ -154,7 +154,8 @@ select {
     height: 8px
 }
 
-button {
+button, .button {
+    display: inline-block;
     background-color: #e25f8b;
     margin: 0 auto;
     margin-top: 10px;
@@ -166,6 +167,7 @@ button {
     color: #fff;
     font-family: monospace;
     border: 0;
+    text-decoration: none;
 }
 
 ul.block-list {
@@ -282,7 +284,7 @@ ul.block-list .block + .block {
     flex-basis: 300px;
 }
 
-.refine-container {
+#filter-lessons {
     flex-basis: 250px;
     display: block;
     padding: 16px;

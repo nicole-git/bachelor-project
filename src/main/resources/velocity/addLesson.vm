@@ -1,0 +1,35 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+
+<div id="create-lesson-vue">
+    <h1>Add new lesson</h1>
+    <v-app>
+        <v-container>
+            <v-text-field v-model="lesson.title" label="Title"></v-text-field>
+            <v-text-field v-model="lesson.description" label="Description" multi-line></v-text-field>
+            <button>Add new exercise</button>
+        </v-container>
+    </v-app>
+</div>
+<script>
+    // client tells the server that it wants to GET "/api/students"
+    new Vue({
+        el: '#create-lesson-vue',
+        data: {
+            lesson: {
+                title: "",
+                description: "",
+                exercises: []
+            }
+        },
+        watch: {
+            lesson: {
+                handler: function (newValue) {
+                    console.log(newValue);
+                },
+                deep: true
+            }
+        }
+    });
+</script>
+#end
