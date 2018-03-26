@@ -26,12 +26,11 @@
             <div class="width-limit">
                 <ul class="navigation">
                     <img class="logo" src="/img/og9.png">
+                    <li><a href="/lessons">Lessons</a></li>
                     #if($logintype == "teacher")
                         <li><a href="/statistics">Statistics</a></li>
-                        <li><a href="/teacherLessons">Lessons</a></li>
                     #end
                     #if($logintype == "student")
-                        <li><a href="/lessons">Lessons</a></li>
                         <li><a href="/about">About</a></li>
                     #end
                     <li id="logout"><a href="/logout">Log out</a></li>

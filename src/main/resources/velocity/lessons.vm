@@ -13,6 +13,9 @@
             <label for="advanced">Advanced</label><br>
             <input v-model="message" placeholder="Write something">
             <p>Message is: {{ message }}</p>
+            <div v-if="isAdmin" id="addNewLesson">
+                <button @click="alertButton">Add new lesson</button>
+            </div>
         </div>
     </div>
     <ul id="lesson-list" class="block-list">
@@ -25,21 +28,32 @@
     </ul>
 </div>
 <script>
-    // client tells the server that it wants to GET "/api/lessons"
-    axios.get("/api/lessons").then(function (response) {
-        new Vue({
-            el: '#lessons-vue',
-            data: {
-                lessons: response.data,
-                includeBeginner: true,
-                message: "python",
+    new Vue({
+        el: '#lessons-vue',
+        data: {
+            lessons: [],
+            includeBeginner: true,
+            includeIntermediate: true,
+            includeAdvanced: true,
+            isAdmin: false,
+            message: "python",
+        },
+        methods: {
+            alert: function () {
+                alert("clicked");
             },
-            methods: {
-                alert: function () {
-                    alert("clicked");
-                }
+            alertButton: function () {
+                alert("clicked");
             }
-        });
+        },
+        created: function () {
+            axios.get("/api/lessons").then(response => {
+                this.lessons = response.data;
+            });
+            axios.get("/api/user").then(response => {
+                this.isAdmin = response.data.admin;
+            });
+        }
     });
 </script>
 #end

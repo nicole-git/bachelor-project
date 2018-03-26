@@ -2,10 +2,7 @@ package app;
 
 import app.controller.*;
 import app.exception.NotFoundException;
-import app.model.CodeRunningInput;
-import app.model.CodeRunningResult;
-import app.model.Exercise;
-import app.model.UserInfo;
+import app.model.*;
 import app.security.UserRole;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
@@ -66,9 +63,7 @@ public class Main {
 
             get("/", ctx -> ctx.redirect("/lessons"), roles(STUDENT));
 
-            get("/lessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lessons.vm"), roles(STUDENT));
-
-            get("/teacherLessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/teacherLessons.vm"), roles(TEACHER));
+            get("/lessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lessons.vm"), roles(STUDENT, TEACHER));
 
             get("/lessons/:lesson-id", ctx -> { // one specific lesson, get by id
                 ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
@@ -107,6 +102,14 @@ public class Main {
                         ctx.json(ExerciseController.getExerciseVms());
                     }
                 }, roles(STUDENT));
+
+                get("/user", ctx -> {
+                    if (TEACHER == UserRole.getRole(ctx)) {
+                        ctx.json(new SessionInfo(true));
+                    } else {
+                        ctx.json(new SessionInfo(false));
+                    }
+                });
 
                 post("/run-code", ctx -> { // just run the user code (Run code)
                     CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert post-body to class
