@@ -5,6 +5,6 @@
     <h1>Log in</h1>
     <input name="username" type="text" placeholder="Username">
     <input name="password" type="password" placeholder="Password">
-    <button>Log in</button>
+    <button class="button">Log in</button>
 </form>
 #end

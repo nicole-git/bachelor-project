@@ -22,8 +22,8 @@
     <div id="editor">$exercise.startCode.get("JAVASCRIPT")</div>
     <div id="output">Waiting ...</div>
 </div>
-<button id="run-code-btn">Run code</button>
-<button id="check-answer-btn">Check answer</button>
+<button class="button" id="run-code-btn">Run code</button>
+<button class="button" id="check-answer-btn">Check answer</button>
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
