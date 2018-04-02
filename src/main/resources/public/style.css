@@ -6,8 +6,12 @@
     box-sizing: border-box;
 }
 
+html {
+    font-family: Calibri;
+}
+
 body {
-    background-color: #fbfbfb;
+    background-color: #ffffff;/*#fbfbfb*/
     margin: 0px;
     font-family: "open sans", arial, sans-serif;
     font-size: 14px;
@@ -22,12 +26,12 @@ header {
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    border-top: 3px solid #e25f8b;/*#00509E*/
     border-bottom: 1px solid #0000000d;
     height: 90px;
     box-sizing: content-box;
-    background-color: #fbf5f4; /*#ff79b6, #E2738C*/
+    background-color: #005E6B; /*#ff79b6, #E2738C*/
     z-index: 1;
+    font-family: Calibri;
 }
 
 img.logo {
@@ -50,12 +54,13 @@ ul.navigation li {
     text-align: center;
     display: inline-block;
     height: 90px;
+    font-size: 20px;
 }
 
 ul.navigation li a {
     display: inline-block;
     text-decoration: none;
-    color: #cb5d76;
+    color: #ffffff;
     margin: 0px 5px;
     padding: 0 5px;
     height: 90px;
@@ -65,10 +70,11 @@ ul.navigation li a {
 
 h1, h2, h3 {
     font-weight: 400;
+    font-family: "Trebuchet MS";
 }
 
 h1 {
-    color: #e25f8b;
+    color: #004E43;
     margin-bottom: 16px;
 }
 
@@ -157,7 +163,7 @@ select {
 
 .button {
     display: inline-block;
-    background-color: #e25f8b;
+    background-color: #00897A;
     margin: 0 auto;
     margin-top: 10px;
     max-width: 150px;
@@ -184,9 +190,9 @@ ul.block-list a {
 }
 
 ul.block-list .block {
-    background: #fff;
+    background-color: #F9F9F9;
     border: 1px solid #ddd;
-    border-left: 3px solid #e25f8b;
+    border-left: 3px solid #6ACBC3;
 }
 
 ul.block-list .block + .block {
@@ -298,7 +304,7 @@ ul.block-list .block + .block {
     display: block;
     padding: 16px;
     margin-right: 32px;
-    background-color: #fff;
+    background-color: #F9F9F9;;
     border: 1px solid #ddd;
     margin-bottom: 16px;
 }
@@ -310,4 +316,5 @@ ul.block-list .block + .block {
 
 .container {
     padding: 0;
+    background-color: #FFFFFF;
 }
