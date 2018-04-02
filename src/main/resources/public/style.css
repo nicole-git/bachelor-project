@@ -69,6 +69,7 @@ h1, h2, h3 {
 
 h1 {
     color: #e25f8b;
+    margin-bottom: 16px;
 }
 
 h2 {
@@ -267,7 +268,6 @@ ul.block-list .block + .block {
 
 #lesson-content {
     display: flex;
-    margin-top: 16px;
 }
 
 #lesson-left-container {
@@ -282,6 +282,7 @@ ul.block-list .block + .block {
     background-color: #fff;
     border: 1px solid #ddd;
     margin-bottom: 16px;
+    white-space: pre-wrap;
 }
 
 #deleteLesson {
@@ -294,7 +295,6 @@ ul.block-list .block + .block {
 }
 
 #filter-lessons {
-    flex-basis: 250px;
     display: block;
     padding: 16px;
     margin-right: 32px;
@@ -303,14 +303,11 @@ ul.block-list .block + .block {
     margin-bottom: 16px;
 }
 
-#lesson-list {
-    flex: 2;
-}
-
-#lessons-vue {
-    display: flex;
-}
-
+/*vuetify overrides*/
 .dialog.dialog--active {
     background: #fff;
+}
+
+.container {
+    padding: 0;
 }

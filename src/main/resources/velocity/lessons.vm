@@ -2,30 +2,37 @@
 #@mainLayout()
 <h1>Lessons</h1>
 <div id="lessons-vue" v-cloak>
-    <div class="refine-container">
-        <div id="filter-lessons">
-            <h2>Filter</h2>
-            <input v-model="includeBeginner" type="checkbox" id="beginner" value="Beginner" @click="alert">
-            <label for="beginner">Beginner</label><br>
-            <input v-model="includeIntermediate" type="checkbox" id="intermediate" value="Intermediate" v-on:click="alert">
-            <label for="intermediate">Intermediate</label><br>
-            <input v-model="includeAdvanced" type="checkbox" id="advanced" value="Advanced">
-            <label for="advanced">Advanced</label><br>
-            <input v-model="message" placeholder="Write something">
-            <p>Message is: {{ message }}</p>
-        </div>
-        <div v-if="isAdmin" id="addNewLesson">
-            <a class="button" href="/lessons/new">Add new lesson</a>
-        </div>
-    </div>
-    <ul id="lesson-list" class="block-list">
-        <li v-for="lesson in lessons" class="block">
-            <a :href="`/lessons/${lesson.id}`">
-                <div class="block__title"> {{ lesson.title }}</div>
-                <div class="block__description"> {{ lesson.description }}</div>
-            </a>
-        </li>
-    </ul>
+    <v-app>
+        <v-container fluid>
+            <v-layout row wrap>
+                <v-flex xs4>
+                    <div class="refine-container">
+                        <div id="filter-lessons">
+                            <h2>Filter</h2>
+                            <v-switch color="green" label="Beginner" v-model="includeBeginner"></v-switch>
+                            <v-switch color="green" label="Intermediate" v-model="includeIntermediate"></v-switch>
+                            <v-switch color="green" label="Advanced" v-model="includeAdvanced"></v-switch>
+                            <v-text-field v-model="message" label="Search" single-line></v-text-field>
+                            <p>Message is: {{ message }}</p>
+                        </div>
+                        <div v-if="isAdmin" id="addNewLesson">
+                            <a class="button" href="/lessons/new">Add new lesson</a>
+                        </div>
+                    </div>
+                </v-flex>
+                <v-flex xs8>
+                    <ul id="lesson-list" class="block-list">
+                        <li v-for="lesson in lessons" class="block">
+                            <a :href="`/lessons/${lesson.id}`">
+                                <div class="block__title"> {{ lesson.title }}</div>
+                                <div class="block__description"> {{ lesson.description }}</div>
+                            </a>
+                        </li>
+                    </ul>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-app>
 </div>
 <script>
     new Vue({
@@ -36,7 +43,7 @@
             includeIntermediate: true,
             includeAdvanced: true,
             isAdmin: false,
-            message: "python",
+            message: "",
         },
         methods: {
             alert: function () {
