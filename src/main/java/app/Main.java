@@ -71,9 +71,9 @@ public class Main {
                 ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
                         "lessonId", ctx.param("lesson-id")
                 ));
-            }, roles(STUDENT));
+            }, roles(STUDENT, TEACHER));
 
-            get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm"), roles(STUDENT));
+            get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
 
             get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
 
@@ -85,7 +85,7 @@ public class Main {
                         "supportedLanguages", LanguageVm.supportedLanguages,
                         "exercise", ExerciseController.getExercise(exerciseId)
                 ));
-            }, roles(STUDENT));
+            }, roles(STUDENT, TEACHER));
 
             path("/api", () -> {
 
@@ -103,7 +103,7 @@ public class Main {
                     } else {
                         ctx.json(ExerciseController.getExerciseVms());
                     }
-                }, roles(STUDENT));
+                }, roles(STUDENT, TEACHER));
 
                 get("/user", ctx -> {
                     if (TEACHER == UserRole.getRole(ctx)) {
