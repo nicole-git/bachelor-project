@@ -4,6 +4,7 @@ import app.exception.NotFoundException;
 import app.model.Lesson;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
+import io.javalin.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +12,11 @@ import java.util.List;
 public class LessonController {
 
     public static Lesson getLesson(String lessonId) throws NotFoundException {
-        for (Lesson lesson : getLessons()) {
-            if (lesson.getId().equals(lessonId)) {
-                return lesson;
-            }
+        Lesson lesson = FirebaseUtil.synchronizeRead("lessons/" + lessonId).getValue(Lesson.class);
+        if (lesson == null) {
+            throw new NotFoundException();
         }
-        throw new NotFoundException();
+        return lesson;
     }
 
     public static List<Lesson> getLessons() {
@@ -27,4 +27,7 @@ public class LessonController {
         return lessons;
     }
 
+    public static void deleteLesson(String lessonId) {
+        FirebaseUtil.synchronizeWrite("lessons/" + lessonId, null);
+    }
 }

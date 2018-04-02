@@ -21,6 +21,7 @@
                     </div>
                 </v-flex>
                 <v-flex xs8>
+                    <h2 v-if="lessons.length === 0">No lessons added yet</h2>
                     <ul id="lesson-list" class="block-list">
                         <li v-for="lesson in lessons" class="block">
                             <a :href="`/lessons/${lesson.id}`">

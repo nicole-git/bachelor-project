@@ -97,6 +97,19 @@ public class Main {
                     ctx.json(LessonController.getLesson(ctx.param("lesson-id")));
                 }, roles(STUDENT, TEACHER));
 
+                delete("/lessons/:lesson-id", ctx -> {
+                    LessonController.deleteLesson(ctx.param("lesson-id"));
+                }, roles(TEACHER));
+
+                // TODO: Rewrite to use method-references
+                // path("lessons", () -> {
+                //     get(LessonController::getLesson, roles(STUDENT, TEACHER));
+                //     path(":lesson-id", () -> {
+                //         get(LessonController::getLesson, roles(STUDENT, TEACHER));
+                //         delete(LessonController::deleteLesson, roles(TEACHER));
+                //     });
+                // });
+
                 get("/exercises", ctx -> {
                     if (ctx.queryParam("lesson-id") != null) { //ex: /api/exercises?lesson-id=lesson-1
                         ctx.json(ExerciseController.getExercisesForLesson(ctx.queryParam("lesson-id")));

@@ -310,9 +310,6 @@ ul.block-list .block + .block {
 }
 
 /*vuetify overrides*/
-.dialog.dialog--active {
-    background: #fff;
-}
 
 .container {
     padding: 0;
