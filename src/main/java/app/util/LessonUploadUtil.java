@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,18 +25,28 @@ public class LessonUploadUtil {
 
     public static void main(String[] args) throws Exception {
         FirebaseDatabase db = FirebaseUtil.initFirebase();
-        Lesson lesson1 = new ObjectMapper().readValue(readFileAsString("lesson/lesson1.json"), Lesson.class);
-        lesson1.setText(readFileAsString("lesson/lesson1.html"));
-        FirebaseUtil.synchronizeWrite(db, "lessons", ImmutableMap.of(lesson1.getId(), lesson1));
         System.out.println("Uploading files to firebase ... ");
+        FirebaseUtil.synchronizeWrite(db, "lessons", getLessonsFromFileSystem());
         FirebaseUtil.synchronizeWrite(db, "exercises", getExercisesFromFileSystem());
-        System.out.println("Uploading complete!");
+        System.out.println("Upload complete!");
+    }
+
+    // create a map with lesson-id as key and lesson as value
+    private static Map<String, Lesson> getLessonsFromFileSystem() throws IOException {
+        Map<String, Lesson> lessonMap = new HashMap<>();
+        File lessonsDirectory = new File("lessons");
+        for (File lessonDir : lessonsDirectory.listFiles()) {
+            Lesson lesson = new ObjectMapper().readValue(readFileAsString(lessonDir, "meta.json"), Lesson.class);
+            lesson.setText(readFileAsString(lessonDir, "text.html"));
+            lessonMap.put(lesson.getId(), lesson);
+        }
+        return lessonMap;
     }
 
     // create a map with exercise-id as key and exercise as value
     private static Map<String, Exercise> getExercisesFromFileSystem() throws IOException {
         File codeDirectory = new File("code");
-        Map<String, Exercise> exerciseList = new HashMap<>();
+        Map<String, Exercise> exerciseMap = new HashMap<>();
         for (File exerciseDir : codeDirectory.listFiles()) {
             JsonNode metaInfo = new ObjectMapper().readTree(readFileAsString(exerciseDir, "meta.json"));
             String instructions = readFileAsString(exerciseDir, "instructions.html");
@@ -65,13 +76,9 @@ public class LessonUploadUtil {
                             Language.PYTHON, pythonTestCode
                     )
             );
-            exerciseList.put(exercise.getId(), exercise);
+            exerciseMap.put(exercise.getId(), exercise);
         }
-        return exerciseList;
-    }
-
-    private static String readFileAsString(String path) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(path)));
+        return exerciseMap;
     }
 
     private static String readFileAsString(File exerciseFile, String path) throws IOException {
