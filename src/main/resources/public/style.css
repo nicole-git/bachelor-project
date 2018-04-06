@@ -177,6 +177,10 @@ select {
     text-decoration: none;
 }
 
+.button:disabled {
+    background-color: #999;
+}
+
 ul.block-list {
     list-style: none;
     padding: 0;

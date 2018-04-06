@@ -7,7 +7,9 @@ import com.google.firebase.database.DataSnapshot;
 import io.javalin.Context;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class LessonController {
 
@@ -29,5 +31,16 @@ public class LessonController {
 
     public static void deleteLesson(String lessonId) {
         FirebaseUtil.synchronizeWrite("lessons/" + lessonId, null);
+    }
+
+    public static Lesson createLesson(Lesson lesson) {
+        Lesson newLesson = new Lesson(
+                UUID.randomUUID().toString(),
+                lesson.getTitle(),
+                lesson.getText(),
+                new ArrayList<>()
+        );
+        FirebaseUtil.synchronizeWrite("lessons/" + newLesson.getId(), lesson);
+        return newLesson;
     }
 }

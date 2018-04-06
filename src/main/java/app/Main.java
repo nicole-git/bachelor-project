@@ -93,6 +93,12 @@ public class Main {
                     ctx.json(LessonController.getLessons());
                 }, roles(STUDENT, TEACHER));
 
+                post("/lessons", ctx -> {
+                    Lesson lessonInput = ctx.bodyAsClass(Lesson.class);
+                    ctx.json(LessonController.createLesson(lessonInput));
+                    System.out.println(lessonInput);
+                }, roles(TEACHER));
+
                 get("/lessons/:lesson-id", ctx -> {
                     ctx.json(LessonController.getLesson(ctx.param("lesson-id")));
                 }, roles(STUDENT, TEACHER));

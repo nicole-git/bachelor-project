@@ -5,9 +5,13 @@
     <h1>Add new lesson</h1>
     <v-app>
         <v-container>
-            <v-text-field v-model="lesson.title" label="Title"></v-text-field>
-            <v-text-field v-model="lesson.description" label="Description" multi-line></v-text-field>
-            <button>Add new exercise</button>
+            <v-form v-model="valid">
+                <v-text-field v-model="lesson.title" label="Title" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                <v-text-field v-model="lesson.text" label="Description" multi-line :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
+                <div class="button" :disabled="!valid" @click="createLesson('addExercise')">Add new exercise</div>
+                <br>
+                <div class="button" :disabled="!valid" @click="createLesson('save')">Save</div>
+            </v-form>
         </v-container>
     </v-app>
 </div>
@@ -16,10 +20,22 @@
     new Vue({
         el: '#create-lesson-vue',
         data: {
+            valid: false,
             lesson: {
                 title: "",
-                description: "",
-                exercises: []
+                text: "",
+                exerciseIds: []
+            }
+        },
+        methods: {
+            createLesson: function (action) {
+                axios.post("/api/lessons", this.lesson).then(response => {
+                    if(action === "addExercise") {
+                        window.location = `/lessons/${response.data.id}/add-exercise`
+                    } else if(action === "save") {
+                        window.location = "/lessons"
+                    }
+                });
             }
         },
         watch: {
