@@ -73,6 +73,8 @@ public class Main {
                 ));
             }, roles(STUDENT, TEACHER));
 
+            get("/add-exercise", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/addExercise.vm"), roles(TEACHER));
+
             get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
 
             get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
@@ -89,32 +91,14 @@ public class Main {
 
             path("/api", () -> {
 
-                get("/lessons", ctx -> {
-                    ctx.json(LessonController.getLessons());
-                }, roles(STUDENT, TEACHER));
-
-                post("/lessons", ctx -> {
-                    Lesson lessonInput = ctx.bodyAsClass(Lesson.class);
-                    ctx.json(LessonController.createLesson(lessonInput));
-                    System.out.println(lessonInput);
-                }, roles(TEACHER));
-
-                get("/lessons/:lesson-id", ctx -> {
-                    ctx.json(LessonController.getLesson(ctx.param("lesson-id")));
-                }, roles(STUDENT, TEACHER));
-
-                delete("/lessons/:lesson-id", ctx -> {
-                    LessonController.deleteLesson(ctx.param("lesson-id"));
-                }, roles(TEACHER));
-
-                // TODO: Rewrite to use method-references
-                // path("lessons", () -> {
-                //     get(LessonController::getLesson, roles(STUDENT, TEACHER));
-                //     path(":lesson-id", () -> {
-                //         get(LessonController::getLesson, roles(STUDENT, TEACHER));
-                //         delete(LessonController::deleteLesson, roles(TEACHER));
-                //     });
-                // });
+                path("lessons", () -> {
+                     get(LessonController::getLessons, roles(STUDENT, TEACHER));
+                     post(LessonController::createLesson, roles(TEACHER));
+                     path(":lesson-id", () -> {
+                         get(LessonController::getLesson, roles(STUDENT, TEACHER));
+                         delete(LessonController::deleteLesson, roles(TEACHER));
+                     });
+                });
 
                 get("/exercises", ctx -> {
                     if (ctx.queryParam("lesson-id") != null) { //ex: /api/exercises?lesson-id=lesson-1

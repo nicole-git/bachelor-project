@@ -2,7 +2,6 @@ package app.controller;
 
 import app.exception.NotFoundException;
 import app.model.Exercise;
-import app.model.Lesson;
 import app.model.UserInfo;
 import app.util.FirebaseUtil;
 import app.viewmodel.ExerciseVm;
