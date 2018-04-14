@@ -15,9 +15,7 @@
                             <v-text-field v-model="message" label="Search" single-line></v-text-field>
                             <p>Message is: {{ message }}</p>
                         </div>
-                        <div v-if="isAdmin" id="addNewLesson">
-                            <a class="button" href="/lessons/new">Add new lesson</a>
-                        </div>
+                        <v-btn v-if="isAdmin" href="/lessons/new">Add new lesson</v-btn>
                     </div>
                 </v-flex>
                 <v-flex xs8>
