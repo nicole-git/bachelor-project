@@ -134,7 +134,7 @@ public class Main {
                 path("/statistics", () -> {
                     get("/exercises", StatisticsController::getExerciseInfo, roles(TEACHER));
                     get("/students", StatisticsController::getAllUserInfo, roles(TEACHER));
-                    get("/students/:student-id", StatisticsController::getStudentInfo);
+                    get("/students/:student-id", StatisticsController::getStudentInfo, roles(TEACHER));
                 });
 
             });
