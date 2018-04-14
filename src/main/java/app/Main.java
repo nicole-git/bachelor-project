@@ -87,7 +87,7 @@ public class Main {
             }, roles(STUDENT, TEACHER));
 
             path("api", () -> {
-
+                get("/user", UserController::getSessionInfo);
                 path("lessons", () -> {
                      get(LessonController::getLessons, roles(STUDENT, TEACHER));
                      post(LessonController::createLesson, roles(TEACHER));
@@ -99,41 +99,14 @@ public class Main {
                          });
                      });
                 });
-
-                get("/user", ctx -> {
-                    if (TEACHER == UserRole.getRole(ctx)) {
-                        ctx.json(new SessionInfo(true));
-                    } else {
-                        ctx.json(new SessionInfo(false));
-                    }
-                });
-
-                post("/run-code", ctx -> { // just run the user code (Run code)
-                    CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert post-body to class
-                    String result = (ScriptService.runScript(input.getLanguage(), input.getCode()));
-                    ctx.json(result); // send runScript result to client, as json
-                }, roles(STUDENT));
-
-                post("/run-code-with-test", ctx -> { // run user code and test if correct (Check answer)
-                    String userId = "user1";
-                    CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert json to java-object
-                    Exercise exercise = ExerciseController.getExercise(input.getExerciseId()); //gets the exercise the user is solving
-                    CodeRunningResult result = ScriptService.runScriptWithTest(input.getLanguage(), input.getCode(), exercise.getTestCode());
-
-                    if (!UserController.getExerciseSolved(userId, exercise.getId())) {
-                        AttemptController.registerAttempt(userId, input, result);
-                    }
-                    ctx.json(result); // send runScriptWithTest result to client, as json
-                }, roles(STUDENT));
-
+                post("/run-code", CodeRunningController::runCode, roles(STUDENT));
+                post("/run-code-with-test", CodeRunningController::runCodeWithTest, roles(STUDENT));
                 path("/statistics", () -> {
                     get("/exercises", StatisticsController::getExerciseInfo, roles(TEACHER));
                     get("/students", StatisticsController::getAllUserInfo, roles(TEACHER));
                     get("/students/:student-id", StatisticsController::getStudentInfo, roles(TEACHER));
                 });
-
             });
-
         });
 
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));

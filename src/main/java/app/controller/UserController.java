@@ -3,11 +3,16 @@ package app.controller;
 import app.exception.NotFoundException;
 import app.model.Attempt;
 import app.model.Exercise;
+import app.model.SessionInfo;
 import app.model.UserInfo;
+import app.security.UserRole;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
+import io.javalin.Context;
 
 import java.util.*;
+
+import static app.security.UserRole.TEACHER;
 
 public class UserController {
 
@@ -57,4 +62,11 @@ public class UserController {
         return counter;
     }
 
+    public static void getSessionInfo(Context ctx) {
+        if (TEACHER == UserRole.getRole(ctx)) {
+            ctx.json(new SessionInfo(true));
+        } else {
+            ctx.json(new SessionInfo(false));
+        }
+    }
 }
