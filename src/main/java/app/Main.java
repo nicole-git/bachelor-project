@@ -9,11 +9,8 @@ import app.util.FirebaseUtil;
 import app.util.ScriptService;
 import app.util.ViewUtil;
 import app.viewmodel.LanguageVm;
-import com.google.common.collect.ImmutableList;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
-
-import java.util.List;
 
 import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
@@ -135,21 +132,11 @@ public class Main {
                 }, roles(STUDENT));
 
                 path("/statistics", () -> {
-
-                    get("/exercises", ctx -> {
-                        ctx.json(StatisticsController.getExerciseInfo(UserController.getAllUserInfo())); // rewrite
-                    });
-
-                    get("/students", ctx -> {
-                        ctx.json(UserController.getAllUserInfo());
-                    });
-
-                    get("/students/:student-id", ctx -> {
-                        List<UserInfo> userInfoList = ImmutableList.of(UserController.getUserInfoByUserId(ctx.param("student-id")));
-                        ctx.json(StatisticsController.getExerciseInfo(userInfoList));
-                    });
-
+                    get("/exercises", StatisticsController::getExerciseInfo, roles(TEACHER));
+                    get("/students", StatisticsController::getAllUserInfo, roles(TEACHER));
+                    get("/students/:student-id", StatisticsController::getStudentInfo);
                 });
+
             });
 
         });
