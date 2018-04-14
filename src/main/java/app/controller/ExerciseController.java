@@ -6,6 +6,7 @@ import app.model.UserInfo;
 import app.util.FirebaseUtil;
 import app.viewmodel.ExerciseVm;
 import com.google.firebase.database.DataSnapshot;
+import io.javalin.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,4 +45,7 @@ public class ExerciseController {
         return exercises;
     }
 
+    public static void getExercisesForLesson(Context ctx) {
+        ctx.json(ExerciseController.getExercisesForLesson(ctx.param("lesson-id")));
+    }
 }

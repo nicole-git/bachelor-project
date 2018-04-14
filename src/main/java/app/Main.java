@@ -86,7 +86,7 @@ public class Main {
                 ));
             }, roles(STUDENT, TEACHER));
 
-            path("/api", () -> {
+            path("api", () -> {
 
                 path("lessons", () -> {
                      get(LessonController::getLessons, roles(STUDENT, TEACHER));
@@ -94,16 +94,11 @@ public class Main {
                      path(":lesson-id", () -> {
                          get(LessonController::getLesson, roles(STUDENT, TEACHER));
                          delete(LessonController::deleteLesson, roles(TEACHER));
+                         path("exercises", () -> {
+                             get(ExerciseController::getExercisesForLesson, roles(STUDENT, TEACHER));
+                         });
                      });
                 });
-
-                get("/exercises", ctx -> {
-                    if (ctx.queryParam("lesson-id") != null) { //ex: /api/exercises?lesson-id=lesson-1
-                        ctx.json(ExerciseController.getExercisesForLesson(ctx.queryParam("lesson-id")));
-                    } else {
-                        ctx.json(ExerciseController.getExerciseVms());
-                    }
-                }, roles(STUDENT, TEACHER));
 
                 get("/user", ctx -> {
                     if (TEACHER == UserRole.getRole(ctx)) {

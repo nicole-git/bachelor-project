@@ -71,7 +71,7 @@
             axios.get("/api/lessons/$lessonId").then(response => {
                 this.lesson = response.data
             });
-            axios.get("/api/exercises?lesson-id=$lessonId").then(response => {
+            axios.get("/api/lessons/$lessonId/exercises").then(response => {
                 this.exercises = response.data
             });
             axios.get("/api/user").then(response => {
