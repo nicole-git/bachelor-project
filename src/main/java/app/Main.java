@@ -28,36 +28,14 @@ public class Main {
                 .port(7000)
                 .enableRouteOverview("/routes")
                 .enableStaticFiles("/public")
-                .accessManager((handler, ctx, permittedRoles) -> {
-                    UserRole userRole = UserRole.getRole(ctx);
-                    if (permittedRoles.contains(userRole)) {
-                        handler.handle(ctx);
-                    } else {
-                        ctx.status(401);
-                        ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
-                    }
-                })
+                .accessManager(LoginController::accessManager)
                 .start();
 
         app.routes(() -> {
 
-            post("/login", ctx -> {
-                //todo: this has to be fixed
-                if ("student1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
-                    ctx.sessionAttribute("logintype", "student");
-                    ctx.redirect("/lessons");
-                } else if ("teacher1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
-                    ctx.sessionAttribute("logintype", "teacher");
-                    ctx.redirect("/statistics");
-                } else {
-                    ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
-                }
-            });
+            post("/login", LoginController::login);
 
-            get("/logout", ctx -> {
-                ctx.sessionAttribute("logintype", "none");
-                ctx.redirect("/");
-            });
+            get("/logout", LoginController::logout);
 
             get("/", ctx -> ctx.redirect("/lessons"), roles(STUDENT));
 
