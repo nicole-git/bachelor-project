@@ -33,6 +33,7 @@ public class Main {
                     if (permittedRoles.contains(userRole)) {
                         handler.handle(ctx);
                     } else {
+                        ctx.status(401);
                         ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
                     }
                 })
