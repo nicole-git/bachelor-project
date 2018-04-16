@@ -2,16 +2,26 @@
 #@mainLayout()
 
 <div id="create-lesson-vue">
-    <h1>Add new lesson</h1>
+    <h1>Create new lesson</h1>
     <v-app>
         <v-container>
-            <v-form v-model="valid">
-                <v-text-field v-model="lesson.title" label="Title" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
-                <v-text-field v-model="lesson.text" label="Description" multi-line :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
-                <div class="button" :disabled="!valid" @click="createLesson('addExercise')">Add new exercise</div>
-                <br>
-                <div class="button" :disabled="!valid" @click="createLesson('save')">Save</div>
-            </v-form>
+            <div id="lesson-content">
+                <div id="lesson-left-container">
+                    <div id="lesson-info">
+                        <v-form v-model="valid">
+                            <v-text-field v-model="lesson.title" label="Title"
+                                          :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field v-model="lesson.text" label="Description" multi-line
+                                          :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
+                        </v-form>
+                    </div>
+                </div>
+                <div id="lesson-right-container">
+                    <v-btn :disabled="!valid" @click="createLesson('addExercise')">Create new exercise</v-btn>
+                    <br>
+                    <v-btn :disabled="!valid" @click="createLesson('save')">Save</v-btn>
+                </div>
+            </div>
         </v-container>
     </v-app>
 </div>
@@ -30,9 +40,9 @@
         methods: {
             createLesson: function (action) {
                 axios.post("/api/lessons", this.lesson).then(response => {
-                    if(action === "addExercise") {
-                        window.location = `/lessons/${response.data.id}/add-exercise`
-                    } else if(action === "save") {
+                    if (action === "addExercise") {
+                        window.location =`/lessons/${response.data.id}/add-exercise`
+                    } else if (action === "save") {
                         window.location = "/lessons"
                     }
                 });
