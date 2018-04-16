@@ -2,11 +2,8 @@ package app;
 
 import app.controller.*;
 import app.exception.NotFoundException;
-import app.model.*;
-import app.security.UserRole;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
-import app.util.ScriptService;
 import app.util.ViewUtil;
 import app.viewmodel.LanguageVm;
 import com.google.firebase.database.FirebaseDatabase;
@@ -68,18 +65,18 @@ public class Main {
             path("api", () -> {
                 get("/user", UserController::getSessionInfo);
                 path("lessons", () -> {
-                     get(LessonController::getLessons, roles(STUDENT, TEACHER));
-                     post(LessonController::createLesson, roles(TEACHER));
-                     path(":lesson-id", () -> {
-                         get(LessonController::getLesson, roles(STUDENT, TEACHER));
-                         delete(LessonController::deleteLesson, roles(TEACHER));
-                         path("exercises", () -> {
-                             get(ExerciseController::getExercisesForLesson, roles(STUDENT, TEACHER));
-                         });
-                     });
+                    get(LessonController::getLessons, roles(STUDENT, TEACHER));
+                    post(LessonController::createLesson, roles(TEACHER));
+                    path(":lesson-id", () -> {
+                        get(LessonController::getLesson, roles(STUDENT, TEACHER));
+                        delete(LessonController::deleteLesson, roles(TEACHER));
+                        path("exercises", () -> {
+                            get(ExerciseController::getExercisesForLesson, roles(STUDENT, TEACHER));
+                        });
+                    });
                 });
-                post("/run-code", CodeRunningController::runCode, roles(STUDENT));
-                post("/run-code-with-test", CodeRunningController::runCodeWithTest, roles(STUDENT));
+                post("/run-code", CodeRunningController::runCode, roles(STUDENT, TEACHER));
+                post("/run-code-with-test", CodeRunningController::runCodeWithTest, roles(STUDENT, TEACHER));
                 path("/statistics", () -> {
                     get("/exercises", StatisticsController::getExerciseInfo, roles(TEACHER));
                     get("/students", StatisticsController::getAllUserInfo, roles(TEACHER));
