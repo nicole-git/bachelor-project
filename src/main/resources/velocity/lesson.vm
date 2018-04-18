@@ -3,53 +3,61 @@
 <div id="exercises-vue" v-cloak>
     <v-app>
         <v-container>
-            <h1 v-if="!isAdmin"> {{ lesson.title }}</h1>
-            <v-text-field v-else
-                    v-model="lesson.title"
-                    box
-                    label="Lesson title"
-            ></v-text-field>
-            <div id="lesson-content">
-                <div id="lesson-left-container">
-                    <div v-if="!isAdmin" id="lesson-text"> {{lesson.text}}</div>
-                    <v-text-field v-else v-model="lesson.text" box multi-line label="Text"></v-text-field>
-                    <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete
-                        lesson
-                    </v-btn>
-                    <v-layout row justify-center>
-                        <v-dialog v-model="showDeleteLessonDialog" max-width="290">
-                            <v-card>
-                                <v-card-title class="headline">Are you sure you want to delete this lesson?
-                                </v-card-title>
-                                <v-card-text>This will permanently delete the lesson from the database.</v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="red darken-4" flat="flat"
-                                           @click.native="showDeleteLessonDialog = false">No
-                                    </v-btn>
-                                    <v-btn color="green darken-4" flat="flat"
-                                           @click.native="deleteLesson">Yes
-                                    </v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                    </v-layout>
-                    <v-btn v-if="isAdmin" @click="saveLesson">Save changes</v-btn>
+            <v-form v-model="valid">
+                <h1 v-if="!isAdmin"> {{ lesson.title }}</h1>
+                <v-text-field v-else
+                              v-model="lesson.title"
+                              :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"
+                              box
+                              label="Lesson title"
+                ></v-text-field>
+                <div id="lesson-content">
+                    <div id="lesson-left-container">
+                        <div v-if="!isAdmin" id="lesson-text"> {{lesson.text}}</div>
+                        <v-text-field v-else
+                                      v-model="lesson.text"
+                                      :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"
+                                      box
+                                      multi-line label="Text"></v-text-field>
+                        <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete
+                            lesson
+                        </v-btn>
+                        <v-layout row justify-center>
+                            <v-dialog v-model="showDeleteLessonDialog" max-width="290">
+                                <v-card>
+                                    <v-card-title class="headline">Are you sure you want to delete this lesson?
+                                    </v-card-title>
+                                    <v-card-text>This will permanently delete the lesson from the database.
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="red darken-4" flat="flat"
+                                               @click.native="showDeleteLessonDialog = false">No
+                                        </v-btn>
+                                        <v-btn color="green darken-4" flat="flat"
+                                               @click.native="deleteLesson">Yes
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-layout>
+                        <v-btn v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save changes</v-btn>
+                    </div>
+                    <div id="lesson-right-container">
+                        <ul id="exercise-list" class="block-list">
+                            <li v-for="exercise in exercises" class="block">
+                                <a :href="`/exercises/${exercise.id}`">
+                                    <div class="block__title"> {{ exercise.title }}
+                                        <small v-if="exercise.solved">(solved)</small>
+                                    </div>
+                                    <div class="block__description"> {{ exercise.description }}</div>
+                                </a>
+                            </li>
+                        </ul>
+                        <v-btn v-if="isAdmin" id="addExercise" href="#">Add exercise</v-btn>
+                    </div>
                 </div>
-                <div id="lesson-right-container">
-                    <ul id="exercise-list" class="block-list">
-                        <li v-for="exercise in exercises" class="block">
-                            <a :href="`/exercises/${exercise.id}`">
-                                <div class="block__title"> {{ exercise.title }}
-                                    <small v-if="exercise.solved">(solved)</small>
-                                </div>
-                                <div class="block__description"> {{ exercise.description }}</div>
-                            </a>
-                        </li>
-                    </ul>
-                    <v-btn v-if="isAdmin" id="addExercise" href="#">Add exercise</v-btn>
-                </div>
-            </div>
+            </v-form>
         </v-container>
     </v-app>
 </div>
@@ -57,6 +65,7 @@
     new Vue({
         el: '#exercises-vue',
         data: {
+            valid: false,
             lesson: {},
             exercises: [],
             isAdmin: false,

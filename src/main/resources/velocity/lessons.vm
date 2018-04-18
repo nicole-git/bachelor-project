@@ -15,7 +15,7 @@
                             <v-text-field v-model="message" label="Search" single-line></v-text-field>
                             <p>Message is: {{ message }}</p>
                         </div>
-                        <v-btn v-if="isAdmin" href="/lessons/new">Add new lesson</v-btn>
+                        <v-btn v-if="isAdmin" @click="addLesson">Add new lesson</v-btn>
                     </div>
                 </v-flex>
                 <v-flex xs8>
@@ -45,8 +45,15 @@
             message: "",
         },
         methods: {
-            alert: function () {
-                alert("clicked");
+            addLesson: function () {
+                let blankLesson = {
+                    title: "New lesson",
+                    text: "",
+                    exerciseIds: []
+                };
+                axios.post("/api/lessons", blankLesson).then(response => {
+                    window.location =`/lessons/${response.data.id}`;
+                });
             }
         },
         created: function () {
