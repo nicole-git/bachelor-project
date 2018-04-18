@@ -3,11 +3,9 @@
 <html>
     <head>
         <title>Oppgave 9</title>
-
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/css/vuetify.min.css">
         <link rel="stylesheet" type="text/css" href="/style.css">
-
         <script src="/js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
         <script src="/js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
         <script src="/js/ace/mode-groovy.js" type="text/javascript" charset="utf-8"></script>
@@ -17,7 +15,6 @@
         <script src="/js/axios.min.js"></script>
         <script src="/js/vue.js"></script>
         <script src="/js/vuetify.js"></script>
-        <script src="/js/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <link rel="stylesheet" href="/css/font-awesome.min.css">
     </head>

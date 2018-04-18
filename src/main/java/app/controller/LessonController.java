@@ -33,7 +33,7 @@ public class LessonController {
     }
 
     public static void getLesson(Context ctx) {
-        ctx.json(getLesson(ctx.param("lesson-id")));
+        ctx.json(getLesson(ctx.param(":lesson-id")));
     }
 
     public static Lesson getLesson(String lessonId) {
@@ -45,6 +45,6 @@ public class LessonController {
     }
 
     public static void deleteLesson(Context ctx) {
-        FirebaseUtil.synchronizeWrite("lessons/" + ctx.param("lesson-id"), null);
+        FirebaseUtil.synchronizeWrite("lessons/" + ctx.param(":lesson-id"), null);
     }
 }

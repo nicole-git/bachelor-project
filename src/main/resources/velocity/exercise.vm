@@ -1,72 +1,93 @@
-#* @vtlvariable name="exercise" type="app.model.Exercise" *#
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<div class="exercise-info">
-    <h1>$exercise.title</h1>
-    <div class="description">
-        <p>$exercise.instructions</p>
-    </div>
-    <div class="toggle">
-        <i class="fa fa-plus open" aria-hidden="true"></i>
-        <i class="fa fa-minus close" aria-hidden="true"></i>
-    </div>
+<div id="exercise-vue" v-cloak>
+    <v-app>
+        <v-container>
+            <div class="exercise-info">
+                <h1>{{title}}</h1>
+                <div v-if="showInstructions" class="description">
+                    <p>{{instructions}}</p>
+                </div>
+                <div class="toggle" @click="showInstructions = !showInstructions">
+                    <i class="fa fa-plus open" aria-hidden="true"></i>
+                    <i class="fa fa-minus close" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div id="editor-wrap">
+                <div id="top-bar">
+                    <select v-model="currentLanguage" id="language-select" name="language">
+                        <option v-for="language in languages" :value="language">{{language}}</option>
+                        <!-- dropdown options -->
+                    </select>
+                </div>
+                <div id="editor">...</div>
+                <div v-if="output.length === 0" class="output">No output yet. Run code or check answer.</div>
+                <div v-else class="output">{{output}}</div>
+            </div>
+            <v-btn @click="runCode('noTest')">Run code</v-btn>
+            <v-btn @click="runCode('withTest')">Check answer</v-btn>
+        </v-container>
+    </v-app>
 </div>
-<div id="editor-wrap">
-    <div id="top-bar">
-        <select id="language-select" name="language">
-            #foreach($language in $supportedLanguages)
-                <option value="$language.name">$language.displayName</option>
-            #end
-        </select>
-    </div>
-    <div id="editor">$exercise.startCode.get("JAVASCRIPT")</div>
-    <div id="output">Waiting ...</div>
-</div>
-<button class="button" id="run-code-btn">Run code</button>
-<button class="button" id="check-answer-btn">Check answer</button>
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/javascript");
-    editor.setShowPrintMargin(false);
-    editor.renderer.setScrollMargin(8, 8)
-    document.getElementById("language-select").addEventListener("change", function () {
-        editor.getSession().setMode("ace/mode/" + getSelectedLanguage().toLowerCase());
-    });
-    document.getElementById("run-code-btn").addEventListener("click", function () {
-        var data = { // the json we send to the server, which is mapped to CodeRunningInput.java
-            exerciseId: "$exercise.id",
-            language: getSelectedLanguage(),
-            code: editor.getValue()
-        }
-        axios.post("/api/run-code", data).then(function (response) {
-            document.getElementById("output").innerHTML = response.data;
-        }).catch(function (error) {
-            alert("An error occurred")
-        });
-    });
-
-    document.getElementById("check-answer-btn").addEventListener("click", function () {
-        var data = { // the json we send to the server, which is mapped to CodeRunningInput.java
-            exerciseId: "$exercise.id",
-            language: getSelectedLanguage(),
-            code: editor.getValue()
-        }
-        axios.post("/api/run-code-with-test/", data).then(function (response) {
-            document.getElementById("output").innerHTML = response.data.message;
-        }).catch(function (error) {
-            alert("An error occurred")
-        });
-    });
-
-    function getSelectedLanguage() {
-        var languageSelect = document.getElementById("language-select");
-        return languageSelect.options[languageSelect.selectedIndex].value;
-    }
-
-    document.querySelector(".toggle").addEventListener("click", function () {
-        document.querySelector(".exercise-info").classList.toggle("minimized-description")
-        $(".description").slideToggle(200);
+    new Vue({
+        el: "#exercise-vue",
+        data: {
+            editor: null,
+            exerciseId: "",
+            title: "",
+            instructions: "",
+            userCode: {}, // key is language, value is code for that language
+            languages: [],
+            currentLanguage: "",
+            showInstructions: true,
+            output: "",
+        },
+        watch: {
+            currentLanguage: function (newLanguage) {
+                this.editor.getSession().setValue(this.userCode[newLanguage]);
+                this.editor.getSession().setMode("ace/mode/" + newLanguage.toLowerCase());
+            }
+        },
+        methods: {
+            getData: function () {
+                return { // the json we send to the server, which is mapped to CodeRunningInput.java
+                    exerciseId: this.exerciseId,
+                    language: this.currentLanguage,
+                    code: this.userCode[this.currentLanguage]
+                }
+            },
+            runCode: function (action) {
+                this.output = "Running code ...";
+                let url = action === "withTest" ? "/api/run-code-with-test" : "/api/run-code";
+                axios.post(url, this.getData()).then(response => {
+                    this.output = response.data.message || "Running code produced no output.";
+                }).catch(() => {
+                    alert("An error occurred")
+                });
+            },
+        },
+        mounted: function () {
+            let editor = ace.edit("editor");
+            editor.$blockScrolling = "Infinity"; // remove annoying log lines
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/javascript");
+            editor.setShowPrintMargin(false);
+            editor.renderer.setScrollMargin(8, 8);
+            editor.getSession().on("change", () => {
+                this.userCode[this.currentLanguage] = this.editor.getValue();
+            });
+            this.editor = editor;
+            axios.get("/api/exercises/$exerciseId").then(response => {
+                let exercise = response.data;
+                this.exerciseId = exercise.id;
+                this.title = exercise.title;
+                this.instructions = exercise.instructions;
+                this.userCode = exercise.startCode;
+                this.languages = Object.keys(exercise.startCode);
+                this.currentLanguage = this.languages[0];
+            });
+        },
     });
 </script>
 #end

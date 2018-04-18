@@ -10,7 +10,7 @@ public class CodeRunningController {
 
     public static void runCode(Context ctx) {
         CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert post-body to class
-        String result = (ScriptService.runScript(input.getLanguage(), input.getCode()));
+        CodeRunningResult result = (ScriptService.runScript(input.getLanguage(), input.getCode()));
         ctx.json(result); // send runScript result to client, as json
     }
 

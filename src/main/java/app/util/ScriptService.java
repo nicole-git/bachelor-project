@@ -25,7 +25,7 @@ public class ScriptService {
         new ScriptEngineManager().registerEngineName("groovy", new GroovyScriptEngineFactory());
     }
 
-    public static String runScript(String language, String userCode) {
+    public static CodeRunningResult runScript(String language, String userCode) {
         try {
             // Create writers
             StringWriter stringWriter = new StringWriter();
@@ -46,9 +46,9 @@ public class ScriptService {
             errorStringWriter.close();
 
             // return result
-            return stringWriter.toString();
+            return new CodeRunningResult(0, stringWriter.toString());
         } catch (Throwable t) {
-            return t.toString();
+            return new CodeRunningResult(0,  t.toString());
         }
     }
 

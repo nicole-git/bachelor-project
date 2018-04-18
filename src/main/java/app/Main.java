@@ -5,7 +5,6 @@ import app.exception.NotFoundException;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
 import app.util.ViewUtil;
-import app.viewmodel.LanguageVm;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
 
@@ -42,7 +41,7 @@ public class Main {
 
             get("/lessons/:lesson-id", ctx -> { // one specific lesson, get by id
                 ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
-                        "lessonId", ctx.param("lesson-id")
+                        "lessonId", ctx.param(":lesson-id")
                 ));
             }, roles(STUDENT, TEACHER));
 
@@ -54,25 +53,28 @@ public class Main {
 
             get("/statistics", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm"), roles(TEACHER));
 
-            get("/exercises/:exercise-id", ctx -> { // one specific exercise, get by id
-                String exerciseId = ctx.param("exercise-id");
+            get("/exercises/:exercise-id", ctx -> {
                 ViewUtil.renderToCtx(ctx, "/velocity/exercise.vm", model(
-                        "supportedLanguages", LanguageVm.supportedLanguages,
-                        "exercise", ExerciseController.getExercise(exerciseId)
+                        "exerciseId", ctx.param(":exercise-id")
                 ));
             }, roles(STUDENT, TEACHER));
 
             path("api", () -> {
                 get("/user", UserController::getSessionInfo);
-                path("lessons", () -> {
+                path("/lessons", () -> {
                     get(LessonController::getLessons, roles(STUDENT, TEACHER));
                     post(LessonController::createLesson, roles(TEACHER));
-                    path(":lesson-id", () -> {
+                    path("/:lesson-id", () -> {
                         get(LessonController::getLesson, roles(STUDENT, TEACHER));
                         delete(LessonController::deleteLesson, roles(TEACHER));
-                        path("exercises", () -> {
+                        path("/exercises", () -> {
                             get(ExerciseController::getExercisesForLesson, roles(STUDENT, TEACHER));
                         });
+                    });
+                });
+                path("/exercises", () -> {
+                    path("/:exercise-id", () -> {
+                        get(ExerciseController::getExercise, roles(STUDENT, TEACHER));
                     });
                 });
                 post("/run-code", CodeRunningController::runCode, roles(STUDENT, TEACHER));

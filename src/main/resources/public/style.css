@@ -125,7 +125,7 @@ select {
     min-height: 250px;
 }
 
-#output {
+.output {
     background: #1b1d19;
     font-family: monospace;
     font-size: 13px;
@@ -163,18 +163,17 @@ select {
 
 .button {
     display: inline-block;
-    background-color: #00897A;
-    margin: 0 auto;
-    margin-top: 10px;
-    max-width: 150px;
+    background-color: #f0f0f0;
+    margin: 5px;
+    max-width: 200px;
     padding: 10px;
     border-radius: 3px;
-    font-weight: 900;
     cursor: pointer;
-    color: #fff;
-    font-family: monospace;
+    color: #2c2c2c;
     border: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
     text-decoration: none;
+    text-transform: uppercase;
 }
 
 .button:disabled {

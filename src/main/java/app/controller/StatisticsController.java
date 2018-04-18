@@ -20,7 +20,7 @@ public class StatisticsController {
     }
 
     public static void getStudentInfo(Context ctx) {
-        List<UserInfo> userInfoList = ImmutableList.of(UserController.getUserInfoByUserId(ctx.param("student-id")));
+        List<UserInfo> userInfoList = ImmutableList.of(UserController.getUserInfoByUserId(ctx.param(":student-id")));
         ctx.json(StatisticsController.getExerciseInfo(userInfoList));
     }
 

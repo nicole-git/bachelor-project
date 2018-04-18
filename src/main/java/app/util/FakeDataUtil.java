@@ -1,8 +1,6 @@
 package app.util;
 
 import app.model.Attempt;
-import app.model.UserInfo;
-import com.google.common.collect.ImmutableMap;
 
 public class FakeDataUtil {
 
