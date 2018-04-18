@@ -47,4 +47,13 @@ public class LessonController {
     public static void deleteLesson(Context ctx) {
         FirebaseUtil.synchronizeWrite("lessons/" + ctx.param(":lesson-id"), null);
     }
+
+    public static void updateLesson(Context ctx) {
+        String lessonId = ctx.param(":lesson-id");
+        Lesson lesson =  getLesson(lessonId);
+        Lesson updatedLesson = ctx.bodyAsClass(Lesson.class);
+        lesson.setTitle(updatedLesson.getTitle());
+        lesson.setText(updatedLesson.getText());
+        FirebaseUtil.synchronizeWrite("lessons/" + lessonId, lesson);
+    }
 }

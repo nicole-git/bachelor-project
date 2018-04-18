@@ -3,10 +3,16 @@
 <div id="exercises-vue" v-cloak>
     <v-app>
         <v-container>
-            <h1> {{ lesson.title }}</h1>
+            <h1 v-if="!isAdmin"> {{ lesson.title }}</h1>
+            <v-text-field v-else
+                    v-model="lesson.title"
+                    box
+                    label="Lesson title"
+            ></v-text-field>
             <div id="lesson-content">
                 <div id="lesson-left-container">
-                    <div id="lesson-text"> {{lesson.text}}</div>
+                    <div v-if="!isAdmin" id="lesson-text"> {{lesson.text}}</div>
+                    <v-text-field v-else v-model="lesson.text" box multi-line label="Text"></v-text-field>
                     <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete
                         lesson
                     </v-btn>
@@ -28,7 +34,7 @@
                             </v-card>
                         </v-dialog>
                     </v-layout>
-                    <v-btn v-if="isAdmin" id="saveChanges" href="#">Save changes</v-btn>
+                    <v-btn v-if="isAdmin" @click="saveLesson">Save changes</v-btn>
                 </div>
                 <div id="lesson-right-container">
                     <ul id="exercise-list" class="block-list">
@@ -60,6 +66,15 @@
             deleteLesson: function () {
                 axios.delete("/api/lessons/$lessonId").then(response => {
                     window.location = "/lessons";
+                });
+            },
+            saveLesson: function () {
+                let data = {
+                    title: this.lesson.title,
+                    text: this.lesson.text
+                }
+                axios.patch("/api/lessons/$lessonId", data).then(response => {
+
                 });
             }
         },

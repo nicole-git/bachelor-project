@@ -7,6 +7,7 @@ import app.util.FirebaseUtil;
 import app.util.ViewUtil;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
+import org.python.bouncycastle.jcajce.provider.symmetric.TEA;
 
 import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
@@ -66,6 +67,7 @@ public class Main {
                     post(LessonController::createLesson, roles(TEACHER));
                     path("/:lesson-id", () -> {
                         get(LessonController::getLesson, roles(STUDENT, TEACHER));
+                        patch(LessonController::updateLesson, roles(TEACHER));
                         delete(LessonController::deleteLesson, roles(TEACHER));
                         path("/exercises", () -> {
                             get(ExerciseController::getExercisesForLesson, roles(STUDENT, TEACHER));
