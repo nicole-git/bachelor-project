@@ -42,7 +42,7 @@
                                 </v-card>
                             </v-dialog>
                         </v-layout>
-                        <v-btn v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save changes</v-btn>
+                        <v-btn v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save lesson</v-btn>
                     </div>
                     <div id="lesson-right-container">
                         <ul id="exercise-list" class="block-list">
@@ -59,6 +59,9 @@
                     </div>
                 </div>
             </v-form>
+            <v-snackbar :timeout="3000" v-model="showSnackbar">
+                {{ snackbarText }}<v-btn dark flat @click.native="showSnackbar = false">Close</v-btn>
+            </v-snackbar>
         </v-container>
     </v-app>
 </div>
@@ -66,6 +69,8 @@
     new Vue({
         el: '#exercises-vue',
         data: {
+            showSnackbar: false,
+            snackbarText: "",
             valid: false,
             lesson: {
                 title: "",
@@ -80,7 +85,7 @@
                 return this.isAdmin ? `/lessons/$lessonId/exercises/${exercise.id}` : `/exercises/${exercise.id}`;
             },
             deleteLesson: function () {
-                axios.delete("/api/lessons/$lessonId").then(response => {
+                axios.delete("/api/lessons/$lessonId").then(() => {
                     window.location = "/lessons";
                 });
             },
@@ -89,8 +94,12 @@
                     title: this.lesson.title,
                     text: this.lesson.text
                 };
-                axios.patch("/api/lessons/$lessonId", data).then(response => {
-
+                axios.patch("/api/lessons/$lessonId", data).then(() => {
+                    this.showSnackbar = true;
+                    this.snackbarText = "Lesson saved!";
+                }).catch(() => {
+                    this.showSnackbar = true;
+                    this.snackbarText = "Failed to save lesson.";
                 });
             },
             addExercise: function () {
