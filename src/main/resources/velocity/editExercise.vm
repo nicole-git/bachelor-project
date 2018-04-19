@@ -1,0 +1,84 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<div id="create-exercise-vue">
+    <v-app>
+        <v-container>
+            <div id="exercise-content">
+                <div id="exercise-left-container">
+                    <div id="exercise-info">
+                        <v-form v-model="valid">
+                            <v-text-field v-model="exercise.title" label="Title"
+                                          :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field v-model="exercise.description" label="Description"
+                                          :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field v-model="exercise.instructions" label="Instructions" multi-line
+                                          :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
+                            <v-btn @click="deleteExercise">Delete exercise</v-btn>
+                            <v-btn>Save exercise</v-btn>
+                        </v-form>
+                    </div>
+                </div>
+                <div id="exercise-right-container">
+                    <h2>Available in:</h2>
+                    <v-layout row justify-center>
+                        <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
+                            <v-btn color="primary" dark slot="activator">Add language</v-btn>
+                            <v-card>
+                                <v-toolbar dark color="teal darken-1">
+                                    <v-btn icon @click.native="dialog = false" dark>
+                                        <v-icon>close</v-icon>
+                                    </v-btn>
+                                    <v-toolbar-title>Language, start-code test-code</v-toolbar-title>
+                                    <v-spacer></v-spacer>
+                                    <v-toolbar-items>
+                                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+                                    </v-toolbar-items>
+                                </v-toolbar>
+                                <v-list-tile avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>Select a language and add its start-code and test-code
+                                        </v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-flex xs12 sm6>
+                                    <v-select
+                                            label="Select language"
+                                            required
+                                            :items="['Python', 'JavaScript', 'Ruby', 'Groovy']"
+                                    ></v-select>
+                                </v-flex>
+                            </v-card>
+                        </v-dialog>
+                    </v-layout>
+                </div>
+            </div>
+        </v-container>
+    </v-app>
+</div>
+<script>
+    new Vue({
+        el: '#create-exercise-vue',
+        data: {
+            valid: false,
+            exercise: {
+                title: "",
+                description: "",
+                instructions: ""
+            },
+            dialog: false,
+            notifications: false,
+            sound: true,
+            widgets: false
+        },
+        methods: {
+            deleteExercise: function () {
+                axios.delete("/api/lessons/$lessonId/exercises/$exerciseId").then(() => {
+                    window.location = "/lessons/$lessonId";
+                }).catch(() => {
+                    alert("An error occurred.");
+                });
+            }
+        }
+    });
+</script>
+#end

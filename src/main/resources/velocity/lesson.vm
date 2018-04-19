@@ -18,7 +18,8 @@
                                       v-model="lesson.text"
                                       :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"
                                       box
-                                      multi-line label="Text"></v-text-field>
+                                      multi-line
+                                      label="Text"></v-text-field>
                         <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete
                             lesson
                         </v-btn>
@@ -46,7 +47,7 @@
                     <div id="lesson-right-container">
                         <ul id="exercise-list" class="block-list">
                             <li v-for="exercise in exercises" class="block">
-                                <a :href="`/exercises/${exercise.id}`">
+                                <a :href="exerciseUrl(exercise)">
                                     <div class="block__title"> {{ exercise.title }}
                                         <small v-if="exercise.solved">(solved)</small>
                                     </div>
@@ -54,7 +55,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <v-btn v-if="isAdmin" id="addExercise" href="#">Add exercise</v-btn>
+                        <v-btn v-if="isAdmin" @click="addExercise" id="addExercise">Add exercise</v-btn>
                     </div>
                 </div>
             </v-form>
@@ -66,12 +67,18 @@
         el: '#exercises-vue',
         data: {
             valid: false,
-            lesson: {},
+            lesson: {
+                title: "",
+                text: "",
+            },
             exercises: [],
             isAdmin: false,
             showDeleteLessonDialog: false
         },
         methods: {
+            exerciseUrl: function (exercise) {
+                return this.isAdmin ? `/lessons/$lessonId/exercises/${exercise.id}` : `/exercises/${exercise.id}`;
+            },
             deleteLesson: function () {
                 axios.delete("/api/lessons/$lessonId").then(response => {
                     window.location = "/lessons";
@@ -81,9 +88,19 @@
                 let data = {
                     title: this.lesson.title,
                     text: this.lesson.text
-                }
+                };
                 axios.patch("/api/lessons/$lessonId", data).then(response => {
 
+                });
+            },
+            addExercise: function () {
+                let blankExercise = {
+                    title: "New exercise",
+                    description: "",
+                    instructions: ""
+                };
+                axios.post("/api/lessons/$lessonId/exercises", blankExercise).then(response => {
+                    window.location =`/lessons/$lessonId/exercises/${response.data.id}`;
                 });
             }
         },

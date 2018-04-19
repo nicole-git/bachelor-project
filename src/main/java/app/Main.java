@@ -7,7 +7,6 @@ import app.util.FirebaseUtil;
 import app.util.ViewUtil;
 import com.google.firebase.database.FirebaseDatabase;
 import io.javalin.Javalin;
-import org.python.bouncycastle.jcajce.provider.symmetric.TEA;
 
 import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
@@ -44,8 +43,6 @@ public class Main {
                 ));
             }, roles(STUDENT, TEACHER));
 
-            get("/add-exercise", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/addExercise.vm"), roles(TEACHER));
-
             get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
 
             get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
@@ -58,6 +55,13 @@ public class Main {
                 ));
             }, roles(STUDENT, TEACHER));
 
+            get("/lessons/:lesson-id/exercises/:exercise-id", ctx -> {
+                ViewUtil.renderToCtx(ctx, "/velocity/editExercise.vm", model(
+                        "lessonId", ctx.param(":lesson-id"),
+                        "exerciseId", ctx.param(":exercise-id")
+                ));
+            }, roles(TEACHER));
+
             path("api", () -> {
                 get("/user", UserController::getSessionInfo);
                 path("/lessons", () -> {
@@ -69,6 +73,10 @@ public class Main {
                         delete(LessonController::deleteLesson, roles(TEACHER));
                         path("/exercises", () -> {
                             get(ExerciseController::getExercisesForLesson, roles(STUDENT, TEACHER));
+                            post(ExerciseController::createExerciseForLesson, roles(TEACHER));
+                            path("/:exercise-id", () -> {
+                                delete(ExerciseController::deleteExerciseForLesson, roles(TEACHER));
+                            });
                         });
                     });
                 });

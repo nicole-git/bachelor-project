@@ -2,12 +2,14 @@ package app.controller;
 
 import app.exception.NotFoundException;
 import app.model.Exercise;
+import app.model.Lesson;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
 import io.javalin.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ExerciseController {
@@ -39,5 +41,29 @@ public class ExerciseController {
 
     public static void getExercise(Context ctx) {
         ctx.json(ExerciseController.getExercise(ctx.param(":exercise-id")));
+    }
+
+    public static void createExerciseForLesson(Context ctx) {
+        Exercise exerciseInput = ctx.bodyAsClass(Exercise.class);
+        Exercise newExercise = new Exercise(
+                UUID.randomUUID().toString(),
+                exerciseInput.getTitle(),
+                exerciseInput.getDescription(),
+                exerciseInput.getInstructions(),
+                exerciseInput.getStartCode(),
+                exerciseInput.getTestCode()
+        );
+        Lesson lesson = LessonController.getLesson(ctx.param(":lesson-id"));
+        lesson.getExerciseIds().add(newExercise.getId());
+        FirebaseUtil.synchronizeWrite("lessons/" + lesson.getId(), lesson);
+        FirebaseUtil.synchronizeWrite("exercises/" + newExercise.getId(), newExercise);
+        ctx.json(newExercise);
+    }
+
+    public static void deleteExerciseForLesson(Context ctx) {
+        FirebaseUtil.synchronizeWrite("exercises/" + ctx.param(":exercise-id"), null);
+        Lesson lesson = LessonController.getLesson(ctx.param(":lesson-id"));
+        lesson.getExerciseIds().remove(ctx.param(":exercise-id"));
+        FirebaseUtil.synchronizeWrite("lessons/" + ctx.param(":lesson-id"), lesson);
     }
 }
