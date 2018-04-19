@@ -20,9 +20,7 @@
                                       box
                                       multi-line
                                       label="Text"></v-text-field>
-                        <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete
-                            lesson
-                        </v-btn>
+                        <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete lesson</v-btn>
                         <v-layout row justify-center>
                             <v-dialog v-model="showDeleteLessonDialog" max-width="290">
                                 <v-card>
@@ -32,10 +30,10 @@
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="red darken-4" flat="flat"
+                                        <v-btn color="green darken-4" flat="flat"
                                                @click.native="showDeleteLessonDialog = false">No
                                         </v-btn>
-                                        <v-btn color="green darken-4" flat="flat"
+                                        <v-btn color="red  darken-4" flat="flat"
                                                @click.native="deleteLesson">Yes
                                         </v-btn>
                                     </v-card-actions>
