@@ -66,4 +66,14 @@ public class ExerciseController {
         lesson.getExerciseIds().remove(ctx.param(":exercise-id"));
         FirebaseUtil.synchronizeWrite("lessons/" + ctx.param(":lesson-id"), lesson);
     }
+
+    public static void updateExercise(Context ctx) {
+        String exerciseId = ctx.param(":exercise-id");
+        Exercise exercise = getExercise(exerciseId);
+        Exercise updatedExercise = ctx.bodyAsClass(Exercise.class);
+        exercise.setTitle(updatedExercise.getTitle());
+        exercise.setDescription(updatedExercise.getDescription());
+        exercise.setInstructions(updatedExercise.getInstructions());
+        FirebaseUtil.synchronizeWrite("exercises/" + exerciseId, exercise);
+    }
 }

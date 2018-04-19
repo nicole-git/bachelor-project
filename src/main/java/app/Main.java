@@ -83,6 +83,7 @@ public class Main {
                 path("/exercises", () -> {
                     path("/:exercise-id", () -> {
                         get(ExerciseController::getExercise, roles(STUDENT, TEACHER));
+                        patch(ExerciseController::updateExercise, roles(TEACHER));
                     });
                 });
                 post("/run-code", CodeRunningController::runCode, roles(STUDENT, TEACHER));

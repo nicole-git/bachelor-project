@@ -14,7 +14,7 @@
                             <v-text-field v-model="exercise.instructions" label="Instructions" multi-line
                                           :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
                             <v-btn @click="deleteExercise">Delete exercise</v-btn>
-                            <v-btn>Save exercise</v-btn>
+                            <v-btn @click="saveExercise">Save exercise</v-btn>
                         </v-form>
                     </div>
                 </div>
@@ -52,6 +52,10 @@
                     </v-layout>
                 </div>
             </div>
+            <v-snackbar :timeout="3000" v-model="showSnackbar">
+                {{ snackbarText }}
+                <v-btn dark flat @click.native="showSnackbar = false">Close</v-btn>
+            </v-snackbar>
         </v-container>
     </v-app>
 </div>
@@ -59,6 +63,8 @@
     new Vue({
         el: '#create-exercise-vue',
         data: {
+            showSnackbar: false,
+            snackbarText: "",
             valid: false,
             exercise: {
                 title: "",
@@ -77,7 +83,26 @@
                 }).catch(() => {
                     alert("An error occurred.");
                 });
+            },
+            saveExercise: function () {
+                let data = {
+                    title: this.exercise.title,
+                    description: this.exercise.description,
+                    instructions: this.exercise.instructions
+                }
+                axios.patch("/api/exercises/$exerciseId", data).then(response => {
+                    this.showSnackbar = true;
+                    this.snackbarText = "Exercise saved!";
+                }).catch(() => {
+                    this.showSnackbar = true;
+                    this.snackbarText = "Failed to save exercise.";
+                });
             }
+        },
+        created: function () {
+            axios.get("/api/exercises/$exerciseId").then(response => {
+                this.exercise = response.data
+            });
         }
     });
 </script>
