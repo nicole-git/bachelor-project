@@ -6,6 +6,8 @@ import app.model.Exercise;
 import app.model.SessionInfo;
 import app.model.UserInfo;
 import app.security.UserRole;
+import app.service.AttemptService;
+import app.service.ExerciseService;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
 import io.javalin.Context;
@@ -26,7 +28,7 @@ public class UserController {
             String userName = child.getKey();
             Map<String, Boolean> exerciseSolved = new HashMap<>();
             Map<String, Integer> exerciseAttempts = new HashMap<>();
-            for (Exercise exercise : ExerciseController.getExercises()) {
+            for (Exercise exercise : ExerciseService.getExercises()) {
                 exerciseSolved.put(exercise.getId(), getExerciseSolved(userName, exercise.getId()));
                 exerciseAttempts.put(exercise.getId(), getExerciseAttempts(userName, exercise.getId()));
             }
@@ -45,8 +47,7 @@ public class UserController {
     }
 
     public static boolean getExerciseSolved(String userId, String exerciseId) {
-        for (DataSnapshot child : FirebaseUtil.synchronizeRead("attempts").getChildren()) {
-            Attempt attempt = child.getValue(Attempt.class);
+        for (Attempt attempt : AttemptService.getAttempts()) {
             if (userId.equals(attempt.getUserId()) && exerciseId.equals(attempt.getExerciseId()) && attempt.getPercentageCorrect() == 1) {
                 return true;
             }
@@ -56,8 +57,7 @@ public class UserController {
 
     public static int getExerciseAttempts(String userId, String exerciseId) {
         int counter = 0;
-        for (DataSnapshot child : FirebaseUtil.synchronizeRead("attempts").getChildren()) {
-            Attempt attempt = child.getValue(Attempt.class);
+        for (Attempt attempt : AttemptService.getAttempts()) {
             if (userId.equals(attempt.getUserId()) && exerciseId.equals(attempt.getExerciseId())) {
                 counter = counter + 1;
             }
@@ -72,4 +72,5 @@ public class UserController {
             ctx.json(new SessionInfo(false));
         }
     }
+
 }

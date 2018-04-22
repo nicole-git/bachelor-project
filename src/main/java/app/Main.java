@@ -2,6 +2,7 @@ package app;
 
 import app.controller.*;
 import app.exception.NotFoundException;
+import app.service.ExerciseService;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
 import app.util.ViewUtil;
@@ -99,7 +100,7 @@ public class Main {
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
 
-        ExerciseController.getExercises(); // connect to firebase, reduces load-time
+        ExerciseService.getExercises(); // connect to firebase, reduces load-time
 
         FakeDataUtil.writeFakeData(); //
 

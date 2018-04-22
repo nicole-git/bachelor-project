@@ -48,7 +48,7 @@ public class ScriptService {
             // return result
             return new CodeRunningResult(0, stringWriter.toString());
         } catch (Throwable t) {
-            return new CodeRunningResult(0,  t.toString());
+            return new CodeRunningResult(0, t.toString());
         }
     }
 

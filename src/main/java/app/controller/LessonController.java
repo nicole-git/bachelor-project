@@ -1,23 +1,16 @@
 package app.controller;
 
-import app.exception.NotFoundException;
 import app.model.Lesson;
-import app.util.FirebaseUtil;
-import com.google.firebase.database.DataSnapshot;
+import app.service.LessonService;
 import io.javalin.Context;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class LessonController {
 
     public static void getLessons(Context ctx) {
-        List<Lesson> lessons = new ArrayList<>();
-        for (DataSnapshot child : FirebaseUtil.synchronizeRead("lessons").getChildren()) {
-            lessons.add(child.getValue(Lesson.class));
-        }
-        ctx.json(lessons);
+        ctx.json(LessonService.getLessons());
     }
 
     public static void createLesson(Context ctx) {
@@ -28,32 +21,23 @@ public class LessonController {
                 lessonInput.getText(),
                 new ArrayList<>()
         );
-        FirebaseUtil.synchronizeWrite("lessons/" + newLesson.getId(), newLesson);
+        LessonService.saveLesson(newLesson);
         ctx.json(newLesson);
     }
 
     public static void getLesson(Context ctx) {
-        ctx.json(getLesson(ctx.param(":lesson-id")));
-    }
-
-    public static Lesson getLesson(String lessonId) {
-        Lesson lesson = FirebaseUtil.synchronizeRead("lessons/" + lessonId).getValue(Lesson.class);
-        if (lesson == null) {
-            throw new NotFoundException();
-        }
-        return lesson;
+        ctx.json(LessonService.getLesson(ctx.param(":lesson-id")));
     }
 
     public static void deleteLesson(Context ctx) {
-        FirebaseUtil.synchronizeWrite("lessons/" + ctx.param(":lesson-id"), null);
+        LessonService.deleteLesson(ctx.param(":lesson-id"));
     }
 
     public static void updateLesson(Context ctx) {
-        String lessonId = ctx.param(":lesson-id");
-        Lesson lesson =  getLesson(lessonId);
-        Lesson updatedLesson = ctx.bodyAsClass(Lesson.class);
-        lesson.setTitle(updatedLesson.getTitle());
-        lesson.setText(updatedLesson.getText());
-        FirebaseUtil.synchronizeWrite("lessons/" + lessonId, lesson);
+        Lesson userInput = ctx.bodyAsClass(Lesson.class);
+        Lesson lessonToBeUpdated = LessonService.getLesson(ctx.param(":lesson-id"));
+        lessonToBeUpdated.setTitle(userInput.getTitle());
+        lessonToBeUpdated.setText(userInput.getText());
+        LessonService.saveLesson(lessonToBeUpdated);
     }
 }
