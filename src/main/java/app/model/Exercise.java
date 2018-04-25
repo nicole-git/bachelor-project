@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,4 +18,18 @@ public class Exercise {
     private String instructions;
     private Map<String, String> startCode;
     private Map<String, List<String>> testCode;
+
+    public Map<String, String> getStartCode() {
+        if (startCode == null) {
+            this.startCode = new HashMap<>();
+        }
+        return startCode;
+    }
+
+    public Map<String, List<String>> getTestCode() {
+        if (testCode == null) {
+            this.testCode = new HashMap<>();
+        }
+        return testCode;
+    }
 }

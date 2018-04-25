@@ -1,52 +1,63 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<div id="create-exercise-vue">
+<div id="create-exercise-vue" v-cloak>
     <v-app>
         <v-container>
             <div id="exercise-content">
                 <div id="exercise-left-container">
                     <div id="exercise-info">
                         <v-form v-model="valid">
-                            <v-text-field v-model="exercise.title" label="Title"
-                                          :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
-                            <v-text-field v-model="exercise.description" label="Description"
-                                          :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
-                            <v-text-field v-model="exercise.instructions" label="Instructions" multi-line
-                                          :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
+                            <v-text-field v-model="exercise.title" label="Title" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field v-model="exercise.description" label="Description" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field v-model="exercise.instructions" label="Instructions" multi-line :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
                             <v-btn @click="deleteExercise">Delete exercise</v-btn>
-                            <v-btn @click="saveExercise">Save exercise</v-btn>
+                            <v-btn @click="saveExercise(true)">Save exercise</v-btn>
                         </v-form>
                     </div>
                 </div>
                 <div id="exercise-right-container">
                     <h2>Available in:</h2>
+                    <v-btn color="primary" dark @click="openDialog(null)">Add language</v-btn>
+                    <ul>
+                        <li v-for="language in exercise.languages">
+                            {{language}}
+                            <span @click="openDialog(language)"> (edit)</span>
+                            <span @click="deleteLanguage(language)"> (delete)</span>
+                        </li>
+                    </ul>
                     <v-layout row justify-center>
-                        <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
-                            <v-btn color="primary" dark slot="activator">Add language</v-btn>
+                        <v-dialog v-model="addCodeDialog.show" persistent max-width="800px">
                             <v-card>
-                                <v-toolbar dark color="teal darken-1">
-                                    <v-btn icon @click.native="dialog = false" dark>
-                                        <v-icon>close</v-icon>
+                                <v-card-title>
+                                    <span class="headline">Add start/test code</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container grid-list-md>
+                                        <v-layout wrap>
+                                            <v-flex xs12>
+                                                <v-select v-model="addCodeDialog.language" :items="supportedLanguages" label="Choose language" autocomplete></v-select>
+                                            </v-flex>
+                                            <v-text-field v-model="addCodeDialog.startCode" box multi-line label="Start-code"></v-text-field>
+                                            <v-expansion-panel class="add-testcode-expansion-panel ">
+                                                <v-expansion-panel-content v-for="(item,i) in addCodeDialog.testCode" :key="i">
+                                                    <div slot="header">Test {{i+1}}</div>
+                                                    <v-text-field v-model="addCodeDialog.testCode[i]" box multi-line label="Test-code"></v-text-field>
+                                                </v-expansion-panel-content>
+                                            </v-expansion-panel>
+                                        </v-layout>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn color="blue darken-1" flat @click.native="addCodeDialog.testCode.push('')">
+                                        Add test
                                     </v-btn>
-                                    <v-toolbar-title>Language, start-code test-code</v-toolbar-title>
                                     <v-spacer></v-spacer>
-                                    <v-toolbar-items>
-                                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
-                                    </v-toolbar-items>
-                                </v-toolbar>
-                                <v-list-tile avatar>
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>Select a language and add its start-code and test-code
-                                        </v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
-                                <v-flex xs12 sm6>
-                                    <v-select
-                                            label="Select language"
-                                            required
-                                            :items="['Python', 'JavaScript', 'Ruby', 'Groovy']"
-                                    ></v-select>
-                                </v-flex>
+                                    <v-btn color="blue darken-1" flat @click.native="addCodeDialog.show = false">Close
+                                    </v-btn>
+                                    <v-btn color="blue darken-1" flat @click.native="addLanguageToExercise">Add to
+                                        exercise
+                                    </v-btn>
+                                </v-card-actions>
                             </v-card>
                         </v-dialog>
                     </v-layout>
@@ -63,18 +74,27 @@
     new Vue({
         el: '#create-exercise-vue',
         data: {
+            supportedLanguages: [
+              "PYTHON",
+              "JAVASCRIPT",
+              "RUBY",
+              "GROOVY"
+            ],
             showSnackbar: false,
             snackbarText: "",
             valid: false,
             exercise: {
                 title: "",
                 description: "",
-                instructions: ""
+                instructions: "",
+                languages: []
             },
-            dialog: false,
-            notifications: false,
-            sound: true,
-            widgets: false
+            addCodeDialog: {
+                language: "python",
+                startCode: "",
+                testCode: [],
+                show: false
+            }
         },
         methods: {
             deleteExercise: function () {
@@ -84,25 +104,70 @@
                     alert("An error occurred.");
                 });
             },
-            saveExercise: function () {
+            saveExercise: function (showSnackbar) {
                 let data = {
                     title: this.exercise.title,
                     description: this.exercise.description,
-                    instructions: this.exercise.instructions
-                }
-                axios.patch("/api/exercises/$exerciseId", data).then(response => {
+                    instructions: this.exercise.instructions,
+                };
+                axios.patch("/api/exercises/$exerciseId", data).then(() => {
+                    if (showSnackbar) {
+                        this.showSnackbar = true;
+                        this.snackbarText = "Exercise saved!";
+                    }
+                }).catch(() => {
+                    if (showSnackbar) {
+                        this.showSnackbar = true;
+                        this.snackbarText = "Failed to save exercise.";
+                    }
+                });
+            },
+            addLanguageToExercise: function () {
+                let data = {
+                    startCode: {
+                        [this.addCodeDialog.language]: this.addCodeDialog.startCode
+                    },
+                    testCode: {
+                        [this.addCodeDialog.language]: this.addCodeDialog.testCode
+                    }
+                };
+                axios.patch("/api/exercises/$exerciseId/add-language", data).then(() => {
                     this.showSnackbar = true;
-                    this.snackbarText = "Exercise saved!";
+                    this.snackbarText = "Start/test code added!";
+                    this.addCodeDialog.show = false;
+                    this.getExercise();
                 }).catch(() => {
                     this.showSnackbar = true;
-                    this.snackbarText = "Failed to save exercise.";
+                    this.snackbarText = "Failed to add start/test code.";
+                });
+            },
+            openDialog: function (language) {
+                if (language) { // editing an existing language
+                    this.addCodeDialog.language = language;
+                    this.addCodeDialog.startCode = this.exercise.startCode[language];
+                    this.addCodeDialog.testCode = this.exercise.testCode[language];
+                } else {
+                    this.addCodeDialog.language = "PYTHON";
+                    this.addCodeDialog.startCode = "";
+                    this.addCodeDialog.testCode = [];
+                }
+                this.saveExercise(false);
+                this.addCodeDialog.show = true;
+            },
+            getExercise: function () {
+                axios.get("/api/exercises/$exerciseId").then(response => {
+                    this.exercise = response.data;
+                    this.exercise.languages = Object.keys(this.exercise.testCode || {});
+                });
+            },
+            deleteLanguage: function (language) {
+                axios.delete("/api/exercises/$exerciseId/code?language=" + language).then(() => {
+                    this.getExercise();
                 });
             }
         },
         created: function () {
-            axios.get("/api/exercises/$exerciseId").then(response => {
-                this.exercise = response.data
-            });
+            this.getExercise();
         }
     });
 </script>

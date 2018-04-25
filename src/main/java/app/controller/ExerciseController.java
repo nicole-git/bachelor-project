@@ -50,4 +50,19 @@ public class ExerciseController {
         exerciseToBeUpdated.setInstructions(userInput.getInstructions());
         ExerciseService.saveExercise(exerciseToBeUpdated);
     }
+
+    public static void addLanguageToExercise(Context ctx) {
+        Exercise userInput = ctx.bodyAsClass(Exercise.class);
+        Exercise exerciseToBeUpdated = ExerciseService.getExercise(ctx.param(":exercise-id"));
+        exerciseToBeUpdated.getStartCode().putAll(userInput.getStartCode());
+        exerciseToBeUpdated.getTestCode().putAll(userInput.getTestCode());
+        ExerciseService.saveExercise(exerciseToBeUpdated);
+    }
+
+    public static void deleteLanguage(Context ctx) {
+        Exercise exerciseToBeUpdated = ExerciseService.getExercise(ctx.param(":exercise-id"));
+        exerciseToBeUpdated.getStartCode().remove(ctx.queryParam("language"));
+        exerciseToBeUpdated.getTestCode().remove(ctx.queryParam("language"));
+        ExerciseService.saveExercise(exerciseToBeUpdated);
+    }
 }

@@ -85,6 +85,8 @@ public class Main {
                     path("/:exercise-id", () -> {
                         get(ExerciseController::getExercise, roles(STUDENT, TEACHER));
                         patch(ExerciseController::updateExercise, roles(TEACHER));
+                        patch("/add-language", ExerciseController::addLanguageToExercise, roles(TEACHER));
+                        delete("/code", ExerciseController::deleteLanguage, roles(TEACHER));
                     });
                 });
                 post("/run-code", CodeRunningController::runCode, roles(STUDENT, TEACHER));

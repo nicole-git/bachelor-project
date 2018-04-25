@@ -84,7 +84,7 @@
                 this.title = exercise.title;
                 this.instructions = exercise.instructions;
                 this.userCode = exercise.startCode;
-                this.languages = Object.keys(exercise.startCode);
+                this.languages = Object.keys(exercise.testCode);
                 this.currentLanguage = this.languages[0];
             });
         },

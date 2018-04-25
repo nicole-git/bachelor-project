@@ -357,3 +357,11 @@ ul.block-list .block + .block {
 .theme--light .input-group--text-field.input-group--text-field-box .input-group__input {
     background: #f5f5f5; /* Input background */
 }
+
+.input-group.input-group--text-field.input-group--text-field-box.input-group--multi-line.primary--text {
+    padding-top: 10px;
+}
+
+.add-testcode-expansion-panel .input-group__details {
+    display: none;
+}
