@@ -21,6 +21,7 @@
                                       multi-line
                                       label="Text"></v-text-field>
                         <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete lesson</v-btn>
+                        <v-btn v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save lesson</v-btn>
                         <v-layout row justify-center>
                             <v-dialog v-model="showDeleteLessonDialog" max-width="290">
                                 <v-card>
@@ -40,7 +41,7 @@
                                 </v-card>
                             </v-dialog>
                         </v-layout>
-                        <v-btn v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save lesson</v-btn>
+
                     </div>
                     <div id="lesson-right-container">
                         <ul id="exercise-list" class="block-list">
@@ -103,7 +104,7 @@
             addExercise: function () {
                 let blankExercise = {
                     title: "New exercise",
-                    description: "",
+                    description: "Description",
                     instructions: ""
                 };
                 axios.post("/api/lessons/$lessonId/exercises", blankExercise).then(response => {

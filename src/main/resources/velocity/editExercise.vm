@@ -7,24 +7,38 @@
                 <div id="exercise-left-container">
                     <div id="exercise-info">
                         <v-form v-model="valid">
-                            <v-text-field v-model="exercise.title" label="Title" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
-                            <v-text-field v-model="exercise.description" label="Description" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
-                            <v-text-field v-model="exercise.instructions" label="Instructions" multi-line :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
+                            <v-text-field box v-model="exercise.title" label="Title" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field box v-model="exercise.description" label="Description" :rules="[v => v.length > 5 || 'Must be longer than 5 characters']"></v-text-field>
+                            <v-text-field box v-model="exercise.instructions" label="Instructions" multi-line :rules="[v => v.length > 50 || 'Must be longer than 50 characters']"></v-text-field>
                             <v-btn @click="deleteExercise">Delete exercise</v-btn>
                             <v-btn @click="saveExercise(true)">Save exercise</v-btn>
                         </v-form>
                     </div>
                 </div>
                 <div id="exercise-right-container">
-                    <h2>Available in:</h2>
-                    <v-btn color="primary" dark @click="openDialog(null)">Add language</v-btn>
-                    <ul>
-                        <li v-for="language in exercise.languages">
-                            {{language}}
-                            <span @click="openDialog(language)"> (edit)</span>
-                            <span @click="deleteLanguage(language)"> (delete)</span>
-                        </li>
-                    </ul>
+                    <v-data-table
+                            :headers="languageTableHeaders"
+                            :items="exercise.languages"
+                            hide-actions
+                            class="elevation-1"
+                    >
+                        <template slot="items" slot-scope="props">
+                            <td>{{ props.item }}</td>
+                            <td class="justify-center layout px-0">
+                                <v-btn icon class="mx-0" @click="openDialog(props.item)">
+                                    <v-icon color="orange darken-4">edit</v-icon>
+                                </v-btn>
+                                <v-btn icon class="mx-0" @click="deleteLanguage(props.item)">
+                                    <v-icon color="red darken-4">delete</v-icon>
+                                </v-btn>
+                            </td>
+                        </template>
+                        <template slot="footer">
+                            <td colspan="100%">
+                                <v-layout row justify-center><v-btn color="blue darken-1" flat @click="openDialog(null)">Add language</v-btn></v-layout>
+                            </td>
+                        </template>
+                    </v-data-table>
                     <v-layout row justify-center>
                         <v-dialog v-model="addCodeDialog.show" persistent max-width="800px">
                             <v-card>
@@ -33,6 +47,7 @@
                                 </v-card-title>
                                 <v-card-text>
                                     <v-container grid-list-md>
+                                        <v-form v-model="addCodeDialog.valid">
                                         <v-layout wrap>
                                             <v-flex xs12>
                                                 <v-select v-model="addCodeDialog.language" :items="supportedLanguages" label="Choose language" autocomplete></v-select>
@@ -40,23 +55,29 @@
                                             <v-text-field v-model="addCodeDialog.startCode" box multi-line label="Start-code"></v-text-field>
                                             <v-expansion-panel class="add-testcode-expansion-panel ">
                                                 <v-expansion-panel-content v-for="(item,i) in addCodeDialog.testCode" :key="i">
-                                                    <div slot="header">Test {{i+1}}</div>
-                                                    <v-text-field v-model="addCodeDialog.testCode[i]" box multi-line label="Test-code"></v-text-field>
+                                                    <div slot="header">
+                                                        Test {{i+1}} <span v-if="addCodeDialog.testCode[i].length === 0">(empty test)</span>
+                                                        <v-btn v-if="addCodeDialog.testCode.length >= 2" icon class="mx-0" @click="addCodeDialog.testCode.splice(i, 1)">
+                                                            <v-icon color="red darken-4">delete</v-icon>
+                                                        </v-btn>
+                                                    </div>
+                                                    <v-text-field
+                                                            v-model="addCodeDialog.testCode[i]"
+                                                            box
+                                                            multi-line label="Test-code"
+                                                            :rules="[v => v.length > 5 || 'Must be longer than 5 characters']">
+                                                    </v-text-field>
                                                 </v-expansion-panel-content>
                                             </v-expansion-panel>
                                         </v-layout>
+                                        </v-form>
                                     </v-container>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn color="blue darken-1" flat @click.native="addCodeDialog.testCode.push('')">
-                                        Add test
-                                    </v-btn>
+                                    <v-btn color="blue darken-1" flat @click.native="addCodeDialog.testCode.push('')">Add test</v-btn>
                                     <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" flat @click.native="addCodeDialog.show = false">Close
-                                    </v-btn>
-                                    <v-btn color="blue darken-1" flat @click.native="addLanguageToExercise">Add to
-                                        exercise
-                                    </v-btn>
+                                    <v-btn color="blue darken-1" flat @click.native="addCodeDialog.show = false">Close</v-btn>
+                                    <v-btn color="blue darken-1" :disabled="!addCodeDialog.valid" flat @click.native="addLanguageToExercise">Add to exercise</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
@@ -75,14 +96,18 @@
         el: '#create-exercise-vue',
         data: {
             supportedLanguages: [
-              "PYTHON",
-              "JAVASCRIPT",
-              "RUBY",
-              "GROOVY"
+                "PYTHON",
+                "JAVASCRIPT",
+                "RUBY",
+                "GROOVY"
             ],
             showSnackbar: false,
             snackbarText: "",
             valid: false,
+            languageTableHeaders: [
+                { text: "Language", sortable: false },
+                { text: "Actions", sortable: false, align: "center", width: "1px" }
+            ],
             exercise: {
                 title: "",
                 description: "",
@@ -90,6 +115,7 @@
                 languages: []
             },
             addCodeDialog: {
+                valid: false,
                 language: "python",
                 startCode: "",
                 testCode: [],
@@ -149,7 +175,7 @@
                 } else {
                     this.addCodeDialog.language = "PYTHON";
                     this.addCodeDialog.startCode = "";
-                    this.addCodeDialog.testCode = [];
+                    this.addCodeDialog.testCode = [""];
                 }
                 this.saveExercise(false);
                 this.addCodeDialog.show = true;
