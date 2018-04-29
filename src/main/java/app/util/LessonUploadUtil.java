@@ -3,6 +3,8 @@ package app.util;
 import app.model.Exercise;
 import app.model.Language;
 import app.model.Lesson;
+import app.model.User;
+import app.security.UserRole;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
@@ -24,6 +26,13 @@ public class LessonUploadUtil {
         System.out.println("Uploading files to firebase ... ");
         FirebaseUtil.synchronizeWrite(db, "lessons", getLessonsFromFileSystem());
         FirebaseUtil.synchronizeWrite(db, "exercises", getExercisesFromFileSystem());
+        FirebaseUtil.synchronizeWrite(db, "users", ImmutableMap.of(
+                "user1", new User("user1", "password", UserRole.STUDENT),
+                "user2", new User("user2", "password", UserRole.STUDENT),
+                "user3", new User("user3", "password", UserRole.STUDENT),
+                "teacher1", new User("teacher1", "password", UserRole.TEACHER),
+                "student1", new User("student1", "password", UserRole.STUDENT)
+        ));
         System.out.println("Upload complete!");
     }
 

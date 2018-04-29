@@ -1,8 +1,8 @@
 package app;
 
 import app.controller.*;
+import app.exception.InvalidLoginException;
 import app.exception.NotFoundException;
-import app.service.ExerciseService;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
 import app.util.ViewUtil;
@@ -29,6 +29,8 @@ public class Main {
                 .start();
 
         app.routes(() -> {
+
+            get("/login", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/login.vm"));
 
             post("/login", LoginController::login);
 
@@ -99,12 +101,11 @@ public class Main {
             });
         });
 
+        app.exception(InvalidLoginException.class, (exception, ctx) -> ViewUtil.renderToCtx(ctx, "/velocity/login.vm"));
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
 
-        ExerciseService.getExercises(); // connect to firebase, reduces load-time
-
-        FakeDataUtil.writeFakeData(); //
+        FakeDataUtil.writeFakeData();
 
     }
 

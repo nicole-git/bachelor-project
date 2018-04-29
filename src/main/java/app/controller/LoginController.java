@@ -1,24 +1,36 @@
 package app.controller;
 
+import app.exception.InvalidLoginException;
+import app.model.User;
 import app.security.UserRole;
+import app.service.LoginService;
 import app.util.ViewUtil;
 import io.javalin.Context;
 import io.javalin.Handler;
 import io.javalin.security.Role;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
 public class LoginController {
     public static void login(Context ctx) {
-        //todo: this has to be fixed
-        if ("student1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
+        String username = ctx.formParam("username");
+        String password = ctx.formParam("password");
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            throw new InvalidLoginException();
+        }
+
+        User user = LoginService.getUserByUsername(username);
+        if (!user.getPassword().equals(password)) {
+            throw new InvalidLoginException();
+        }
+
+        if (user.getUserRole() == UserRole.STUDENT) {
             ctx.sessionAttribute("logintype", "student");
             ctx.redirect("/lessons");
-        } else if ("teacher1".equals(ctx.formParam("username")) && "password".equals(ctx.formParam("password"))) {
+        } else if (user.getUserRole() == UserRole.TEACHER) {
             ctx.sessionAttribute("logintype", "teacher");
             ctx.redirect("/statistics");
-        } else {
-            ViewUtil.renderToCtx(ctx, "/velocity/login.vm");
         }
     }
 
