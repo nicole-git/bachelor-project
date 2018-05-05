@@ -13,7 +13,6 @@ import static app.security.UserRole.STUDENT;
 import static app.security.UserRole.TEACHER;
 import static io.javalin.ApiBuilder.*;
 import static io.javalin.security.Role.roles;
-import static io.javalin.translator.template.TemplateUtil.model;
 
 public class Main {
 
@@ -30,40 +29,17 @@ public class Main {
 
         app.routes(() -> {
 
-            get("/login", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/login.vm"));
-
-            post("/login", LoginController::login);
-
-            get("/logout", LoginController::logout);
-
             get("/", ctx -> ctx.redirect("/lessons"), roles(STUDENT));
-
-            get("/lessons", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lessons.vm"), roles(STUDENT, TEACHER));
-
-            get("/lessons/:lesson-id", ctx -> { // one specific lesson, get by id
-                ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm", model(
-                        "lessonId", ctx.param(":lesson-id")
-                ));
-            }, roles(STUDENT, TEACHER));
-
-            get("/exercises", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
-
-            get("/about", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/about.vm"), roles(STUDENT));
-
-            get("/statistics", ctx -> ViewUtil.renderToCtx(ctx, "/velocity/statistics.vm"), roles(TEACHER));
-
-            get("/exercises/:exercise-id", ctx -> {
-                ViewUtil.renderToCtx(ctx, "/velocity/exercise.vm", model(
-                        "exerciseId", ctx.param(":exercise-id")
-                ));
-            }, roles(STUDENT, TEACHER));
-
-            get("/lessons/:lesson-id/exercises/:exercise-id", ctx -> {
-                ViewUtil.renderToCtx(ctx, "/velocity/editExercise.vm", model(
-                        "lessonId", ctx.param(":lesson-id"),
-                        "exerciseId", ctx.param(":exercise-id")
-                ));
-            }, roles(TEACHER));
+            get("/login", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/login.vm"));
+            post("/login", LoginController::login);
+            get("/logout", LoginController::logout);
+            get("/lessons", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lessons.vm"), roles(STUDENT, TEACHER));
+            get("/lessons/:lesson-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
+            get("/exercises", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
+            get("/about", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/about.vm"), roles(STUDENT));
+            get("/statistics", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/statistics.vm"), roles(TEACHER));
+            get("/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/exercise.vm"), roles(STUDENT, TEACHER));
+            get("/lessons/:lesson-id/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/editExercise.vm"), roles(TEACHER));
 
             path("api", () -> {
                 get("/user", UserController::getSessionInfo);
@@ -103,7 +79,7 @@ public class Main {
 
         app.exception(InvalidLoginException.class, (exception, ctx) -> ctx.redirect("/login"));
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
-        app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
+        app.error(404, ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/notFound.vm"));
 
         FakeDataUtil.writeFakeData();
 
