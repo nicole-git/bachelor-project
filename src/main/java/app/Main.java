@@ -101,7 +101,7 @@ public class Main {
             });
         });
 
-        app.exception(InvalidLoginException.class, (exception, ctx) -> ViewUtil.renderToCtx(ctx, "/velocity/login.vm"));
+        app.exception(InvalidLoginException.class, (exception, ctx) -> ctx.redirect("/login"));
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ViewUtil.renderToCtx(ctx, "/velocity/notFound.vm"));
 
