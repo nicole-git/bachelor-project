@@ -38,6 +38,7 @@ public class Main {
             get("/exercises", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
             get("/about", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/about.vm"), roles(STUDENT));
             get("/statistics", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/statistics.vm"), roles(TEACHER));
+            get("/data-explorer", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/data-explorer.vm"), roles(TEACHER));
             get("/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/exercise.vm"), roles(STUDENT, TEACHER));
             get("/lessons/:lesson-id/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/editExercise.vm"), roles(TEACHER));
 
@@ -70,6 +71,7 @@ public class Main {
                 post("/run-code", CodeRunningController::runCode, roles(STUDENT, TEACHER));
                 post("/run-code-with-test", CodeRunningController::runCodeWithTest, roles(STUDENT, TEACHER));
                 path("/statistics", () -> {
+                    get("/attempts", StatisticsController::getAttempts, roles(TEACHER));
                     get("/exercises", StatisticsController::getExerciseInfo, roles(TEACHER));
                     get("/students", StatisticsController::getAllUserInfo, roles(TEACHER));
                     get("/students/:student-id", StatisticsController::getStudentInfo, roles(TEACHER));

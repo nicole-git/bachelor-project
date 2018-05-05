@@ -2,6 +2,7 @@ package app.controller;
 
 import app.model.ExerciseInfo;
 import app.model.UserInfo;
+import app.service.AttemptService;
 import com.google.common.collect.ImmutableList;
 import io.javalin.Context;
 
@@ -30,5 +31,9 @@ public class StatisticsController {
 
     public static void getAllUserInfo(Context ctx) {
         ctx.json(UserController.getAllUserInfo());
+    }
+
+    public static void getAttempts(Context ctx) {
+        ctx.json(AttemptService.getAttempts());
     }
 }

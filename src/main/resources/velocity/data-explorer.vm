@@ -1,0 +1,38 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<link rel="stylesheet" href="/css/pivot.css">
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/pivot.js"></script>
+<style>
+    .pvtUi * {
+        font-size: 14px !important;
+    }
+
+    select.pvtRenderer,
+    select.pvtAggregator {
+        appearance: none;
+        padding: 5px 35px 5px 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAFAgMAAAABCpX7AAAACVBMVEUAAABwcHChoaHU243TAAAAAXRSTlMAQObYZgAAABxJREFUeF5jmBqawKAa2sDAGcbAwBTBwMCwgAEAK+sDnr4rwRUAAAAASUVORK5CYII=) right 10px top 50% no-repeat #f5f5f5;
+    }
+</style>
+<h1>Attempt explorer</h1>
+<p>
+    Every time a student checks their answer, an <code>Attempt</code> is recorded.
+    This table lets your explore these attempts.
+</p>
+<div id="output"></div>
+<script>
+    axios.get("/api/statistics/attempts").then(response => {
+        $("#output").pivotUI(response.data,
+                {
+                    rows: ["userId", "exerciseId"],
+                    cols: ["language"],
+                }
+        );
+    });
+</script>
+#end

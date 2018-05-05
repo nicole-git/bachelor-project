@@ -1,77 +1,83 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<div id="students-vue" v-cloak>
+<div id="statistics-vue" v-cloak>
     <v-app>
         <v-container>
+            <v-select v-model="selectedChart" :items="chartOptions" label="Select chart to view" autocomplete></v-select>
             <v-select v-model="selectedStudentOption" :items="studentOptions" label="Select student" autocomplete></v-select>
-            <v-select v-model="selectedExerciseOption" :items="exerciseOptions" label="Select exercise" autocomplete></v-select>
             <div id="chart_div"></div>
         </v-container>
     </v-app>
 </div>
 <script>
-    // client tells the server that it wants to GET "/api/students"
+    var NUMBER_OF_ATTEMPTS_PER_EXERCISE = "Number of attempts per exercise";
+    var AVERAGE_ATTEMPTS_BEFORE_SOLVE_PER_EXERCISE = "Average attempts before solve per exercise";
+    var NUMBER_OF_SOLVES_PER_EXERCISE = "Number of solves per exercise";
+
     new Vue({
-        el: '#students-vue',
+        el: "#statistics-vue",
         data: {
             selectedStudentOption: "All students",
-            selectedExerciseOption: "All exercises",
+            selectedChart: NUMBER_OF_ATTEMPTS_PER_EXERCISE,
+            chartOptions: [
+                NUMBER_OF_ATTEMPTS_PER_EXERCISE,
+                AVERAGE_ATTEMPTS_BEFORE_SOLVE_PER_EXERCISE,
+                NUMBER_OF_SOLVES_PER_EXERCISE
+            ],
             students: [],
-            exercises: []
         },
         computed: {
-            studentOptions: function() {
+            studentOptions: function () {
                 return ["All students"].concat(this.students.map(student => student.userId));
             },
-            exerciseOptions: function () {
-                return ["All exercises"].concat(this.exercises.map(exercise => exercise.exerciseId));
-            }
         },
         watch: {
-            selectedStudentOption: function (newOption) {
-                getDataAndDrawGraph(newOption)
+            selectedStudentOption: function () {
+                this.getDataAndDrawChart()
             },
-            selectedExerciseOption: function (newOption) {
-                getDataAndDrawGraph(newOption)
-            }
+            selectedChart: function () {
+                this.getDataAndDrawChart()
+            },
         },
         created: function () {
             axios.get("/api/statistics/students").then(response => {
                 this.students = this.students.concat(response.data);
             });
-            axios.get("/api/statistics/exercises").then(response => {
-                this.exercises = this.exercises.concat(response.data);
-            });
+            this.getDataAndDrawChart();
+        },
+        methods: {
+            getDataAndDrawChart: function () {
+                var student = this.selectedStudentOption;
+                var path = student === "All students" ? "/api/statistics/exercises" : "/api/statistics/students/" + student;
+                axios.get(path).then(response => {
+                    var graphData = [];
+                    graphData.push(["Exercise", this.selectedChart]);
+                    response.data.forEach(element => {
+                        if (this.selectedChart === NUMBER_OF_ATTEMPTS_PER_EXERCISE) {
+                            graphData.push([element.exerciseId, element.totalAttempts]);
+                        } else if (this.selectedChart === AVERAGE_ATTEMPTS_BEFORE_SOLVE_PER_EXERCISE) {
+                            graphData.push([element.exerciseId, element.averageAttemptsBeforeSolve]);
+                        } else if (this.selectedChart === NUMBER_OF_SOLVES_PER_EXERCISE) {
+                            graphData.push([element.exerciseId, element.totalSolves]);
+                        }
+                    });
+                    google.charts.load('current', {packages: ['corechart', 'bar']});
+                    google.charts.setOnLoadCallback(() => this.drawChart(graphData, this.selectedChart));
+                });
+            },
+            drawChart: function (graphData, title) {
+                var data = google.visualization.arrayToDataTable(graphData);
+                var options = {
+                    title: title,
+                    width: "100%",
+                    height: 400,
+                    bar: {groupWidth: '95%'},
+                    legend: {position: 'none'},
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            }
         }
     });
-
-    getDataAndDrawGraph("All students");
-
-    function getDataAndDrawGraph(option) {
-        var path = option === "All students" ? "/api/statistics/exercises" : "/api/statistics/students/" + option;
-        axios.get(path).then(function (response) {
-            var graphData = [];
-            graphData.push(["Exercise", "Total Attempts"]);
-            response.data.forEach(function (element) {
-                graphData.push([element.exerciseId, element.totalAttempts]);
-            });
-            google.charts.load('current', {packages: ['corechart', 'bar']});
-            google.charts.setOnLoadCallback(() => drawChart(graphData));
-        });
-    }
-
-    function drawChart(graphData) {
-        var data = google.visualization.arrayToDataTable(graphData);
-        var options = {
-            title: "Number of attempts per exercise",
-            width: "100%",
-            height: 400,
-            bar: {groupWidth: '95%'},
-            legend: {position: 'none'},
-        };
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
-
 </script>
 #end

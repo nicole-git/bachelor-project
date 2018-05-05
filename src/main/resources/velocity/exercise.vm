@@ -15,7 +15,7 @@
             </div>
             <div id="editor-wrap">
                 <div id="top-bar">
-                    <select v-model="currentLanguage" id="language-select" name="language">
+                    <select id="lang-select" v-model="currentLanguage" id="language-select" name="language">
                         <option v-for="language in languages" :value="language">{{language}}</option>
                         <!-- dropdown options -->
                     </select>

@@ -4,6 +4,7 @@ import app.exception.NotFoundException;
 import app.model.Attempt;
 import app.model.Exercise;
 import app.model.SessionInfo;
+import app.model.User;
 import app.model.UserInfo;
 import app.security.UserRole;
 import app.service.AttemptService;
@@ -11,28 +12,29 @@ import app.service.ExerciseService;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
 import io.javalin.Context;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static app.security.UserRole.TEACHER;
 
 public class UserController {
 
-    // TODO: this is very inefficient. should  rewrite to go through each attempt instead
+    // TODO: rewrite to go through each attempt instead ?
     public static List<UserInfo> getAllUserInfo() {
         List<UserInfo> userInfoList = new ArrayList<>();
         for (DataSnapshot child : FirebaseUtil.synchronizeRead("users").getChildren()) {
-            String userName = child.getKey();
+            User user = child.getValue(User.class);
+            if (user.getUserRole() == UserRole.TEACHER) {
+                continue; // skip teachers
+            }
             Map<String, Boolean> exerciseSolved = new HashMap<>();
             Map<String, Integer> exerciseAttempts = new HashMap<>();
             for (Exercise exercise : ExerciseService.getExercises()) {
-                exerciseSolved.put(exercise.getId(), getExerciseSolved(userName, exercise.getId()));
-                exerciseAttempts.put(exercise.getId(), getExerciseAttempts(userName, exercise.getId()));
+                exerciseSolved.put(exercise.getId(), getExerciseSolved(user.getUsername(), exercise.getId()));
+                exerciseAttempts.put(exercise.getId(), getExerciseAttempts(user.getUsername(), exercise.getId()));
             }
-            userInfoList.add(new UserInfo(userName, exerciseSolved, exerciseAttempts));
+            userInfoList.add(new UserInfo(user.getUsername(), exerciseSolved, exerciseAttempts));
         }
         return userInfoList;
     }
