@@ -12,10 +12,12 @@ import app.service.ExerciseService;
 import app.util.FirebaseUtil;
 import com.google.firebase.database.DataSnapshot;
 import io.javalin.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static app.security.UserRole.TEACHER;
 
 public class UserController {

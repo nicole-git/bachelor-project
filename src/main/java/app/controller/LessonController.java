@@ -19,6 +19,7 @@ public class LessonController {
                 UUID.randomUUID().toString(),
                 lessonInput.getTitle(),
                 lessonInput.getText(),
+                lessonInput.getDifficulty(),
                 new ArrayList<>()
         );
         LessonService.saveLesson(newLesson);
@@ -38,6 +39,7 @@ public class LessonController {
         Lesson lessonToBeUpdated = LessonService.getLesson(ctx.param(":lesson-id"));
         lessonToBeUpdated.setTitle(userInput.getTitle());
         lessonToBeUpdated.setText(userInput.getText());
+        lessonToBeUpdated.setDifficulty(userInput.getDifficulty());
         LessonService.saveLesson(lessonToBeUpdated);
     }
 }

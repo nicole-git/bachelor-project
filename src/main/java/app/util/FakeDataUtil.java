@@ -1,6 +1,7 @@
 package app.util;
 
 import app.model.Attempt;
+
 import java.util.Random;
 
 public class FakeDataUtil {

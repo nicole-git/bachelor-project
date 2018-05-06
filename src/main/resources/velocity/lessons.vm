@@ -12,16 +12,14 @@
                             <v-switch color="green" label="Beginner" v-model="includeBeginner"></v-switch>
                             <v-switch color="green" label="Intermediate" v-model="includeIntermediate"></v-switch>
                             <v-switch color="green" label="Advanced" v-model="includeAdvanced"></v-switch>
-                            <v-text-field v-model="message" label="Search" single-line></v-text-field>
-                            <p>Message is: {{ message }}</p>
                         </div>
                         <v-btn v-if="isAdmin" @click="addLesson">Add new lesson</v-btn>
                     </div>
                 </v-flex>
                 <v-flex xs8>
-                    <h2 v-if="lessons.length === 0">No lessons added yet</h2>
+                    <h2 v-if="filteredLessons.length === 0">No lessons matching filter</h2>
                     <ul id="lesson-list" class="block-list">
-                        <li v-for="lesson in lessons" class="block">
+                        <li v-for="lesson in filteredLessons" class="block">
                             <a :href="`/lessons/${lesson.id}`">
                                 <div class="block__title"> {{ lesson.title }}</div>
                                 <div class="block__description"> {{ lesson.description }}</div>
@@ -48,11 +46,27 @@
             addLesson: function () {
                 let blankLesson = {
                     title: "New lesson",
+                    difficulty: "BEGINNER",
                     text: "",
                     exerciseIds: []
                 };
                 axios.post("/api/lessons", blankLesson).then(response => {
-                    window.location =`/lessons/${response.data.id}`;
+                    window.location = `/lessons/${response.data.id}`;
+                });
+            }
+        },
+        computed: {
+            filteredLessons: function () {
+                return (this.lessons || []).filter(lesson => {
+                    if (this.includeBeginner && lesson.difficulty === "BEGINNER") {
+                        return true;
+                    }
+                    if (this.includeIntermediate && lesson.difficulty === "INTERMEDIATE") {
+                        return true;
+                    }
+                    if (this.includeAdvanced && lesson.difficulty === "ADVANCED") {
+                        return true;
+                    }
                 });
             }
         },
