@@ -28,9 +28,6 @@
                         <li><a href="/statistics">Statistics</a></li>
                         <li><a href="/data-explorer">Data explorer</a></li>
                     #end
-                    #if($logintype == "student")
-                        <li><a href="/about">About</a></li>
-                    #end
                     <li id="logout"><a href="/logout">Log out</a></li>
                 </ul>
             </div>

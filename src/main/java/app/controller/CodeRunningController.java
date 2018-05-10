@@ -12,7 +12,7 @@ public class CodeRunningController {
 
     public static void runCode(Context ctx) {
         CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert post-body to class
-        CodeRunningResult result = (ScriptService.runScript(input.getLanguage(), input.getCode()));
+        CodeRunningResult result = ScriptService.runScript(input.getLanguage(), input.getCode());
         ctx.json(result); // send runScript result to client, as json
     }
 
@@ -21,7 +21,6 @@ public class CodeRunningController {
         CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert json to java-object
         Exercise exercise = ExerciseService.getExercise(input.getExerciseId()); //gets the exercise the user is solving
         CodeRunningResult result = ScriptService.runScriptWithTest(input.getLanguage(), input.getCode(), exercise.getTestCode());
-
         if (!UserController.getExerciseSolved(userId, exercise.getId())) {
             AttemptService.registerAttempt(userId, input, result);
         }

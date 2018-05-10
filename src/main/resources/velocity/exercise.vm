@@ -17,15 +17,14 @@
                 <div id="top-bar">
                     <select id="lang-select" v-model="currentLanguage" id="language-select" name="language">
                         <option v-for="language in languages" :value="language">{{language}}</option>
-                        <!-- dropdown options -->
                     </select>
                 </div>
                 <div id="editor">...</div>
                 <div v-if="output.length === 0" class="output">No output yet. Run code or check answer.</div>
                 <div v-else class="output">{{output}}</div>
             </div>
-            <v-btn @click="runCode('noTest')">Run code</v-btn>
-            <v-btn @click="runCode('withTest')">Check answer</v-btn>
+            <v-btn color="white" @click="runCode('noTest')">Run code</v-btn>
+            <v-btn color="white" @click="runCode('withTest')">Check answer</v-btn>
         </v-container>
     </v-app>
 </div>

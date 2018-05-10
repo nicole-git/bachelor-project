@@ -13,7 +13,7 @@
                             <v-switch color="green" label="Intermediate" v-model="includeIntermediate"></v-switch>
                             <v-switch color="green" label="Advanced" v-model="includeAdvanced"></v-switch>
                         </div>
-                        <v-btn v-if="isAdmin" @click="addLesson">Add new lesson</v-btn>
+                        <v-btn color="white" v-if="isAdmin" @click="addLesson">Add new lesson</v-btn>
                     </div>
                 </v-flex>
                 <v-flex xs8>

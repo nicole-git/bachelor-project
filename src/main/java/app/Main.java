@@ -36,7 +36,6 @@ public class Main {
             get("/lessons", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lessons.vm"), roles(STUDENT, TEACHER));
             get("/lessons/:lesson-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
             get("/exercises", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
-            get("/about", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/about.vm"), roles(STUDENT));
             get("/statistics", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/statistics.vm"), roles(TEACHER));
             get("/data-explorer", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/data-explorer.vm"), roles(TEACHER));
             get("/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/exercise.vm"), roles(STUDENT, TEACHER));

@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    background-color: #ffffff;/*#fbfbfb*/
+    background: #f5f5f5;
     margin: 0px;
     font-family: "open sans", arial, sans-serif;
     font-size: 14px;
@@ -193,7 +193,7 @@ ul.block-list a {
 }
 
 ul.block-list .block {
-    background-color: #F9F9F9;
+    background-color: #fff;
     border: 1px solid #ddd;
     border-left: 3px solid #6ACBC3;
 }
@@ -246,7 +246,7 @@ ul.block-list .block + .block {
 }
 
 #login-form {
-    background: white;
+    background: #fff;
     max-width: 300px;
     box-shadow: 0 1px 10px rgba(0,0,0,0.3);
     border-radius: 5px;
@@ -308,7 +308,7 @@ ul.block-list .block + .block {
     display: block;
     padding: 16px;
     margin-right: 32px;
-    background-color: #F9F9F9;;
+    background-color: #fff;;
     border: 1px solid #ddd;
     margin-bottom: 16px;
 }
@@ -341,18 +341,41 @@ ul.block-list .block + .block {
 #addExercise {
     width: 100%;
     margin: 0;
+}
+
+li + #addExercise {
     margin-top: 20px;
 }
 
+#chart_div {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.40);
+    border-radius: 5px;
+    overflow: hidden;
+    border-bottom: 5px solid white;
+}
 
 /*vuetify overrides*/
+
+.input-group--select .input-group__input {
+    margin-top: 5px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.40);
+    border-bottom: 0;
+}
+
+.input-group--select .input-group__details {
+    visibility: hidden;
+}
 
 .container {
     padding: 0;
 }
 
-.application.theme--light {
-    background: #fff;
+.application.theme--light,
+.application .theme--light.card, .theme--light .card {
+    background: #f5f5f5;
 }
 
 .application .theme--light.input-group--text-field.input-group--text-field-box .input-group__input,

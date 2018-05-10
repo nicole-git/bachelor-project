@@ -21,9 +21,9 @@
                                       multi-line
                                       label="Text">
                         </v-text-field>
-                        <v-select v-if="isAdmin" v-model="lesson.difficulty" :items="difficultyOptions"></v-select>
-                        <v-btn v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete lesson</v-btn>
-                        <v-btn v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save lesson</v-btn>
+                        <v-select v-if="isAdmin" label="Lesson difficulty" v-model="lesson.difficulty" :items="difficultyOptions"></v-select>
+                        <v-btn color="white" v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete lesson</v-btn>
+                        <v-btn color="white" v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save lesson</v-btn>
                         <v-layout row justify-center>
                             <v-dialog v-model="showDeleteLessonDialog" max-width="290">
                                 <v-card>
@@ -48,8 +48,8 @@
                                     <div class="block__description"> {{ exercise.description }}</div>
                                 </a>
                             </li>
+                            <v-btn color="white" v-if="isAdmin" @click="addExercise" id="addExercise">Add exercise</v-btn>
                         </ul>
-                        <v-btn v-if="isAdmin" @click="addExercise" id="addExercise">Add exercise</v-btn>
                     </div>
                 </div>
             </v-form>
