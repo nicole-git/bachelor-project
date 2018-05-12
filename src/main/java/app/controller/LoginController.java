@@ -27,15 +27,18 @@ public class LoginController {
 
         if (user.getUserRole() == UserRole.STUDENT) {
             ctx.sessionAttribute("logintype", "student");
+            ctx.sessionAttribute("username", user.getUsername());
             ctx.redirect("/lessons");
         } else if (user.getUserRole() == UserRole.TEACHER) {
             ctx.sessionAttribute("logintype", "teacher");
+            ctx.sessionAttribute("username", user.getUsername());
             ctx.redirect("/statistics");
         }
     }
 
     public static void logout(Context ctx) {
-        ctx.sessionAttribute("logintype", "none");
+        ctx.sessionAttribute("logintype", null);
+        ctx.sessionAttribute("username", null);
         ctx.redirect("/");
     }
 

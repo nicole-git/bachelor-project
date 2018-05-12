@@ -3,6 +3,7 @@ package app.controller;
 import app.model.ExerciseInfo;
 import app.model.UserInfo;
 import app.service.AttemptService;
+import app.service.UserService;
 import com.google.common.collect.ImmutableList;
 import io.javalin.Context;
 
@@ -21,16 +22,16 @@ public class StatisticsController {
     }
 
     public static void getStudentInfo(Context ctx) {
-        List<UserInfo> userInfoList = ImmutableList.of(UserController.getUserInfoByUserId(ctx.param(":student-id")));
+        List<UserInfo> userInfoList = ImmutableList.of(UserService.getUserInfoByUserId(ctx.param(":student-id")));
         ctx.json(StatisticsController.getExerciseInfo(userInfoList));
     }
 
     public static void getExerciseInfo(Context ctx) {
-        ctx.json(StatisticsController.getExerciseInfo(UserController.getAllUserInfo()));
+        ctx.json(StatisticsController.getExerciseInfo(UserService.getAllUserInfo()));
     }
 
     public static void getAllUserInfo(Context ctx) {
-        ctx.json(UserController.getAllUserInfo());
+        ctx.json(UserService.getAllUserInfo());
     }
 
     public static void getAttempts(Context ctx) {

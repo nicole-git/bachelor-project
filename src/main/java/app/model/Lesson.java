@@ -17,6 +17,7 @@ public class Lesson {
     private String title;
     private String text;
     private Difficulty difficulty;
+    private boolean published;
     private List<String> exerciseIds;
 
     public List<String> getExerciseIds() {

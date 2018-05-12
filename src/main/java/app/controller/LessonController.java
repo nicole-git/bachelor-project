@@ -2,15 +2,22 @@ package app.controller;
 
 import app.model.Lesson;
 import app.service.LessonService;
+import app.service.UserService;
 import io.javalin.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class LessonController {
 
     public static void getLessons(Context ctx) {
-        ctx.json(LessonService.getLessons());
+        boolean isAdmin = UserService.getSessionInfo(ctx).isAdmin();
+        List<Lesson> lessons = LessonService.getLessons().stream()
+            .filter(l -> isAdmin || l.isPublished()) // get lesson if user is admin, or if it's published
+            .collect(Collectors.toList());
+        ctx.json(lessons);
     }
 
     public static void createLesson(Context ctx) {
@@ -20,6 +27,7 @@ public class LessonController {
                 lessonInput.getTitle(),
                 lessonInput.getText(),
                 lessonInput.getDifficulty(),
+                false,
                 new ArrayList<>()
         );
         LessonService.saveLesson(newLesson);
@@ -40,6 +48,7 @@ public class LessonController {
         lessonToBeUpdated.setTitle(userInput.getTitle());
         lessonToBeUpdated.setText(userInput.getText());
         lessonToBeUpdated.setDifficulty(userInput.getDifficulty());
+        lessonToBeUpdated.setPublished(userInput.isPublished());
         LessonService.saveLesson(lessonToBeUpdated);
     }
 }

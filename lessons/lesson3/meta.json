@@ -1,0 +1,12 @@
+{
+  "id": "lesson-3",
+  "title": "Lesson Three - Lesson Title",
+  "text": "",
+  "difficulty": "ADVANCED",
+  "published": true,
+  "exerciseIds": [
+    "exercise-3",
+    "exercise-4",
+    "exercise-5"
+  ]
+}

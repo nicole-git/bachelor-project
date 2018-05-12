@@ -2,9 +2,11 @@
   "id": "lesson-2",
   "title": "Lesson Two - Lesson Title",
   "text": "",
+  "difficulty": "INTERMEDIATE",
+  "published": true,
   "exerciseIds": [
-    "exercise-1",
     "exercise-2",
+    "exercise-3",
     "exercise-4"
   ]
 }

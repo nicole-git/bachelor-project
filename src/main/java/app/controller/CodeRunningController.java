@@ -5,6 +5,7 @@ import app.model.CodeRunningResult;
 import app.model.Exercise;
 import app.service.AttemptService;
 import app.service.ExerciseService;
+import app.service.UserService;
 import app.util.ScriptService;
 import io.javalin.Context;
 
@@ -17,12 +18,12 @@ public class CodeRunningController {
     }
 
     public static void runCodeWithTest(Context ctx) {
-        String userId = "user1";
+        String username = UserService.getSessionInfo(ctx).getUsername();
         CodeRunningInput input = ctx.bodyAsClass(CodeRunningInput.class); // convert json to java-object
         Exercise exercise = ExerciseService.getExercise(input.getExerciseId()); //gets the exercise the user is solving
         CodeRunningResult result = ScriptService.runScriptWithTest(input.getLanguage(), input.getCode(), exercise.getTestCode());
-        if (!UserController.getExerciseSolved(userId, exercise.getId())) {
-            AttemptService.registerAttempt(userId, input, result);
+        if (!UserService.getExerciseSolved(username, exercise.getId())) {
+            AttemptService.registerAttempt(username, input, result);
         }
         ctx.json(result); // send runScriptWithTest result to client, as json
     }

@@ -3,6 +3,7 @@ package app;
 import app.controller.*;
 import app.exception.InvalidLoginException;
 import app.exception.NotFoundException;
+import app.service.UserService;
 import app.util.FakeDataUtil;
 import app.util.FirebaseUtil;
 import app.util.ViewUtil;
