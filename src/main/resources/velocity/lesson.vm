@@ -22,7 +22,7 @@
                                       label="Text">
                         </v-text-field>
                         <v-select v-if="isAdmin" label="Lesson difficulty" v-model="lesson.difficulty" :items="difficultyOptions"></v-select>
-                        <v-switch color="green" label="Published" v-model="lesson.published"></v-switch>
+                        <v-switch v-if="isAdmin" color="green" label="Published" v-model="lesson.published"></v-switch>
                         <v-btn color="white" v-if="isAdmin" @click="showDeleteLessonDialog = true">Delete lesson</v-btn>
                         <v-btn color="white" v-if="isAdmin" :disabled="!valid" @click="saveLesson">Save lesson</v-btn>
                         <v-layout row justify-center>
