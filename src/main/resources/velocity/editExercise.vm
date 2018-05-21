@@ -171,7 +171,7 @@
                         [this.addCodeDialog.language]: this.addCodeDialog.testCode
                     }
                 };
-                axios.patch("/api/exercises/$exerciseId/add-language", data).then(() => {
+                axios.put("/api/exercises/$exerciseId/language", data).then(() => {
                     this.showSnackbar = true;
                     this.snackbarText = "Start/test code added!";
                     this.addCodeDialog.show = false;
@@ -201,7 +201,7 @@
                 });
             },
             deleteLanguage: function (language) {
-                axios.delete("/api/exercises/$exerciseId/code?language=" + language).then(() => {
+                axios.delete("/api/exercises/$exerciseId/language?language=" + language).then(() => {
                     this.getExercise();
                 });
             }

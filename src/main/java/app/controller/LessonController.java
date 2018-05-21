@@ -3,11 +3,11 @@ package app.controller;
 import app.model.Lesson;
 import app.service.LessonService;
 import app.service.UserService;
+import app.util.FirebaseUtil;
 import io.javalin.Context;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class LessonController {
@@ -23,7 +23,7 @@ public class LessonController {
     public static void createLesson(Context ctx) {
         Lesson lessonInput = ctx.bodyAsClass(Lesson.class);
         Lesson newLesson = new Lesson(
-                UUID.randomUUID().toString(),
+                FirebaseUtil.randomId(),
                 lessonInput.getTitle(),
                 lessonInput.getText(),
                 lessonInput.getDifficulty(),

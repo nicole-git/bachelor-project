@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.ExerciseInfo;
+import app.model.PivotAttempt;
 import app.model.UserInfo;
 import app.service.AttemptService;
 import app.service.UserService;
@@ -34,7 +35,7 @@ public class StatisticsController {
         ctx.json(UserService.getAllUserInfo());
     }
 
-    public static void getAttempts(Context ctx) {
-        ctx.json(AttemptService.getAttempts());
+    public static void getPivotAttempts(Context ctx) {
+        ctx.json(AttemptService.getAttempts().stream().map(PivotAttempt::new).collect(Collectors.toList()));
     }
 }

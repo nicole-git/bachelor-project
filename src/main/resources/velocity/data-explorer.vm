@@ -34,7 +34,7 @@
 </p>
 <div id="output"></div>
 <script>
-    axios.get("/api/statistics/attempts").then(response => {
+    axios.get("/api/statistics/pivot-attempts").then(response => {
         $("#output").pivotUI(response.data,
                 {
                     rows: ["userId", "exerciseId"],

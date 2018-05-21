@@ -3,8 +3,7 @@ package app;
 import app.controller.*;
 import app.exception.InvalidLoginException;
 import app.exception.NotFoundException;
-import app.service.UserService;
-import app.util.FakeDataUtil;
+import app.service.LessonService;
 import app.util.FirebaseUtil;
 import app.util.ViewUtil;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,14 +63,14 @@ public class Main {
                     path("/:exercise-id", () -> {
                         get(ExerciseController::getExercise, roles(STUDENT, TEACHER));
                         patch(ExerciseController::updateExercise, roles(TEACHER));
-                        patch("/add-language", ExerciseController::addLanguageToExercise, roles(TEACHER));
-                        delete("/code", ExerciseController::deleteLanguage, roles(TEACHER));
+                        put("/language", ExerciseController::addLanguageToExercise, roles(TEACHER));
+                        delete("/language", ExerciseController::deleteLanguage, roles(TEACHER));
                     });
                 });
                 post("/run-code", CodeRunningController::runCode, roles(STUDENT, TEACHER));
                 post("/run-code-with-test", CodeRunningController::runCodeWithTest, roles(STUDENT, TEACHER));
                 path("/statistics", () -> {
-                    get("/attempts", StatisticsController::getAttempts, roles(TEACHER));
+                    get("/pivot-attempts", StatisticsController::getPivotAttempts, roles(TEACHER));
                     get("/exercises", StatisticsController::getExerciseInfo, roles(TEACHER));
                     get("/students", StatisticsController::getAllUserInfo, roles(TEACHER));
                     get("/students/:student-id", StatisticsController::getStudentInfo, roles(TEACHER));
@@ -83,7 +82,7 @@ public class Main {
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
         app.error(404, ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/notFound.vm"));
 
-        FakeDataUtil.writeFakeData();
+        LessonService.getLessons(); // call to initialize the connection to firebase
 
     }
 

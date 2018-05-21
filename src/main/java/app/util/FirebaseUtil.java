@@ -4,8 +4,11 @@ import app.Main;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.database.*;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.io.FileInputStream;
 import java.util.concurrent.CountDownLatch;
 
@@ -17,9 +20,9 @@ public class FirebaseUtil {
         try {
             FileInputStream serviceAccount = new FileInputStream("deploy/serviceAccountKey.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl("https://nubk-oppgave9.firebaseio.com/")
-                    .build();
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setDatabaseUrl("https://nubk-oppgave9.firebaseio.com/")
+                .build();
             FirebaseApp.initializeApp(options);
             return FirebaseDatabase.getInstance();
         } catch (Exception e) {
@@ -63,6 +66,11 @@ public class FirebaseUtil {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    // This could be improved
+    public static String randomId() {
+        return Long.toString(System.nanoTime(), 36);
     }
 
 }

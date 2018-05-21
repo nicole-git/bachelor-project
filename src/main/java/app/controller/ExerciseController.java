@@ -2,26 +2,46 @@ package app.controller;
 
 import app.model.Exercise;
 import app.model.Lesson;
+import app.model.SessionInfo;
+import app.model.StudentExercise;
 import app.service.ExerciseService;
 import app.service.LessonService;
+import app.service.UserService;
+import app.util.FirebaseUtil;
 import io.javalin.Context;
-
-import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ExerciseController {
 
     public static void getExercisesForLesson(Context ctx) {
-        ctx.json(ExerciseService.getExercisesForLesson(ctx.param(":lesson-id")));
+        SessionInfo sessionInfo = UserService.getSessionInfo(ctx);
+        List<Exercise> exercises = ExerciseService.getExercisesForLesson(ctx.param(":lesson-id"));
+        if (sessionInfo.isAdmin()) {
+            ctx.json(exercises);
+        } else { // students don't get to view the test-code, and they have a "solved" boolean
+            ctx.json(
+                exercises.stream()
+                    .map(e -> new StudentExercise(e, sessionInfo.getUsername()))
+                    .collect(Collectors.toList())
+            );
+        }
     }
 
     public static void getExercise(Context ctx) {
-        ctx.json(ExerciseService.getExercise(ctx.param(":exercise-id")));
+        SessionInfo sessionInfo = UserService.getSessionInfo(ctx);
+        Exercise exercise = ExerciseService.getExercise(ctx.param(":exercise-id"));
+        if (sessionInfo.isAdmin()) {
+            ctx.json(exercise);
+        } else { // students don't get to view the test-code, and they have a "solved" boolean
+            ctx.json(new StudentExercise(exercise, sessionInfo.getUsername()));
+        }
     }
 
     public static void createExerciseForLesson(Context ctx) {
         Exercise exerciseInput = ctx.bodyAsClass(Exercise.class);
         Exercise newExercise = new Exercise(
-                UUID.randomUUID().toString(),
+                FirebaseUtil.randomId(),
                 exerciseInput.getTitle(),
                 exerciseInput.getDescription(),
                 exerciseInput.getInstructions(),

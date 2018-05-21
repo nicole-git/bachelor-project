@@ -8,14 +8,13 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class AttemptService {
 
     public static void registerAttempt(String userId, CodeRunningInput input, CodeRunningResult result) {
         Attempt attempt = new Attempt(
                 System.currentTimeMillis(),
-                UUID.randomUUID().toString(),
+                FirebaseUtil.randomId(),
                 userId,
                 input.getExerciseId(),
                 input.getLanguage(),

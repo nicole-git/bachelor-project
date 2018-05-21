@@ -54,11 +54,11 @@
                     graphData.push(["Exercise", this.selectedChart]);
                     response.data.forEach(element => {
                         if (this.selectedChart === NUMBER_OF_ATTEMPTS_PER_EXERCISE) {
-                            graphData.push([element.exerciseId, element.totalAttempts]);
+                            graphData.push([element.exerciseTitle, element.totalAttempts]);
                         } else if (this.selectedChart === AVERAGE_ATTEMPTS_BEFORE_SOLVE_PER_EXERCISE) {
-                            graphData.push([element.exerciseId, element.averageAttemptsBeforeSolve]);
+                            graphData.push([element.exerciseTitle, element.averageAttemptsBeforeSolve]);
                         } else if (this.selectedChart === NUMBER_OF_SOLVES_PER_EXERCISE) {
-                            graphData.push([element.exerciseId, element.totalSolves]);
+                            graphData.push([element.exerciseTitle, element.totalSolves]);
                         }
                     });
                     google.charts.load('current', {packages: ['corechart', 'bar']});
