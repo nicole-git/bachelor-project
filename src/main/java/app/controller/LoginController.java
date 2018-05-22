@@ -48,7 +48,7 @@ public class LoginController {
             handler.handle(ctx);
         } else {
             ctx.status(401);
-            ViewUtil.renderHtmlFrame(ctx, "/velocity/login.vm");
+            ViewUtil.renderHtmlFrame(ctx, "/view/login.vm");
         }
     }
 }

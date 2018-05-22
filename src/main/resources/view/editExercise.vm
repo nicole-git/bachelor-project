@@ -1,4 +1,4 @@
-#parse("/velocity/layout.vm")
+#parse("/view/layout.vm")
 #@mainLayout()
 <div id="create-exercise-vue" v-cloak>
     <v-app>

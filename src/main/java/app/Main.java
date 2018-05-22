@@ -30,16 +30,16 @@ public class Main {
         app.routes(() -> {
 
             get("/", ctx -> ctx.redirect("/lessons"), roles(STUDENT));
-            get("/login", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/login.vm"));
+            get("/login", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/login.vm"));
             post("/login", LoginController::login);
             get("/logout", LoginController::logout);
-            get("/lessons", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lessons.vm"), roles(STUDENT, TEACHER));
-            get("/lessons/:lesson-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
-            get("/exercises", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/lesson.vm"), roles(STUDENT, TEACHER));
-            get("/statistics", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/statistics.vm"), roles(TEACHER));
-            get("/data-explorer", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/data-explorer.vm"), roles(TEACHER));
-            get("/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/exercise.vm"), roles(STUDENT, TEACHER));
-            get("/lessons/:lesson-id/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/editExercise.vm"), roles(TEACHER));
+            get("/lessons", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/lessons.vm"), roles(STUDENT, TEACHER));
+            get("/lessons/:lesson-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/lesson.vm"), roles(STUDENT, TEACHER));
+            get("/exercises", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/lesson.vm"), roles(STUDENT, TEACHER));
+            get("/statistics", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/statistics.vm"), roles(TEACHER));
+            get("/data-explorer", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/data-explorer.vm"), roles(TEACHER));
+            get("/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/exercise.vm"), roles(STUDENT, TEACHER));
+            get("/lessons/:lesson-id/exercises/:exercise-id", ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/editExercise.vm"), roles(TEACHER));
 
             path("api", () -> {
                 get("/user", UserController::getSessionInfo);
@@ -80,7 +80,7 @@ public class Main {
 
         app.exception(InvalidLoginException.class, (exception, ctx) -> ctx.redirect("/login"));
         app.exception(NotFoundException.class, (exception, ctx) -> ctx.status(404));
-        app.error(404, ctx -> ViewUtil.renderHtmlFrame(ctx, "/velocity/notFound.vm"));
+        app.error(404, ctx -> ViewUtil.renderHtmlFrame(ctx, "/view/notFound.vm"));
 
         LessonService.getLessons(); // call to initialize the connection to firebase
 

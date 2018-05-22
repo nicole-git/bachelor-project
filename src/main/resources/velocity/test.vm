@@ -1,2 +1,0 @@
-#parse("/velocity/layout.vm")
-#@mainLayout()
