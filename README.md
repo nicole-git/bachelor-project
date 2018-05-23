@@ -1,28 +1,22 @@
 # oppgave9
 
-## Setup
-* Clone project 
-* Create file `deploy/serviceAccountKey.json` with Firebase credentials
+## Installation
 
-## Run server
+* Clone the project
+* Add Firebase key
+* Build and run jar
 
-* Run `Main.java`
+### Clone the project
+`git clone https://github.com/nubk/oppgave9.git`
 
-## Upload exercise-files to Firebase
+### Add firebase key
+The system requires a Firebase project, and credentials for that project stored in a file: `src/main/resources/deploy/serviceAccountKey.json`. This key can be downloaded from your Firebase project ([instructions](https://firebase.google.com/docs/admin/setup)).
 
-* Run `ExerciseUploadUtil.java`
+### Build and run jar
+Once you have added the Firebase credentials, you can build the system. To build a jar, navigate to the project root folder (oppgave9) and type type the following commands: 
+* `mvn install` (this will create a jar with all the required dependencies in the target folder)
+* `cd target` (navigate to target folder)
+* `java -jar oppgave9-1.0-SNAPSHOT-jar-with-dependencies.jar` (this will run the application)
 
-## About exercise/Firebase setup
-
-The code and instructions for exercises needs their own directory in the `exercises` directory.
-Each exercise must have the following files: 
-
-* `instructions.html` // instructions for the exercise
-* `javascript.js` // start-code for javascript
-* `javascript-test.js` // test-code for javascript
-* `meta.json` // meta information for exercise (title, description, etc)
-* `python.py` // start-code for python
-* `python-test.py` // test-code for python
-
-## Login
-There are two dummy-users in the system: `student1` and `teacher1`. The password for both is `password`.
+## Populate database with fake data
+It can be useful to have some fake data for development purposes. You can run `src/main/java/app/util/FakeDataUtil.java` to populate the database. Please note that this will delete any real data.
