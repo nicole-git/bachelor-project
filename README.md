@@ -13,7 +13,7 @@
 The system requires a Firebase project, and credentials for that project stored in a file: `src/main/resources/deploy/serviceAccountKey.json`. This key can be downloaded from your Firebase project ([instructions](https://firebase.google.com/docs/admin/setup)).
 
 ### Build and run jar
-Once you have added the Firebase credentials, you can build the system. To build a jar, navigate to the project root folder (oppgave9) and type type the following commands: 
+Once you have added the Firebase credentials, you can build the system. To build a jar, navigate to the project root folder (oppgave9) and type the following commands: 
 * `mvn install` (this will create a jar with all the required dependencies in the target folder)
 * `cd target` (navigate to target folder)
 * `java -jar oppgave9-1.0-SNAPSHOT-jar-with-dependencies.jar` (this will run the application)
