@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 
 public class FirebaseUtil {
@@ -18,7 +19,7 @@ public class FirebaseUtil {
     // that we can use to read from and write to the database
     public static FirebaseDatabase initFirebase() {
         try {
-            FileInputStream serviceAccount = new FileInputStream("deploy/serviceAccountKey.json");
+            InputStream serviceAccount = FirebaseUtil.class.getResourceAsStream("/deploy/serviceAccountKey.json");
             FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .setDatabaseUrl("https://nubk-oppgave9.firebaseio.com/")

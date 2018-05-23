@@ -1,5 +1,5 @@
 # Don't push firebase key
-deploy/serviceAccountKey.json
+src/main/resources/deploy/serviceAccountKey.json
 
 .idea
 *.iml
