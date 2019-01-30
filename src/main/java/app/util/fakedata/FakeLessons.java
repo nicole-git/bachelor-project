@@ -1,15 +1,13 @@
-package app.util;
+package app.util.fakedata;
 
 import app.model.Exercise;
 import app.model.Language;
 import app.model.Lesson;
-import app.model.User;
-import app.security.UserRole;
+import app.util.FirebaseUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,21 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LessonUploadUtil {
+public class FakeLessons {
 
-    public static void main(String[] args) throws Exception {
-        FirebaseDatabase db = FirebaseUtil.initFirebase();
-        System.out.println("Uploading files to firebase ... ");
+    public static void writeFakeData(FirebaseDatabase db) throws IOException {
         FirebaseUtil.synchronizeWrite(db, "lessons", getLessonsFromFileSystem());
         FirebaseUtil.synchronizeWrite(db, "exercises", getExercisesFromFileSystem());
-        FirebaseUtil.synchronizeWrite(db, "users", ImmutableMap.of(
-                "user1", new User("user1", "password", UserRole.STUDENT),
-                "user2", new User("user2", "password", UserRole.STUDENT),
-                "user3", new User("user3", "password", UserRole.STUDENT),
-                "teacher1", new User("teacher1", "password", UserRole.TEACHER),
-                "student1", new User("student1", "password", UserRole.STUDENT)
-        ));
-        System.out.println("Upload complete!");
     }
 
     // create a map with lesson-id as key and lesson as value
@@ -93,5 +81,4 @@ public class LessonUploadUtil {
     private static File readFile(File exerciseFile, String path) {
         return Paths.get(exerciseFile.getAbsolutePath() + "/" + path).toFile();
     }
-
 }

@@ -17,12 +17,17 @@
         <script src="/js/vuetify.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <script>
+            Object.assign(Vue.prototype.$vuetify.theme, {
+                primary: "#008191",
+            });
+        </script>
     </head>
     <body>
         <header>
-            <div class="width-limit">
+            <div class="header-content width-limit">
+                <img class="logo" src="/img/og9.png">
                 <ul class="navigation">
-                    <img class="logo" src="/img/og9.png">
                     <li><a href="/lessons">Lessons</a></li>
                     #if($logintype == "teacher")
                         <li><a href="/statistics">Statistics</a></li>

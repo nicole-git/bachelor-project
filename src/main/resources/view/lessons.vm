@@ -9,9 +9,9 @@
                     <div class="refine-container">
                         <div id="filter-lessons">
                             <h2>Filter</h2>
-                            <v-switch color="green" label="Beginner" v-model="includeBeginner"></v-switch>
-                            <v-switch color="green" label="Intermediate" v-model="includeIntermediate"></v-switch>
-                            <v-switch color="green" label="Advanced" v-model="includeAdvanced"></v-switch>
+                            <v-switch color="primary" label="Beginner" v-model="includeBeginner"></v-switch>
+                            <v-switch color="primary" label="Intermediate" v-model="includeIntermediate"></v-switch>
+                            <v-switch color="primary" label="Advanced" v-model="includeAdvanced"></v-switch>
                         </div>
                         <v-btn color="white" v-if="isAdmin" @click="addLesson">Add new lesson</v-btn>
                     </div>

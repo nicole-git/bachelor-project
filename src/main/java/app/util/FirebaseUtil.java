@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 
+// Most of this was copied from stack overflow
 public class FirebaseUtil {
 
     // this method creates a connection to firebase and returns a FirebaseDatabase-object

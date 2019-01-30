@@ -8,6 +8,7 @@
 
 html {
     font-family: Calibri;
+    overflow: hidden;
 }
 
 body {
@@ -18,7 +19,7 @@ body {
 }
 
 main {
-    padding-top: 130px;
+    padding-top: 115px;
 }
 
 header {
@@ -26,45 +27,38 @@ header {
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    border-bottom: 1px solid #0000000d;
-    height: 90px;
     box-sizing: content-box;
-    background-color: #005E6B; /*#ff79b6, #E2738C*/
+    background-color: #008191; /*#ff79b6, #E2738C*/
+    border-bottom: 4px solid #005E6B; /*#ff79b6, #E2738C*/
     z-index: 1;
-    font-family: Calibri;
+    font-family: Calibri, sans-serif;
+}
+
+header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
 }
 
 img.logo {
-    float: left;
-    height: 52px;
-    margin: calc((90px - 52px) / 2) 0;
+    height: 45px;
     margin-right: 30px;
 }
 
 ul.navigation {
-    list-style: none;
-    padding: 0;
-    float: left;
-    margin: 0;
-    height: 90px;
     width: 100%;
 }
 
 ul.navigation li {
-    text-align: center;
     display: inline-block;
-    height: 90px;
     font-size: 20px;
+    padding: 20px;
 }
 
 ul.navigation li a {
-    display: inline-block;
     text-decoration: none;
     color: #ffffff;
-    margin: 0px 5px;
-    padding: 0 5px;
-    height: 90px;
-    line-height: 90px;
 
 }
 
@@ -195,7 +189,9 @@ ul.block-list a {
 ul.block-list .block {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-left: 3px solid #6ACBC3;
+    border-left: 3px solid #009cb0;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 ul.block-list .block + .block {
@@ -203,7 +199,7 @@ ul.block-list .block + .block {
 }
 
 .block__title {
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
 }
 
@@ -216,6 +212,8 @@ ul.block-list .block + .block {
     padding: 15px;
     background: white;
     border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 .exercise-info .description {
@@ -293,6 +291,8 @@ ul.block-list .block + .block {
     border: 1px solid #ddd;
     margin-bottom: 16px;
     white-space: pre-wrap;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 #deleteLesson {
@@ -311,6 +311,8 @@ ul.block-list .block + .block {
     background-color: #fff;;
     border: 1px solid #ddd;
     margin-bottom: 16px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
 #lesson-info {
@@ -397,3 +399,4 @@ li + #addExercise {
 .input-group--text-field-box:not(.input-group--textarea).input-group--multi-line label {
     top: 16px;
 }
+

@@ -1,5 +1,6 @@
 #parse("/view/layout.vm")
 #@mainLayout()
+<h1>Statistics</h1>
 <div id="statistics-vue" v-cloak>
     <v-app>
         <v-container>
